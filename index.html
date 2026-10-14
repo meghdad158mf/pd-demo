@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-fHoyKHRpi7dFZWnkFIQAF0TYNwiI6sefNrXippq9yDw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-qp4/CYPLToCnRcGFRep5CrxnbL3o4arh6dEMIvwbINA='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -862,6 +862,9 @@ a.btn{text-decoration:none}
 /* v19: فیلدهای تازه‌ی پرونده‌ی فرد */
 .kv dd.pre{white-space:pre-line}
 .tag.tag-c{background:var(--flag-soft);color:var(--flag-ink)}
+/* v20: تب «برنامه‌ها» در پرونده‌ی محله */
+@media (max-width:720px){.tabs.tabs4.tabs5{grid-template-columns:repeat(5,minmax(0,1fr))}.tabs.tabs5 button{font-size:13px}}
+@media (max-width:899px){.verbs .verb:last-child:nth-child(even){grid-column:1/-1}}
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1006,20 +1009,22 @@ const ISTAT={proposed:{t:'پیشنهادی',c:'mute'},review:{t:'در حال ب�
 const RTYPES=['بازدید میدانی','جلسه با متولیان','تماس تلفنی','گزارش مردمی'];
 const LEVEL={admin:{t:'مدیر سامانه',c:'flag'},supervisor:{t:'رابط استانی',c:'acc'},operator:{t:'کارشناس محله',c:'mute'},viewer:{t:'نمایشی',c:'mute'}};
 const CST={pending:{t:'در انتظار تأیید',c:'warn i-clock'},approved:{t:'تأییدشده',c:'ok'},rejected:{t:'برگشت برای اصلاح',c:'bad i-back'},auto:{t:'ثبت رابط استانی',c:'acc'},admin:{t:'ثبت مدیر',c:'mute'},revoked:{t:'لغو با عدم تأیید مدیر',c:'bad'},withdrawn:{t:'پس‌گرفته',c:'mute'}};
-const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',review:'بررسی',contact:'ارتباط با فرد'};
+const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',program:'برنامه',review:'بررسی',contact:'ارتباط با فرد'};
 const OPW={create:'ثبت',update:'ویرایش',delete:'حذف'};
 const GENDER={m:'مرد',f:'زن'};
 const MARITAL={single:'مجرد',married:'متأهل'};
 /* نمونه‌ی اولیه؛ مدیر از «شهرها و دسته‌بندی‌ها» عوضش می‌کند */
 const COURSES0=['دوره مقدماتی پرچمدار','مهارت‌های ارتباطی','کار با کودک و نوجوان','مدیریت جلسه و برنامه','رسانه و فضای مجازی','کار تیمی و مسئولیت‌پذیری'];
+/* انواع برنامه‌های محله؛ مدیر از «دسته‌بندی‌ها» عوضش می‌کند */
+const PROG0=['سخنرانی','مداحی','سرود','تئاتر','کنش‌های اجتماعی','نماز استغاثه','توسل'];
 const SKILLS_NEW=['سخنرانی چندرسانه‌ای','مداحی','اجرا','کار با کودک','پژوهش','هوش مصنوعی','رسانه'];
 const EDU=['زیر دیپلم','دیپلم','کاردانی','کارشناسی','کارشناسی ارشد','دکتری','حوزوی'];
 const COOP={active:{t:'همکاری فعال',c:'ok'},low:{t:'همکاری کم',c:'mute'},inactive:{t:'بدون همکاری',c:'mute'}};
 const CTYPES=['تماس تلفنی','جلسه حضوری','پیامک','بازدید','دعوت به برنامه'];
 const PERIODS=[['7','۷ روز'],['30','۳۰ روز'],['90','۹۰ روز'],['all','همه']];
 const opts=o=>Object.entries(o).map(([k,v])=>[k,v.t]);
-const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'وضعیت شغلی کنونی',marital:'وضعیت تأهل',jobHist:'سوابق شغلی',strengths:'قوت‌ها',weaknesses:'ضعف‌ها',courses:'دوره‌های توانمندسازی',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
-const DIFF_SKIP=new Set(['id','rv','links','problems','ideas','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
+const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',place:'محل برگزاری',audience:'تعداد شرکت‌کنندگان',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'وضعیت شغلی کنونی',marital:'وضعیت تأهل',jobHist:'سوابق شغلی',strengths:'قوت‌ها',weaknesses:'ضعف‌ها',courses:'دوره‌های توانمندسازی',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
+const DIFF_SKIP=new Set(['id','rv','links','problems','ideas','programs','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
 
 /* ================= seeded random ================= */
 function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
@@ -1059,6 +1064,7 @@ function seed(){
     orgs:['شهرداری منطقه','شورایاری','آب و فاضلاب','شرکت برق','پلیس راهور','کلانتری','آموزش و پرورش','بهزیستی','شبکه بهداشت'],
     skills:['سخنرانی','سخنرانی چندرسانه‌ای','مداحی','اجرا','کار با کودک','پژوهش','هوش مصنوعی','رسانه','هماهنگی برنامه','کار با نوجوانان','امور خیریه','ارتباط با ادارات','آموزش','حقوقی','فنی و ساختمانی'],
     courses:COURSES0,
+    progTypes:PROG0,
   };
   const used=new Set(['مریم احمدی','حمید شریفی','نرگس صادقی','محمد نوری']);
   const presetOps={'تهران':['علی رضایی','زهرا کریمی','حسین موسوی','فاطمه حسینی','رضا جعفری'],'مشهد':['سعید نظری'],'اصفهان':['الهه طاهری'],'شیراز':['جواد شکوری'],'تبریز':['آرش پورمند']};
@@ -1428,7 +1434,7 @@ function host(ch){
   if(ch.ent==='contact'){const p=getP(ch.pid);return p?p.contacts:null;}
   const n=findN(ch.nb);if(!n)return null;
   if(ch.ent==='step'){const p=n.problems.find(x=>x.id===ch.par);return p?p.steps:null;}
-  return n[{link:'links',problem:'problems',idea:'ideas',review:'reviews'}[ch.ent]]||null;
+  return n[{link:'links',problem:'problems',idea:'ideas',review:'reviews',program:'programs'}[ch.ent]]||null;
 }
 const target=ch=>{const a=host(ch);return a?a.find(x=>x.id===ch.tid):null;};
 function recompute(p){const s=p.steps.filter(x=>!x._st).sort((a,b)=>a.date.localeCompare(b.date));const l=s[s.length-1];if(l){p.status=l.status;if(l.org)p.org=l.org;}}
@@ -1539,7 +1545,7 @@ const vlist=a=>a.filter(vis);
 const openProblems=n=>n.problems.filter(p=>!p._st&&isOpen(p));
 const lastReview=n=>n.reviews.reduce((a,r)=>!r._st&&(!a||r.date>a)?r.date:a,'');
 const hasCritical=n=>openProblems(n).some(p=>p.prio==='critical');
-const hasPending=n=>!!(n._st||n._cid||n.links.some(x=>x._st||x._cid)||n.problems.some(p=>p._st||p._cid||p.steps.some(s=>s._st))||n.ideas.some(x=>x._st||x._cid)||n.reviews.some(x=>x._st||x._cid));
+const hasPending=n=>!!(n._st||n._cid||n.links.some(x=>x._st||x._cid)||n.problems.some(p=>p._st||p._cid||p.steps.some(s=>s._st))||n.ideas.some(x=>x._st||x._cid)||(n.programs||[]).some(x=>x._st||x._cid)||n.reviews.some(x=>x._st||x._cid));
 const lastStepDays=p=>{const l=p.steps.filter(x=>!x._st).reduce((a,x)=>x.date>a?x.date:a,'');return l?daysSince(l):99;};
 const NEED={urgent:{t:'نیازمند اقدام فوری',c:'--bad',o:0},review:{t:'نیازمند بررسی دوره‌ای',c:'--warn',o:1},ok:{t:'روبه‌راه',c:'--ok',o:2}};
 function nbNeed(n){
@@ -1671,6 +1677,12 @@ function ensurePFlag(){let ch=false;const r=rng(91);
   db.people.forEach(p=>{if(p.pflag)return;const mem=linksOf(p.id).some(x=>x.n.flag==='member');p.pflag=mem&&r()<.7?'member':'none';ch=true;});
   if(ch)persist();}
 function ensureFields(){const st=db.settings;let ch=false;
+  if(!st.progTypes){st.progTypes=[...PROG0];ch=true;
+    /* داده‌ی نمونه: چند برنامه برای بخشی از محله‌ها */
+    const r=rng(2718),TT={'سخنرانی':['سخنرانی با موضوع خانواده','سخنرانی هفتگی مسجد'],'مداحی':['مراسم مداحی شب جمعه'],'سرود':['اجرای گروه سرود نوجوانان'],'تئاتر':['نمایش خیابانی کودکان'],'کنش‌های اجتماعی':['جمع‌آوری کمک برای خانواده‌های نیازمند','پاک‌سازی بوستان محله'],'نماز استغاثه':['نماز استغاثه در مسجد محله'],'توسل':['دعای توسل هفتگی']},PL=['مسجد محله','حسینیه','پارک محله','فرهنگسرا','مدرسه'];
+    db.nb.forEach(n=>{if(!n.programs)n.programs=[];if(n._st||r()>.45)return;const k=1+Math.floor(r()*3);const op=getU(n.op);
+      for(let i=0;i<k;i++){const t=PROG0[Math.floor(r()*PROG0.length)];n.programs.push({id:uid(),type:t,date:isoDaysAgo(Math.floor(r()*90)),title:TT[t][Math.floor(r()*TT[t].length)],place:PL[Math.floor(r()*PL.length)],audience:10*(2+Math.floor(r()*20)),desc:'',by:op?.name||'مریم احمدی',uid:op?.id||'u1'});}});}
+  db.nb.forEach(n=>{if(!n.programs){n.programs=[];ch=true;}});
   if(!st.courses){st.courses=[...COURSES0];ch=true;
     /* داده‌ی نمونه: تأهل و دوره برای بخشی از افراد */
     const r=rng(314);db.people.forEach(p=>{if(!p.marital&&p.birth&&p.birth<1385)p.marital=r()<.75?'married':'single';if(!p.courses&&r()<.35)p.courses=[...new Set([COURSES0[Math.floor(r()*COURSES0.length)],...(r()<.4?[COURSES0[Math.floor(r()*COURSES0.length)]]:[])])];});}
@@ -1895,7 +1907,7 @@ function dossierView(n){
   const ed=canEdit(n),u=me();
   const op=openProblems(n);
   if(['reviews','ideas','history'].includes(ui.tab))ui.tab='records';
-  const tabs=[['summary','خلاصه',null],['problems','مشکلات',op.length?fa(op.length)+' باز':'۰'],['trustees','افراد',fa(vlist(n.links).length)],['records','سوابق',fa(records(n).length)]];
+  const tabs=[['summary','خلاصه',null],['problems','مشکلات',op.length?fa(op.length)+' باز':'۰'],['programs','برنامه‌ها',fa(vlist(n.programs||[]).length)],['trustees','افراد',fa(vlist(n.links).length)],['records','سوابق',fa(records(n).length)]];
   if(!tabs.some(t=>t[0]===ui.tab))ui.tab='summary';
   return `
   <div class="crumb"><a href="#list">محله‌ها</a> ‹ ${esc(n.name)}</div>
@@ -1914,7 +1926,7 @@ function dossierView(n){
   </section>
   <div class="d-grid">
     <div class="d-main" style="min-width:0">
-      <div class="tabs tabs4" role="tablist">${tabs.map(([k,t,c])=>`<button role="tab" aria-selected="${ui.tab===k}" data-act="tab" data-tab="${k}">${t}${c!=null?`<span class="cnt">${fa(c)}</span>`:''}</button>`).join('')}</div>
+      <div class="tabs tabs4 tabs5" role="tablist">${tabs.map(([k,t,c])=>`<button role="tab" aria-selected="${ui.tab===k}" data-act="tab" data-tab="${k}">${t}${c!=null?`<span class="cnt">${fa(c)}</span>`:''}</button>`).join('')}</div>
       <div id="tabpanel">${tabPanel(n,ed)}</div>
     </div>
     <aside class="d-aside nb-aside">
@@ -1957,8 +1969,8 @@ function nbMenu(n){
 /* quick-add sheet: the operator's main actions on a file, one tap from anywhere in the dossier */
 function quickSheet(n){
   const d=$('#dlg');d.classList.remove('as-full');d.onchange=null;const op=openProblems(n);
-  const items=[['review','ثبت بررسی','بازدید، جلسه یا تماس با محله'],['problem','ثبت مشکل','مشکلی که دیده یا گزارش شده'],...(op.length?[['step','افزودن مرحله پیگیری','برای یکی از '+fa(op.length)+' مشکل باز']]:[]),['trustee','افزودن متولی','فرد معتمد یا مؤثر محله'],['idea','ثبت ایده یا طرح','پیشنهاد اهالی یا متولیان']];
-  const IC={review:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z'};
+  const items=[['review','ثبت بررسی','بازدید، جلسه یا تماس با محله'],['problem','ثبت مشکل','مشکلی که دیده یا گزارش شده'],['program','ثبت برنامه','سخنرانی، مداحی، سرود و…'],...(op.length?[['step','افزودن مرحله پیگیری','برای یکی از '+fa(op.length)+' مشکل باز']]:[]),['trustee','افزودن متولی','فرد معتمد یا مؤثر محله'],['idea','ثبت ایده یا طرح','پیشنهاد اهالی یا متولیان']];
+  const IC={program:'M4 4h16v16H4zM4 9h16M9 4v5M15 4v5',review:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z'};
   const list=html=>{d.innerHTML=`<div class="sheet"><header><h2>${html.t}</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header><div class="sheet-list">${html.b}</div></div>`;};
   list({t:'ثبت در محله '+esc(n.name),b:items.map(([k,t,h])=>`<button type="button" class="sheet-item" data-q="${k}"><span class="sheet-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg></span><span><b>${t}</b><small>${h}</small></span></button>`).join('')});
   d.classList.add('as-sheet');
@@ -1969,7 +1981,7 @@ function quickSheet(n){
     const k=b.dataset.q;
     if(k==='step'&&op.length>1){list({t:'پیگیری کدام مشکل؟',b:op.sort((a,b)=>PRIO[b.prio].w-PRIO[a.prio].w).map(p=>`<button type="button" class="sheet-item" data-p="${p.id}"><span class="pill ${PRIO[p.prio].c}">${PRIO[p.prio].t}</span><span><b>${esc(p.title)}</b><small>${PSTAT[p.status].t}، ${fa(p.steps.length)} مرحله</small></span></button>`).join('')});return;}
     d.onclick=null;
-    ({review:()=>reviewForm(n),problem:()=>problemForm(n),step:()=>stepForm(n,op[0]),trustee:()=>linkDialog(n),idea:()=>ideaForm(n)})[k]();
+    ({program:()=>programForm(n),review:()=>reviewForm(n),problem:()=>problemForm(n),step:()=>stepForm(n,op[0]),trustee:()=>linkDialog(n),idea:()=>ideaForm(n)})[k]();
   };
   if(!d.open)d.showModal();
 }
@@ -1978,6 +1990,7 @@ function tabPanel(n,ed){
     case 'trustees':return trusteesTab(n,ed);
     case 'problems':return problemsTab(n,ed);
     case 'ideas':return ideasTab(n,ed);
+    case 'programs':return programsTab(n,ed);
     case 'reviews':return reviewsTab(n,ed);
     case 'records':return recordsTab(n,ed);
     default:return summaryTab(n,ed);
@@ -1997,11 +2010,12 @@ function summaryTab(n,ed){
 }
 /* one chronological record for the file: visits, follow-up steps, ideas and edits */
 const rvAttendees=r=>[...(r.pids||[]).map(id=>getP(id)?.name).filter(Boolean),...(r.participants?[r.participants]:[])].join('، ');
-const REC={review:{t:'بررسی',c:'--ok'},step:{t:'پیگیری',c:'--accent'},idea:{t:'ایده',c:'--flag'},change:{t:'تغییر',c:'--mute'}};
+const REC={program:{t:'برنامه',c:'--cand'},review:{t:'بررسی',c:'--ok'},step:{t:'پیگیری',c:'--accent'},idea:{t:'ایده',c:'--flag'},change:{t:'تغییر',c:'--mute'}};
 function records(n){
   const out=[];
   vlist(n.reviews).forEach(r=>{const at=rvAttendees(r);out.push({k:'review',date:r.date,who:r.by,x:esc(r.type),y:esc(r.summary)+(r.result?'، نتیجه: '+esc(r.result):'')+(at?'<br><span class="muted small">حاضران: '+esc(at)+'</span>':''),o:r,act:'edit-review'});});
   n.problems.filter(p=>!p._st).forEach(p=>vlist(p.steps).forEach(st=>out.push({k:'step',date:st.date,who:st.by,x:esc(st.action),y:`برای مشکل «${esc(p.title)}»، <span class="pill ${PSTAT[st.status].c}">${PSTAT[st.status].t}</span>`,o:st})));
+  vlist(n.programs||[]).forEach(x=>out.push({k:'program',date:x.date,who:x.by||'—',x:esc(x.type+(x.title?'، '+x.title:'')),y:esc([x.place,x.audience?fa(x.audience)+' نفر':''].filter(Boolean).join('، ')),o:x,act:'edit-program'}));
   vlist(n.ideas).forEach(i=>{const c=db.changes.find(x=>x.tid===i.id&&x.op==='create');out.push({k:'idea',date:c?isoDay(new Date(c.t)):'',who:c?uName(c.uid):'—',x:esc(i.type+'، '+i.title),y:(i.proposer?'پیشنهاد: '+esc(i.proposer)+'، ':'')+`<span class="pill ${ISTAT[i.status].c}">${ISTAT[i.status].t}</span>`,o:i,act:'edit-idea'});});
   if(!isViewer())db.changes.filter(c=>c.nb===n.id&&c.ent==='nb').forEach(c=>out.push({k:'change',date:isoDay(new Date(c.t)),who:uName(c.uid),x:esc(c.txt),y:`<span class="pill ${CST[c.st]?.c||'mute'}">${CST[c.st]?.t||c.st}</span>`}));
   return out.sort((a,b)=>b.date.localeCompare(a.date));
@@ -2012,7 +2026,7 @@ function recordsTab(n,ed){
   const list=(f?all.filter(r=>r.k===f):all).map(r=>({...r,ed}));
   const cnt=k=>all.filter(r=>r.k===k).length;
   const chip=(k,t)=>`<button type="button" data-act="recf" data-v="${k}" aria-pressed="${f===k}">${t} ${fa(k?cnt(k):all.length)}</button>`;
-  return `<div class="tab-head"><div class="chips" role="group" aria-label="نوع سابقه">${chip('','همه')}${chip('review','بررسی‌ها')}${chip('step','پیگیری‌ها')}${chip('idea','ایده‌ها')}${isViewer()?'':chip('change','تغییرات')}</div>
+  return `<div class="tab-head"><div class="chips" role="group" aria-label="نوع سابقه">${chip('','همه')}${chip('review','بررسی‌ها')}${chip('step','پیگیری‌ها')}${chip('program','برنامه‌ها')}${chip('idea','ایده‌ها')}${isViewer()?'':chip('change','تغییرات')}</div>
     ${ed?`<div class="head-actions d-only"><button class="btn primary sm" data-act="add-review">+ ثبت بررسی</button><button class="btn sm" data-act="add-idea">+ ایده یا طرح</button></div>`:''}</div>
     ${list.length?`<ul class="tl">${list.map(recItem).join('')}</ul>`:'<div class="card empty"><b>سابقه‌ای ثبت نشده است.</b></div>'}`;
 }
@@ -2052,6 +2066,21 @@ function problemsTab(n,ed){
     </div>`;}).join(''):`<div class="card empty"><b>${f==='open'?'مشکل بازی برای این محله ثبت نشده است.':'موردی نیست.'}</b></div>`}</div>`;
 }
 const u0=()=>me()?.id;
+function programsTab(n,ed){
+  const all=vlist(n.programs||[]).sort((a,b)=>b.date.localeCompare(a.date));const f=ui.progF||'';
+  const list=f?all.filter(x=>x.type===f):all;
+  const types=[...new Set(all.map(x=>x.type))];
+  const chip=(k,t,c)=>`<button type="button" data-act="progf" data-v="${esc(k)}" aria-pressed="${f===k}">${esc(t)} ${fa(c)}</button>`;
+  return `<div class="tab-head">${types.length>1?`<div class="chips" role="group" aria-label="نوع برنامه">${chip('','همه',all.length)}${types.map(t=>chip(t,t,all.filter(x=>x.type===t).length)).join('')}</div>`:`<span class="muted small">برنامه‌هایی که در محله برگزار شده است.</span>`}${ed?`<button class="btn primary sm" data-act="add-program">+ ثبت برنامه</button>`:''}</div>
+  ${list.length?`<div class="grid2">${list.map(x=>`<div class="card idea prog">
+    <div class="row"><span class="tag tag-c">${esc(x.type)}</span>${stBadge(x)}<span class="spacer"></span>${ed?`<button class="btn sm ghost" data-act="edit-program" data-id="${x.id}">ویرایش</button>`:''}</div>
+    ${x.title?`<h3>${esc(x.title)}</h3>`:''}
+    <span class="muted small">${fmtDate(x.date)}${x.place?'، '+esc(x.place):''}${x.audience?'، '+fa(x.audience)+' نفر':''}</span>
+    ${x.desc?`<p class="small">${esc(x.desc)}</p>`:''}
+    <span class="muted small">ثبت: ${esc(x.by||'—')}</span>
+    ${rvInline(x)}
+  </div>`).join('')}</div>`:`<div class="card empty"><b>${f?'برنامه‌ای از این نوع ثبت نشده است.':'هنوز برنامه‌ای ثبت نشده است.'}</b>${ed&&!f?'<button class="btn" data-act="add-program">+ ثبت برنامه</button>':''}</div>`}`;
+}
 function ideasTab(n,ed){
   const list=vlist(n.ideas);
   return `<div class="tab-head"><span class="muted small">ایده‌ها پیشنهاد اولیه‌اند؛ طرح‌ها برنامه مشخص اجرایی دارند.</span>${ed?`<button class="btn primary sm" data-act="add-idea">+ ثبت ایده یا طرح</button>`:''}</div>
@@ -2282,7 +2311,7 @@ function urgentTasks(u,nbs){
   return tasks.sort((a,b)=>b.w-a.w);
 }
 const kcard=x=>`<div class="kcard ${x.cls}"><div class="t">${x.t}</div>${x.s?`<div class="s">${x.s}</div>`:''}${x.m?`<div class="m">${x.m}</div>`:''}${x.a?`<div class="a">${x.a}</div>`:''}</div>`;
-const VERB_IC={visit:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',contact:'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0'};
+const VERB_IC={program:'M4 4h16v16H4zM4 9h16M9 4v5M15 4v5',visit:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',contact:'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0'};
 const vIcon=k=>`<span class="vi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${VERB_IC[k]}"/></svg></span>`;
 function homeView(u){
   const nbs=db.nb.filter(n=>n.op===u.id&&!n._st);
@@ -2297,7 +2326,7 @@ function homeView(u){
   const sec=(id,dot,title,n,body)=>`<details class="grp hsec ${n&&id==='g-ret'?'hot':''}" id="${id}" ${ho[id]?'open':''}><summary class="grp-h" data-act="hsec" data-k="${id}"><span class="dot" style="background:var(${dot})"></span>${title} <span class="n">${fa(n)}</span><span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></summary><div class="hbody">${body}</div></details>`;
   return `<section class="hello"><h1>خانه</h1><p><bdi>${days}</bdi>، <bdi>${fa(nbs.length)} محله در ${esc(u.city)}</bdi></p></section>
   <h2 class="sect">امروز چه کردید؟</h2>
-  <div class="verbs">${verb('visit','ثبت بازدید یا جلسه','از محله‌ای برگشته‌اید؟ از اینجا ثبت کنید',true)}${verb('problem','گزارش مشکل','مشکل تازه در محله')}${verb('step','پیگیری مشکل','اقدام روی مشکل باز')}${verb('contact','ثبت تماس با فرد','گفتگو با متولی')}${verb('trustee','معرفی متولی','فرد تازه در محله')}</div>
+  <div class="verbs">${verb('visit','ثبت بازدید یا جلسه','از محله‌ای برگشته‌اید؟ از اینجا ثبت کنید',true)}${verb('problem','گزارش مشکل','مشکل تازه در محله')}${verb('step','پیگیری مشکل','اقدام روی مشکل باز')}${verb('contact','ثبت تماس با فرد','گفتگو با متولی')}${verb('trustee','معرفی متولی','فرد تازه در محله')}${verb('program','ثبت برنامه','سخنرانی، مداحی، سرود و…')}</div>
   ${recent.length?`<h2 class="sect">آخرین پرونده‌هایی که دیدید</h2><div class="recent">${recent.join('')}</div>`:''}
   ${ret.length?sec('g-ret','--bad','برگشتی برای اصلاح',ret.length,ret.map(c=>kcard({cls:'red',t:`${esc(c.txt)}، ${esc(c.tn)}`,s:`<div class="reason"><b>${esc(uName(c.rv.uid))}:</b> ${esc(c.rv.note||'بدون توضیح')}</div>`,a:`${target(c)||c.op!=='delete'?`<button class="btn primary" data-act="fix" data-cid="${c.id}">اصلاح و ارسال دوباره</button>`:''}<button class="btn ghost" data-act="dismiss" data-cid="${c.id}">بستن</button>`})).join('')):''}
   ${sec('g-urg','--warn','فوری',urg.length,urg.length?(()=>{const lim=isMob()?3:4;return (showAll?urg:urg.slice(0,lim)).map(kcard).join('')+(urg.length>lim&&!showAll?`<button class="btn block ghost link-btn" data-act="home-all">نمایش ${fa(urg.length-lim)} مورد دیگر</button>`:'');})():'<p class="done">کار عقب‌افتاده‌ای ندارید. مشکل‌های بحرانی پیگیری شده‌اند و همه‌ی محله‌ها در ۶۰ روز اخیر بررسی شده‌اند.</p>')}
@@ -2333,8 +2362,8 @@ function doVerb(v){
     items.sort((a,b)=>b.w-a.w);
     return pickSheet('تماس با چه کسی؟',items,id=>contactForm(getP(id)),'جستجوی نام یا محله…');
   }
-  const next={visit:n=>reviewForm(n),problem:n=>problemForm(n),trustee:n=>linkDialog(n)}[v];
-  pickSheet({visit:'بازدید از کدام محله؟',problem:'مشکل در کدام محله؟',trustee:'متولی کدام محله؟'}[v],myNbItems(u),id=>{recentPush('n:'+id);next(findN(id));},'جستجوی نام محله…');
+  const next={visit:n=>reviewForm(n),problem:n=>problemForm(n),trustee:n=>linkDialog(n),program:n=>programForm(n)}[v];
+  pickSheet({visit:'بازدید از کدام محله؟',problem:'مشکل در کدام محله؟',trustee:'متولی کدام محله؟',program:'برنامه در کدام محله؟'}[v],myNbItems(u),id=>{recentPush('n:'+id);next(findN(id));},'جستجوی نام محله…');
 }
 /* one search for neighborhoods, people and problems */
 function openSearch(){
@@ -2595,6 +2624,7 @@ function adminCats(){
     ${block('trusteeRoles','برچسب‌های نقش متولیان','برای هر متولی می‌توان یک یا چند برچسب انتخاب کرد. در فهرست محله‌ها و افراد بر اساس همین نقش‌ها دسته‌بندی می‌شود.')}
     ${block('skills','مهارت‌های افراد','در پرونده هر فرد به‌صورت برچسب ثبت می‌شود و در صفحه افراد قابل فیلتر است.')}
     ${block('courses','دوره‌های توانمندسازی','دوره‌هایی که افراد گذرانده‌اند؛ در پرونده هر فرد تیک زده می‌شود و در صفحه افراد قابل فیلتر است.')}
+    ${block('progTypes','انواع برنامه‌های محله','کارشناسان هنگام ثبت برنامه در پرونده‌ی محله یکی از این‌ها را انتخاب می‌کنند.')}
     ${block('problemCats','دسته‌بندی مشکلات','برای فیلتر محله‌ها بر اساس نوع مشکل باز استفاده می‌شود.')}
     ${block('orgs','نهادهای ارجاع','در مراحل پیگیری، مشکل به یکی از این نهادها ارجاع می‌شود.')}
   </div>`;
@@ -2763,7 +2793,7 @@ function nbForm(n){
       const loc=v.loc;delete v.loc;v.lat=loc?loc.lat:(n?n.lat:null);v.lng=loc?loc.lng:(n?n.lng:null);
       if(n)return save('nb',n,v,{nb:n.id,txt:'ویرایش مشخصات محله',tn:n.name});
       const tid=uid();
-      const c=commit({ent:'nb',op:'create',tid,nb:tid,data:{...v,op:u.role==='operator'?u.id:(v.op||''),flag:'none',flagSince:'',active:true,code:'',seq:0,links:[],problems:[],ideas:[],reviews:[],updatedAt:Date.now(),updatedBy:u.name},txt:'تشکیل پرونده محله «'+v.name+'»',tn:v.name});
+      const c=commit({ent:'nb',op:'create',tid,nb:tid,data:{...v,op:u.role==='operator'?u.id:(v.op||''),flag:'none',flagSince:'',active:true,code:'',seq:0,links:[],problems:[],ideas:[],programs:[],reviews:[],updatedAt:Date.now(),updatedBy:u.name},txt:'تشکیل پرونده محله «'+v.name+'»',tn:v.name});
       ui.tab='summary';location.hash='n-'+tid;return c;
     }
   });
@@ -2892,6 +2922,19 @@ function stepForm(n,p,s){
   ],
   onSubmit:v=>{const u=me();return save('step',s,s?v:{...v,by:u.name,uid:u.id},{nb:n.id,par:p.id,txt:'افزودن مرحله پیگیری به «'+p.title+'»',tn:n.name});}});
 }
+function programForm(n,x,preset){
+  const val=k=>preset?.[k]??x?.[k];const types=db.settings.progTypes||PROG0;
+  openForm({title:x?'ویرایش برنامه':'ثبت برنامه در '+n.name,fields:[
+    {name:'type',label:'نوع برنامه',type:'select',options:val('type')&&!types.includes(val('type'))?[...types,val('type')]:types,value:val('type'),hint:'فهرست انواع برنامه را مدیر سامانه تعیین می‌کند.'},
+    {name:'date',label:'تاریخ برگزاری',type:'date',max:'today',value:val('date')||today(),required:true},
+    {name:'title',label:'عنوان یا موضوع (اختیاری)',value:val('title'),ph:'مثلاً سخنرانی دهه‌ی فجر با موضوع خانواده'},
+    {name:'place',label:'محل برگزاری',value:val('place'),ph:'مثلاً مسجد جامع محله'},
+    {name:'audience',label:'تعداد تقریبی شرکت‌کنندگان',type:'number',num:true,inputmode:'numeric',value:val('audience')},
+    {name:'desc',label:'توضیح',type:'textarea',value:val('desc')},
+  ],
+  onDelete:x?()=>{remove('program',x,{nb:n.id,txt:'حذف برنامه «'+x.type+'»',tn:n.name});return isOp()?'درخواست حذف برای تأیید ارسال شد':'حذف شد';}:null,
+  onSubmit:v=>{const u=me();if(v.audience==='')v.audience=null;return save('program',x,x?v:{...v,by:u.name,uid:u.id},{nb:n.id,txt:(x?'ویرایش':'ثبت')+' برنامه «'+v.type+'»',tn:n.name});}});
+}
 function ideaForm(n,i,preset){
   const val=k=>preset?.[k]??i?.[k];
   openForm({title:i?'ویرایش ایده یا طرح':'ثبت ایده یا طرح',fields:[
@@ -2968,6 +3011,7 @@ function openFix(c){
   if(c.ent==='review'&&n)reviewForm(n,o,preset);
   else if(c.ent==='problem'&&n)problemForm(n,o,preset);
   else if(c.ent==='idea'&&n)ideaForm(n,o,preset);
+  else if(c.ent==='program'&&n)programForm(n,o,preset);
   else if(c.ent==='step'&&n){const p=n.problems.find(x=>x.id===c.par);if(p)stepForm(n,p,o?{...o,...(preset||{})}:null);}
   else if(c.ent==='link'&&n&&o)linkForm(n,o);
   else if(c.ent==='person'&&o)personForm(o);
@@ -3088,6 +3132,9 @@ app.addEventListener('click',e=>{
     case 'add-step':stepForm(n,n.problems.find(x=>x.id===id));break;
     case 'edit-step':{const pr=n.problems.find(x=>x.id===b.dataset.pid);stepForm(n,pr,pr.steps.find(x=>x.id===id));break;}
     case 'add-idea':ideaForm(n);break;
+    case 'add-program':programForm(n);break;
+    case 'edit-program':programForm(n,(n.programs||[]).find(x=>x.id===id));break;
+    case 'progf':ui.progF=b.dataset.v;refreshTab(n);break;
     case 'edit-idea':ideaForm(n,n.ideas.find(x=>x.id===id));break;
     case 'add-review':reviewForm(n);break;
     case 'edit-review':reviewForm(n,n.reviews.find(x=>x.id===id));break;

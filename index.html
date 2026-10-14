@@ -826,6 +826,14 @@ a.btn{text-decoration:none}
 .demo-nid{margin-top:6px}
 .demo-nid button{direction:rtl}
 
+/* v15: صفحه‌ی ورود گوشی — سرصفحه‌ی قوسی با حلقه‌ی طلایی دور لوگو */
+@media (max-width:720px){
+  .login{background:var(--bg);position:relative;justify-content:flex-start;padding-block:46px 28px;min-height:100vh;min-height:100dvh}
+  .login::before{content:'';position:absolute;inset:0 0 auto 0;height:340px;background:linear-gradient(165deg,#12695f 0,var(--navy) 70%);border-radius:0 0 50% 50%/0 0 64px 64px;z-index:0}
+  .login>*{position:relative;z-index:1}
+  .login-brand .logo{width:120px;height:120px;padding:6px;border-radius:50%;background:rgba(255,255,255,.08);box-shadow:0 0 0 2px var(--flag),0 0 0 8px rgba(196,145,26,.18),0 14px 30px rgba(0,0,0,.35)}
+  .login-card{border-top:4px solid var(--flag);border-radius:20px;margin-top:8px}
+}
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */

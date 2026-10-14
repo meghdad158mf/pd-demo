@@ -808,6 +808,20 @@ a.btn{text-decoration:none}
   .page-head .stats .stat:first-child{padding-inline-start:4px}
 }
 
+/* ---- v14: SMS login ---- */
+.login-help{font-size:13.5px;color:var(--muted);line-height:1.9;margin:-4px 0 4px}
+.sms-sim{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent-fg);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.9}
+.sms-sim .sms-h{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;margin-bottom:2px}
+.sms-sim .sms-h small{font-size:11.5px;opacity:.8}
+.sms-sim b.num{font-size:18px;letter-spacing:2px}
+.otp-in{font-size:22px!important;letter-spacing:8px;text-align:center}
+.lg-rem{display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer}
+.lg-rem input{width:18px;height:18px}
+.otp-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.otp-foot .linkish:disabled{color:var(--muted);cursor:default}
+.demo-nid{margin-top:6px}
+.demo-nid button{direction:rtl}
+
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1275,10 +1289,10 @@ function flush(){clearTimeout(saveT);saveT=null;if(db)idb.set(KEY,db).catch(()=>
 function persist(){ver++;if(seeding)return;clearTimeout(saveT);saveT=setTimeout(flush,150);}
 addEventListener('pagehide',()=>{if(saveT)flush();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&saveT)flush();});
-function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;persist();}
+function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureAuth();persist();}
 
 let session=null;
-try{session=sessionStorage.getItem(KEY+'-u');}catch(e){}
+try{session=sessionStorage.getItem(KEY+'-u');if(!session){const r=JSON.parse(localStorage.getItem(KEY+'-remember')||'null');if(r&&r.exp>Date.now()){session=r.u;sessionStorage.setItem(KEY+'-u',session);}}}catch(e){}
 const F0={q:'',city:'',district:'',flag:'',active:'',cat:'',prio:'',role:'',op:'',pend:'',need:'',sort:'name'};
 const PF0={q:'',city:'',district:'',role:'',skill:'',gender:'',coop:'',contact:'',nid:'',mine:''};
 const PRF0={stage:'open',chip:'',org:'',q:'',page:1};
@@ -1577,19 +1591,70 @@ function chRow(c,showUser=true){
     <td data-l="وضعیت"><span class="pill ${CST[c.st]?.c||'mute'}">${CST[c.st]?.t||c.st}</span>${c.rv?.note?`<div class="small muted">${esc(c.rv.note)}</div>`:''}</td></tr>`;
 }
 
+/* ---- login: national ID → one-time SMS code (→ password for the site admin).
+   The demo simulates the SMS on screen; the real version sends it from the server. ---- */
+const OTP_TTL=120e3,OTP_GAP=60e3,OTP_TRIES=5,LOCK_MS=15*60e3,REMEMBER_MS=30*DAY;
+const ADMIN_DEMO_PW='parchamdar1405';
+const pwHash=p=>{let h=0x811c9dc5;for(const c of 'pd:'+p){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(16);};
+function makeNid(r){for(;;){const d=Array.from({length:9},()=>Math.floor(r()*10));if(d.every(x=>x===d[0]))continue;const m=d.reduce((a,x,i)=>a+x*(10-i),0)%11;return d.join('')+(m<2?m:11-m);}}
+function ensureAuth(){let ch=false;const r=rng(77);const used=new Set(db.users.map(u=>u.nid).filter(Boolean));
+  db.users.forEach(u=>{if(!u.nid){let n;do n=makeNid(r);while(used.has(n));used.add(n);u.nid=n;ch=true;}
+    if(!u.mobile){u.mobile='091'+String(Math.floor(r()*1e8)).padStart(8,'0');ch=true;}
+    if(u.role==='admin'&&!u.pwh){u.pwh=pwHash(ADMIN_DEMO_PW);ch=true;}});
+  if(!db.logins){db.logins=[];ch=true;}
+  if(ch)persist();}
+const maskMobile=m=>m?`<bdi dir="ltr">${fa(m.slice(0,4))}•••${fa(m.slice(-4))}</bdi>`:'';
+const lockKey=nid=>KEY+'-lock-'+nid;
+function lockedUntil(nid){try{return Number(localStorage.getItem(lockKey(nid)))||0;}catch(x){return 0;}}
+const devLabel=()=>{const a=navigator.userAgent;return (/Android/.test(a)?'اندروید':/iPhone|iPad/.test(a)?'آیفون':/Windows/.test(a)?'ویندوز':/Mac OS/.test(a)?'مک':/Linux/.test(a)?'لینوکس':'دستگاه دیگر')+(/Edg\//.test(a)?'، Edge':/Firefox\//.test(a)?'، Firefox':/Chrome\//.test(a)?'، Chrome':/Safari\//.test(a)?'، Safari':'');};
+const HOW={sms:'پیامک','sms+pw':'پیامک و رمز',demo:'ورود آزمایشی'};
+function finishLogin(u,how,remember){
+  session=u.id;ui.opInit=false;ui.auth=null;
+  try{sessionStorage.setItem(KEY+'-u',session);if(remember)localStorage.setItem(KEY+'-remember',JSON.stringify({u:u.id,exp:Date.now()+REMEMBER_MS}));}catch(x){}
+  u.last=Date.now();(db.logins||(db.logins=[])).unshift({uid:u.id,t:Date.now(),how,dev:devLabel()});if(db.logins.length>500)db.logins.length=500;persist();
+  location.hash=defaultRoute(u);render();
+}
+function sendOtp(a){const u=db.users.find(x=>x.active&&x.nid===a.nid);a.uid=u?.id||null;a.code=String(Math.floor(10000+Math.random()*90000));a.exp=Date.now()+OTP_TTL;a.sent=Date.now();a.tries=a.tries||0;}
+function badTry(a,fail,msg){a.tries=(a.tries||0)+1;
+  if(a.tries>=OTP_TRIES){try{localStorage.setItem(lockKey(a.nid),String(Date.now()+LOCK_MS));}catch(x){}ui.auth={step:'nid',nid:a.nid,err:'تلاش‌های ناموفق زیاد شد؛ ورود با این کد ملی ۱۵ دقیقه بسته شد.'};render();return;}
+  fail((msg||'کد واردشده درست نیست.')+` ${fa(OTP_TRIES-a.tries)} تلاش دیگر باقی است.`);}
+const smsSim=a=>`<div class="sms-sim" role="note"><div class="sms-h"><b>شبیه‌ساز پیامک</b><small>فقط در نسخه‌ی نمایشی؛ در نسخه‌ی اصلی پیامک واقعی می‌رسد</small></div>${a.uid?`<div>به ${maskMobile(getU(a.uid).mobile)}:<br>کد ورود پرچمدار: <b class="num"><bdi dir="ltr">${fa(a.code)}</bdi></b></div>`:'<div>پیامکی ارسال نشد: این کد ملی در سامانه ثبت نیست یا کاربر غیرفعال است.</div>'}</div>`;
 function loginView(){
+  const a=ui.auth||(ui.auth={step:'nid'});
+  const err=`<span class="errmsg" id="lg-err" ${a.err?'':'hidden'}>${esc(a.err||'')}</span>`;
+  let body;
+  if(a.step==='code')body=`<h1>کد ورود</h1>
+      <p class="login-help">اگر کد ملی <b class="num">${fa(a.nid)}</b> در سامانه ثبت شده باشد، کد ورود به شماره‌ی همراه ثبت‌شده پیامک شد.</p>
+      ${smsSim(a)}
+      <label class="field"><span>کد ۵ رقمی</span><input type="text" id="lg-code" class="otp-in" inputmode="numeric" autocomplete="one-time-code" dir="ltr" maxlength="5"></label>
+      ${err}
+      <label class="lg-rem"><input type="checkbox" id="lg-rem" ${a.rem?'checked':''}><span>این دستگاه را تا ۳۰ روز به خاطر بسپار</span></label>
+      <button class="btn primary block" type="submit">تأیید و ورود</button>
+      <div class="otp-foot"><span id="otp-timer" class="small muted"></span><span><button type="button" class="linkish" data-act="otp-resend" id="otp-resend">ارسال دوباره</button><button type="button" class="linkish" data-act="otp-back">تغییر کد ملی</button></span></div>`;
+  else if(a.step==='pw')body=`<h1>رمز عبور مدیر</h1>
+      <p class="login-help">کد پیامکی درست بود. برای ورود مدیر سایت، رمز عبور را هم وارد کنید.</p>
+      <label class="field"><span>رمز عبور</span><input type="password" id="lg-pw" autocomplete="current-password" dir="ltr"></label>
+      ${err}
+      <p class="small muted">رمز مدیر در نسخه‌ی نمایشی: <b dir="ltr">${ADMIN_DEMO_PW}</b></p>
+      <button class="btn primary block" type="submit">ورود</button>
+      <div class="otp-foot"><span></span><button type="button" class="linkish" data-act="otp-back">انصراف</button></div>`;
+  else body=`<h1>ورود به سامانه</h1>
+      <p class="login-help">کد ملی خود را وارد کنید تا کد ورود به شماره‌ی همراه ثبت‌شده‌ی شما پیامک شود.</p>
+      <label class="field"><span>کد ملی</span><input type="text" id="lg-nid" inputmode="numeric" autocomplete="username" dir="ltr" maxlength="10" value="${esc(a.nid||'')}" placeholder="۱۰ رقم"></label>
+      ${err}
+      <button class="btn primary block" type="submit">دریافت کد ورود</button>`;
+  const demoNid=un=>{const u=db.users.find(x=>x.username===un);return u?`<button type="button" data-act="fillnid" data-nid="${u.nid}">${LEVEL[u.role].t}: <span class="num">${fa(u.nid)}</span></button>`:'';};
   return `<div class="login"><div class="login-box">
     <div class="login-brand">${brandSvg(48)}<div><b>پرچمدار</b><small>سامانه پرونده محله‌ها</small></div></div>
-    <form class="card login-card" id="loginform" novalidate>
-      <h1>ورود به سامانه</h1>
-      <label class="field"><span>نام کاربری</span><input type="text" id="lg-u" autocomplete="username" dir="ltr"></label>
-      <label class="field"><span>رمز عبور</span><input type="password" id="lg-p" autocomplete="current-password" dir="ltr"></label>
-      <span class="errmsg" id="lg-err" hidden>نام کاربری یا رمز عبور درست نیست.</span>
-      <button class="btn primary block" type="submit">ورود</button>
-    </form>
-    <div class="demo-row"><span>حساب آزمایشی:</span><button type="button" data-act="demo" data-u="admin">مدیر سایت</button><i></i><button type="button" data-act="demo" data-u="supervisor">سرپرست</button><i></i><button type="button" data-act="demo" data-u="operator">اپراتور</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>
+    <form class="card login-card" id="loginform" novalidate data-step="${a.step}">${body}</form>
+    <div class="demo-row"><span>ورود آزمایشی بدون پیامک:</span><button type="button" data-act="demo" data-u="admin">مدیر سایت</button><i></i><button type="button" data-act="demo" data-u="supervisor">سرپرست</button><i></i><button type="button" data-act="demo" data-u="operator">اپراتور</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>
+    ${a.step==='nid'?`<div class="demo-row demo-nid"><span>کد ملی آزمایشی برای امتحان ورود پیامکی:</span>${demoNid('operator')}${demoNid('supervisor')}${demoNid('admin')}</div>`:''}
   </div><p class="login-foot">نسخه نمایشی، داده‌ها ساختگی‌اند و فقط در همین مرورگر ذخیره می‌شوند</p></div>`;
 }
+/* countdown on the code step */
+setInterval(()=>{const t=document.getElementById('otp-timer');const a=ui.auth;if(!t||!a||a.step!=='code')return;const now=Date.now();
+  const left=Math.max(0,a.exp-now),s=Math.ceil(left/1000);t.textContent=left?`اعتبار کد: ${fa(Math.floor(s/60))}:${fa(String(s%60).padStart(2,'0'))}`:'کد منقضی شد';
+  const r=document.getElementById('otp-resend');if(r){const w=Math.ceil((OTP_GAP-(now-a.sent))/1000);r.disabled=w>0;r.textContent=w>0?`ارسال دوباره (${fa(w)})`:'ارسال دوباره';}},500);
 
 /* ================= neighborhoods list ================= */
 const hayN=new WeakMap();
@@ -2209,6 +2274,7 @@ function moreSheet(){
       ${roleNote(u)?`<p class="acct-note">${roleNote(u)}</p>`:''}<div class="acct-who"><span class="avatar">${esc(initials(u.name))}</span><span><b>${esc(u.name)}</b><small><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(u.city||'')}</small></span></div>
       ${installEvt?`<button type="button" class="btn block" data-act="install">نصب برنامه روی گوشی</button>`:''}
       <label class="field"><span>ورود آزمایشی با نقش دیگر</span><select data-change="persona" id="persona-m">${groups.map(([r,us])=>`<optgroup label="${LEVEL[r].t}">${us.map(x=>`<option value="${x.id}" ${x.id===u.id?'selected':''}>${esc(x.name)}${x.city?'، '+esc(x.city):''}</option>`).join('')}</optgroup>`).join('')}</select></label>
+      ${u.role==='admin'?`<button type="button" class="btn block" data-act="chg-pw">تغییر رمز عبور</button>`:''}
       <button type="button" class="btn block danger" data-act="logout">خروج از حساب</button></div></div>`;
   d.onclick=e=>{if(e.target.closest('[data-close]')){d.close();return;}
     const a=e.target.closest('a.sheet-item');if(a){if(a.dataset.tab){ui.adminTab=a.dataset.tab;if(location.hash==='#admin'){e.preventDefault();render();}}d.close();return;}
@@ -2389,12 +2455,12 @@ function adminUsers(){
   const cnt=r=>db.users.filter(u=>u.role===r).length;
   const f=ui.uf,q=qnorm(f.q);
   const nbc=new Map();db.nb.forEach(n=>{if(n.op)nbc.set(n.op,(nbc.get(n.op)||0)+1);});
-  const list=db.users.filter(u=>(!f.role||u.role===f.role)&&(!f.city||u.city===f.city)&&(!q||qnorm(u.name+' '+u.username).includes(q)));
+  const list=db.users.filter(u=>(!f.role||u.role===f.role)&&(!f.city||u.city===f.city)&&(!q||qnorm(u.name+' '+(u.nid||'')+' '+(u.mobile||'')).includes(q)));
   return `<div class="stack">
-  <div class="tab-head"><div class="toolbar" style="flex:1"><input type="search" data-uf="q" value="${esc(f.q)}" placeholder="جستجوی نام یا نام کاربری" aria-label="جستجوی کاربر"><select data-uf="role" aria-label="سطح"><option value="">همه سطوح</option>${opts(LEVEL).map(([k,t])=>`<option value="${k}" ${f.role===k?'selected':''}>${t}</option>`).join('')}</select><select data-uf="city" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.map(c=>`<option ${f.city===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><button class="btn primary sm" data-act="add-user">+ افزودن کاربر</button></div>
+  <div class="tab-head"><div class="toolbar" style="flex:1"><input type="search" data-uf="q" value="${esc(f.q)}" placeholder="جستجوی نام، کد ملی یا موبایل" aria-label="جستجوی کاربر"><select data-uf="role" aria-label="سطح"><option value="">همه سطوح</option>${opts(LEVEL).map(([k,t])=>`<option value="${k}" ${f.role===k?'selected':''}>${t}</option>`).join('')}</select><select data-uf="city" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.map(c=>`<option ${f.city===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><button class="btn primary sm" data-act="add-user">+ افزودن کاربر</button></div>
   <p class="small muted">${fa(list.length)} کاربر، ${fa(cnt('operator'))} اپراتور، ${fa(cnt('supervisor'))} سرپرست</p>
-  <div class="table-wrap"><table class="tbl resp"><thead><tr><th>نام</th><th>نام کاربری</th><th>سطح</th><th>شهر</th><th>محله‌های تخصیص‌یافته</th><th>وضعیت</th><th>آخرین فعالیت</th><th></th></tr></thead><tbody>
-  ${pageSlice(list,ui.usersPage).map(u=>`<tr style="cursor:default"><td data-l="نام" class="m-main"><a href="#u-${u.id}"><b>${esc(u.name)}</b></a></td><td data-l="نام کاربری" class="m-hide"><span class="code">${esc(u.username)}</span></td><td data-l="سطح"><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span></td>
+  <div class="table-wrap"><table class="tbl resp"><thead><tr><th>نام</th><th>موبایل ورود</th><th>سطح</th><th>شهر</th><th>محله‌های تخصیص‌یافته</th><th>وضعیت</th><th>آخرین فعالیت</th><th></th></tr></thead><tbody>
+  ${pageSlice(list,ui.usersPage).map(u=>`<tr style="cursor:default"><td data-l="نام" class="m-main"><a href="#u-${u.id}"><b>${esc(u.name)}</b></a></td><td data-l="موبایل ورود" class="m-hide"><span class="phone">${fa(u.mobile||'')}</span></td><td data-l="سطح"><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span></td>
   <td data-l="شهر">${u.role==='admin'||u.role==='viewer'?'همه':esc(u.city)}</td>
   <td data-l="محله‌ها" class="num m-hide">${u.role==='operator'?`<a href="#list" data-act="list-op" data-id="${u.id}">${num(nbc.get(u.id)||0)}</a>`:'—'}</td>
   <td data-l="وضعیت"><span class="dot ${u.active?'':'off'}">${u.active?'فعال':'غیرفعال'}</span></td><td data-l="آخرین فعالیت" class="small muted">${relTime(u.last)}</td>
@@ -2441,7 +2507,9 @@ function adminLog(){
   const f=ui.lf;
   const list=db.changes.filter(c=>(!f.u||c.uid===f.u)&&(!f.ent||c.ent===f.ent)&&(!f.st||c.st===f.st));
   const staff=db.users.filter(u=>u.role!=='viewer').sort((a,b)=>a.name.localeCompare(b.name,'fa'));
-  return `<div class="tab-head"><div class="toolbar" style="flex:1"><select data-lf="u" aria-label="کاربر"><option value="">همه کاربران</option>${staff.map(u=>`<option value="${u.id}" ${f.u===u.id?'selected':''}>${esc(u.name)}</option>`).join('')}</select><select data-lf="ent" aria-label="نوع"><option value="">همه انواع</option>${Object.entries(ENT).map(([k,t])=>`<option value="${k}" ${f.ent===k?'selected':''}>${t}</option>`).join('')}</select><select data-lf="st" aria-label="وضعیت"><option value="">همه وضعیت‌ها</option>${Object.entries(CST).map(([k,v])=>`<option value="${k}" ${f.st===k?'selected':''}>${v.t}</option>`).join('')}</select></div><span class="small muted">${num(list.length)} رویداد</span></div>
+  const lg=(db.logins||[]).slice(0,30);
+  const logins=fold('آخرین ورودها',fa((db.logins||[]).length)+' ورود',lg.length?`<div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:520px"><thead><tr><th>زمان</th><th>کاربر</th><th>روش ورود</th><th>دستگاه</th></tr></thead><tbody>${lg.map(x=>`<tr style="cursor:default"><td data-l="زمان" class="small muted">${relTime(x.t)}</td><td data-l="کاربر" class="m-main">${esc(uName(x.uid))} <span class="small muted">${LEVEL[getU(x.uid)?.role]?.t||''}</span></td><td data-l="روش">${HOW[x.how]||x.how}</td><td data-l="دستگاه" class="small">${esc(x.dev||'')}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small muted">هنوز ورودی ثبت نشده است.</p>');
+  return `${logins}<div class="tab-head"><div class="toolbar" style="flex:1"><select data-lf="u" aria-label="کاربر"><option value="">همه کاربران</option>${staff.map(u=>`<option value="${u.id}" ${f.u===u.id?'selected':''}>${esc(u.name)}</option>`).join('')}</select><select data-lf="ent" aria-label="نوع"><option value="">همه انواع</option>${Object.entries(ENT).map(([k,t])=>`<option value="${k}" ${f.ent===k?'selected':''}>${t}</option>`).join('')}</select><select data-lf="st" aria-label="وضعیت"><option value="">همه وضعیت‌ها</option>${Object.entries(CST).map(([k,v])=>`<option value="${k}" ${f.st===k?'selected':''}>${v.t}</option>`).join('')}</select></div><span class="small muted">${num(list.length)} رویداد</span></div>
   <div class="table-wrap"><table class="tbl resp" style="min-width:640px"><thead><tr><th>زمان</th><th>کاربر</th><th>اقدام</th><th>پرونده</th><th>وضعیت</th></tr></thead><tbody>
   ${pageSlice(list,ui.logPage).map(c=>chRow(c)).join('')}
   </tbody></table></div>${pager(list.length,ui.logPage,'logPage')}
@@ -2750,18 +2818,31 @@ function reviewForm(n,r,preset){
 function userForm(u){
   openForm({title:u?'ویرایش کاربر':'افزودن کاربر',noApprovalNote:true,fields:[
     {name:'name',label:'نام و نام خانوادگی',required:true,value:u?.name},
-    {name:'username',label:'نام کاربری',required:true,dir:'ltr',value:u?.username,validate:v=>!/^[a-z0-9._-]{3,}$/i.test(v)?esc('فقط حروف لاتین، عدد، نقطه یا خط تیره؛ حداقل ۳ حرف.'):db.users.some(x=>x!==u&&x.username===v.toLowerCase())?esc('این نام کاربری قبلاً استفاده شده است.'):''},
+    {name:'nid',label:'کد ملی (برای ورود)',required:true,dir:'ltr',inputmode:'numeric',digits:true,value:u?.nid,validate:v=>!nidOk(v)?esc('کد ملی معتبر نیست.'):db.users.some(x=>x!==u&&x.nid===v)?esc('این کد ملی برای کاربر دیگری ثبت شده است.'):''},
+    {name:'mobile',label:'موبایل (کد ورود به این شماره پیامک می‌شود)',required:true,type:'tel',dir:'ltr',inputmode:'tel',digits:true,value:u?.mobile,ph:'09xxxxxxxxx',validate:v=>!mobileOk(v)?esc('شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود.'):''},
     {name:'role',label:'سطح دسترسی',type:'select',options:opts(LEVEL),value:u?.role||'operator'},
     {name:'city',label:'شهر (برای سرپرست و اپراتور)',type:'select',options:[['','—'],...db.settings.cities.map(c=>[c.name,c.name])],value:u?.city||'',validate:(v,vals)=>(vals.role==='operator'||vals.role==='supervisor')&&!v?esc('برای این سطح شهر را انتخاب کنید.'):''},
-    {name:'active',label:'وضعیت',type:'select',options:yesno,value:u?(u.active?'yes':'no'):'yes',hint:'کاربر غیرفعال نمی‌تواند وارد شود؛ سوابقش می‌ماند.'},
+    {name:'active',label:'وضعیت',type:'select',options:yesno,value:u?(u.active?'yes':'no'):'yes',hint:'کاربر غیرفعال نمی‌تواند وارد شود و اگر در سامانه باشد بیرون می‌افتد؛ سوابقش می‌ماند.'},
+    {name:'pw',label:'رمز عبور (فقط برای مدیر سایت)',type:'password',dir:'ltr',value:'',hint:u?.pwh?'مدیر علاوه بر پیامک، این رمز را هم وارد می‌کند. فقط برای تعیین رمز تازه پر کنید.':'مدیر سایت علاوه بر کد پیامکی، این رمز را هم وارد می‌کند؛ حداقل ۸ نویسه.',
+      validate:(v,vals)=>vals.role==='admin'&&!u?.pwh&&!v?esc('برای مدیر سایت رمز عبور تعیین کنید.'):v&&v.length<8?esc('رمز باید حداقل ۸ نویسه باشد.'):''},
   ],toast:'کاربر ذخیره شد',
+  onOpen:f=>{const r=f.elements.role,box=$('[data-f="pw"]',f);const sync=()=>{box.hidden=r.value!=='admin';};r.addEventListener('change',sync);sync();},
   onSubmit:v=>{
-    v.active=v.active==='yes';v.username=v.username.toLowerCase();if(v.role==='admin'||v.role==='viewer')v.city='';
+    v.active=v.active==='yes';if(v.role==='admin'||v.role==='viewer')v.city='';
+    const pw=v.pw;delete v.pw;if(pw&&v.role==='admin')v.pwh=pwHash(pw);
     if(u){if(u.id===me().id&&(!v.active||v.role!=='admin')){toast('نمی‌توانید سطح یا وضعیت خودتان را تغییر دهید');return false;}Object.assign(u,v);}
-    else db.users.push({id:'x'+uid(),last:0,act:0,...v});
+    else{const id='x'+uid();db.users.push({id,username:id,last:0,act:0,...v});}
     db.changes.unshift({id:uid(),t:Date.now(),uid:me().id,ent:'user',op:u?'update':'create',st:'admin',txt:(u?'ویرایش کاربر «':'افزودن کاربر «')+v.name+'»',tn:v.name});
     persist();
   }});
+}
+function pwForm(){
+  const u=me();
+  openForm({title:'تغییر رمز عبور',noApprovalNote:true,fields:[
+    {name:'cur',label:'رمز فعلی',type:'password',dir:'ltr',required:true,validate:v=>pwHash(v)!==u.pwh?esc('رمز فعلی درست نیست.'):''},
+    {name:'pw',label:'رمز تازه',type:'password',dir:'ltr',required:true,hint:'حداقل ۸ نویسه؛ ترکیب حرف و عدد بهتر است.',validate:v=>v.length<8?esc('رمز باید حداقل ۸ نویسه باشد.'):''},
+    {name:'pw2',label:'تکرار رمز تازه',type:'password',dir:'ltr',required:true,validate:(v,vals)=>v!==vals.pw?esc('تکرار رمز با رمز تازه یکی نیست.'):''},
+  ],toast:'رمز عبور تغییر کرد',onSubmit:v=>{u.pwh=pwHash(v.pw);db.changes.unshift({id:uid(),t:Date.now(),uid:u.id,ent:'user',op:'update',st:'admin',txt:'تغییر رمز عبور',tn:u.name});persist();}});
 }
 function rejectDialog(keys,onDone){
   openForm({title:'عدم تأیید و برگشت به اپراتور',noApprovalNote:true,submit:'برگشت با این توضیح',fields:[
@@ -2835,7 +2916,7 @@ function render(){
     m.on('click',e=>{if(!ui.picking||!canEdit(n))return;ui.picking=false;const c=save('nb',n,{lat:+e.latlng.lat.toFixed(6),lng:+e.latlng.lng.toFixed(6)},{nb:n.id,txt:'تعیین موقعیت روی نقشه',tn:n.name});render();toast(c?.st==='pending'?'موقعیت برای تأیید ارسال شد':'موقعیت محله ثبت شد');});
   }
 }
-function doLogout(){session=null;ui.opInit=false;ui.f={...F0};ui.pf={...PF0};ui.pfInit=false;ui.groupInit=false;saveFilters();try{sessionStorage.removeItem(KEY+'-u');}catch(x){}location.hash='';render();}
+function doLogout(){session=null;ui.auth=null;try{localStorage.removeItem(KEY+'-remember');}catch(x){}ui.opInit=false;ui.f={...F0};ui.pf={...PF0};ui.pfInit=false;ui.groupInit=false;saveFilters();try{sessionStorage.removeItem(KEY+'-u');}catch(x){}location.hash='';render();}
 function switchPersona(id){ui.opInit=false;ui.f={...F0};ui.pf={...PF0};saveFilters();session=id;try{sessionStorage.setItem(KEY+'-u',session);}catch(x){}ui.picking=false;ui.sel.clear();ui.qsel.clear();ui.qf={op:'',ent:''};ui.prf={...PRF0};ui.pfInit=false;ui.groupInit=false;ui.homeAll=false;location.hash=defaultRoute(me());render();toast('ورود به‌عنوان '+me().name);}
 function currentN(){const h=location.hash.slice(1);return h.startsWith('n-')?findN(h.slice(2)):null;}
 function currentP(){const h=location.hash.slice(1);return h.startsWith('p-')?getP(h.slice(2)):null;}
@@ -2852,7 +2933,11 @@ app.addEventListener('click',e=>{
   if(b.tagName==='INPUT'&&b.type==='checkbox')e.stopPropagation();
   const a=b.dataset.act,id=b.dataset.id,n=currentN(),p=currentP();
   switch(a){
-    case 'demo':$('#lg-u').value=b.dataset.u;$('#lg-p').value='demo';$('#loginform').requestSubmit();break;
+    case 'demo':{const u=db.users.find(x=>x.active&&x.username===b.dataset.u);if(u)finishLogin(u,'demo',false);break;}
+    case 'fillnid':ui.auth={step:'nid',nid:b.dataset.nid};render();setTimeout(()=>$('#lg-nid')?.focus(),0);break;
+    case 'otp-back':ui.auth={step:'nid',nid:ui.auth?.nid};render();break;
+    case 'otp-resend':{const a=ui.auth;if(!a||Date.now()-a.sent<OTP_GAP)break;sendOtp(a);a.err='';render();toast('کد تازه ارسال شد');break;}
+    case 'chg-pw':$('#dlg').close();pwForm();break;
     case 'logout':doLogout();break;
     case 'install':if(installEvt){installEvt.prompt();installEvt.userChoice.finally(()=>{installEvt=null;render();});}break;
     case 'open':if(e.target.closest('input,a'))break;ui.tab='summary';ui.picking=false;ui.roleFilter='';ui.pFilter='open';location.hash='n-'+id;break;
@@ -2950,11 +3035,30 @@ app.addEventListener('click',e=>{
 app.addEventListener('submit',e=>{
   if(e.target.id!=='loginform')return;
   e.preventDefault();
-  const un=$('#lg-u').value.trim().toLowerCase(),pw=$('#lg-p').value;
-  const u=db.users.find(x=>x.active&&x.username===un);
-  if(!u||!pw){$('#lg-err').hidden=false;return;}
-  session=u.id;ui.opInit=false;try{sessionStorage.setItem(KEY+'-u',session);}catch(x){}
-  location.hash=defaultRoute(u);render();
+  const a=ui.auth||(ui.auth={step:'nid'}),now=Date.now();
+  const fail=m=>{a.err=m;render();setTimeout(()=>$('#loginform input:not([type=checkbox])')?.focus(),0);};
+  const lockMsg=lk=>`به‌دلیل تلاش‌های ناموفق، ورود با این کد ملی تا ${fa(Math.ceil((lk-now)/60000))} دقیقه‌ی دیگر بسته است.`;
+  if(a.step==='nid'){
+    const nid=normDigits($('#lg-nid').value).replace(/\D/g,'');a.nid=nid;
+    if(!nidOk(nid))return fail('یک کد ملی ۱۰ رقمی معتبر وارد کنید.');
+    const lk=lockedUntil(nid);if(lk>now)return fail(lockMsg(lk));
+    a.tries=0;sendOtp(a);a.step='code';a.err='';render();setTimeout(()=>$('#lg-code')?.focus(),0);return;
+  }
+  if(a.step==='code'){
+    const c=normDigits($('#lg-code').value).replace(/\D/g,'');a.rem=$('#lg-rem').checked;
+    const lk=lockedUntil(a.nid);if(lk>now)return fail(lockMsg(lk));
+    if(!c)return fail('کد پیامک‌شده را وارد کنید.');
+    if(a.uid&&c===a.code&&now>a.exp)return fail('این کد منقضی شده است؛ «ارسال دوباره» را بزنید.');
+    if(!a.uid||c!==a.code)return badTry(a,fail);
+    const u=getU(a.uid);if(!u||!u.active)return fail('ورود با این حساب ممکن نیست.');
+    if(u.role==='admin'){a.step='pw';a.err='';a.code=null;render();setTimeout(()=>$('#lg-pw')?.focus(),0);return;}
+    return finishLogin(u,'sms',a.rem);
+  }
+  if(a.step==='pw'){
+    const u=getU(a.uid);const lk=lockedUntil(a.nid);if(lk>now)return fail(lockMsg(lk));
+    if(!u||!u.active||pwHash($('#lg-pw').value)!==u.pwh)return badTry(a,fail,'رمز عبور درست نیست.');
+    return finishLogin(u,'sms+pw',a.rem);
+  }
 });
 app.addEventListener('keydown',e=>{
   if((e.key==='Enter'||e.key===' ')&&e.target.matches('tr[data-act]')){e.preventDefault();e.target.click();}
@@ -2989,6 +3093,7 @@ render();
   let saved=null;
   try{saved=await idb.get(KEY);}catch(e){}
   if(saved&&saved.v===DBV){db=saved;ver++;}else freshDb();
+  ensureAuth();
   render();
 })();
 /* PWA: register the service worker only where the page is served as the installable app */

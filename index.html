@@ -846,13 +846,14 @@ a.btn{text-decoration:none}
 }
 /* v17: عنوان کادر ورود وسط‌چین (همه‌ی مراحل) */
 .login-card h1,.login-card .login-help{text-align:center}
-/* v18: منوی پایین گوشی — نوار شناور گرد و تیره */
+/* v18: منوی پایین گوشی — نوار شناور سفید، کاشی تیره برای بخش فعال */
 @media (max-width:720px){
-  .nav{inset-inline:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));border-radius:22px;border:0;background:var(--navy);box-shadow:0 10px 30px rgba(11,61,58,.35);padding:4px;overflow:hidden}
-  .nav a{color:rgba(255,255,255,.7);border-radius:16px}
-  .nav a[aria-current="page"]{color:#fff;background:rgba(255,255,255,.12)}
+  .nav{inset-inline:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));border-radius:22px;border:1px solid var(--line);background:var(--surface);box-shadow:0 10px 30px rgba(11,61,58,.22);padding:4px;gap:4px;overflow:hidden}
+  .nav a{color:var(--muted);border-radius:16px}
+  .nav a[aria-current="page"]{color:#fff;background:var(--navy)}
+  .nav a[aria-current="page"] svg{color:#f0d48c;opacity:1}
   .nav a[aria-current="page"]::before{display:none}
-  .nav a .badge{box-shadow:0 0 0 2px var(--navy)}
+  .nav a .badge{box-shadow:0 0 0 2px var(--surface)}
   body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .fab{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .toast{inset-block-end:calc(92px + env(safe-area-inset-bottom,0px))}

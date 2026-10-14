@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-z8F2FwA6gKxpEED7kG7SZtuNocpkiWCkLql6b6r49kM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-loNZK380lL6Q3KEwQ6N0oNrGFDR5cGEAB0tH0VLzA4M='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -833,6 +833,16 @@ a.btn{text-decoration:none}
   .login>*{position:relative;z-index:1}
   .login-brand .logo{width:120px;height:120px;padding:6px;border-radius:50%;background:rgba(255,255,255,.08);box-shadow:0 0 0 2px var(--flag),0 0 0 8px rgba(196,145,26,.18),0 14px 30px rgba(0,0,0,.35)}
   .login-card{border-top:4px solid var(--flag);border-radius:20px;margin-top:8px}
+}
+/* v16: صفحه‌ی ورود رایانه — نقش کم‌رنگ لوگو در زمینه، نوار سبز و طلایی بالا */
+@media (min-width:721px){
+  .login{background:var(--bg);min-height:100vh;justify-content:center;position:relative;overflow:hidden}
+  .login::before{content:'';position:absolute;width:760px;height:760px;inset-inline-end:-180px;top:50%;transform:translateY(-50%);background:var(--logo) center/contain no-repeat;opacity:.07;z-index:0;pointer-events:none}
+  .login::after{content:'';position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--navy),var(--flag),var(--navy))}
+  .login>*{position:relative;z-index:1}
+  .login-brand .logo{display:none}
+  .login-brand b{color:var(--fg);font-size:28px}.login-brand small{color:var(--muted);font-size:14px}
+  .login-card{border-top:4px solid var(--flag);border-radius:20px}
 }
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
@@ -1682,7 +1692,7 @@ function loginView(){
       ${err}
       <button class="btn primary block" type="submit">دریافت کد ورود</button>`;
   const demoNid=un=>{const u=db.users.find(x=>x.username===un);return u?`<button type="button" data-act="fillnid" data-nid="${u.nid}">${LEVEL[u.role].t}: <span class="num">${fa(u.nid)}</span></button>`:'';};
-  return `<div class="login"><div class="login-box">
+  return `<div class="login" style="--logo:url('${LOGO}')"><div class="login-box">
     <div class="login-brand">${brandSvg(112)}<div><b>پرچمدار</b><small>سامانه مدیریت</small></div></div>
     <form class="card login-card" id="loginform" novalidate data-step="${a.step}">${body}</form>
     <div class="demo-row"><span>ورود آزمایشی:</span><button type="button" data-act="demo" data-u="admin">مدیر سامانه</button><i></i><button type="button" data-act="demo" data-u="supervisor">رابط استانی</button><i></i><button type="button" data-act="demo" data-u="operator">کارشناس محله</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>

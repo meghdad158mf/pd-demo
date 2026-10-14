@@ -751,6 +751,9 @@ a.btn{text-decoration:none}
   .fold{margin-top:10px}
 }
 
+/* phone: pages with their own search box show only that one */
+@media (max-width:720px){.gsearch.gs-own{display:none}}
+
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1470,7 +1473,7 @@ function topbar(u,route){
   const groups=Object.keys(LEVEL).map(r=>[r,db.users.filter(x=>x.active&&x.role===r)]).filter(g=>g[1].length);
   return `<header class="top"><div class="top-in">
     <a class="brand" href="#${defaultRoute(u)}">${brandSvg()}<span><b>پرچمدار</b><small>سامانه پرونده محله‌ها</small></span></a>
-    <button type="button" class="gsearch" data-act="search">${icon('search')}<span>جستجو در محله، فرد، مشکل…</span></button>
+    <button type="button" class="gsearch ${['list','problems','people'].includes(route)?'gs-own':''}" data-act="search">${icon('search')}<span>جستجو در محله، فرد، مشکل…</span></button>
     <nav class="nav" aria-label="بخش‌ها">${navItems(u).map(([h,t,ic,c])=>`<a href="#${h}" ${cur(h)?'aria-current="page"':''}>${icon(ic)}<span>${t}</span>${c?`<em class="badge">${fa(c>99?'99+':c)}</em>`:''}</a>`).join('')}
       ${moreItems(u).filter(x=>x.s).map(x=>`<a href="#${x.h}" class="nav-x" ${cur(x.h)?'aria-current="page"':''}>${icon(x.ic)}<span>${x.s}</span></a>`).join('')}
       <a href="#" role="button" class="nav-more" data-act="more-menu" aria-haspopup="dialog" ${moreItems(u).some(x=>cur(x.h))||(route.startsWith('u-')&&u.role!=='operator')?'aria-current="page"':''}>${icon('dots')}<span>سایر</span></a></nav>

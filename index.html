@@ -608,6 +608,54 @@ dialog.as-full{height:100dvh;max-height:100dvh}
   .acct{display:none!important}
 }
 
+/* ---- v7: calmer phone screens — filters in a bottom sheet ---- */
+.fbtn,.fs-foot,.fs-back,.acct-note{display:none}
+.acct-note{font-size:13px;line-height:1.8;color:var(--muted);margin:0 0 14px;padding:10px 12px;background:var(--surface-2);border-radius:10px}
+@media (max-width:720px){
+  .m-nosub .sub{display:none}
+  .page-head{flex-wrap:nowrap;align-items:center;margin-block-end:12px}
+  .page-head>div:first-child{min-width:0}
+  .page-head .head-actions{flex:none}
+  .page-head .head-actions .btn{min-height:40px;padding-inline:14px;font-size:13.5px}
+  .acct-note{display:block}
+  .toolbar:has(.fbtn){flex-wrap:nowrap}
+  .toolbar:has(.fbtn) input{flex:1 1 auto;min-width:0}
+  .fbtn{display:inline-flex;align-items:center;gap:6px;flex:none;min-height:46px;padding-inline:14px}
+  .fbtn svg{width:18px;height:18px}
+  .fbtn .cnt{background:var(--accent);color:#fff;border-radius:999px;min-width:20px;height:20px;line-height:20px;font-size:12px;text-align:center;padding:0 6px}
+  .fbtn .cnt:empty{display:none}
+  .filters{display:none}
+  body.fs-open{overflow:hidden}
+  body.fs-open .fs-back{display:block;position:fixed;inset:0;background:rgba(12,22,40,.45);z-index:1300}
+  body.fs-open .filters{display:block;position:fixed;inset:auto 0 0 0;z-index:1301;max-height:86dvh;overflow:auto;overscroll-behavior:contain;margin:0;border-radius:18px 18px 0 0;padding:18px 16px 0;box-shadow:0 -8px 30px rgba(12,22,40,.18)}
+  body.fs-open .filters::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--line);margin:-8px auto 10px}
+  body.fs-open .filters h2{font-size:17px}
+  body.fs-open .fs-foot{display:block;position:sticky;bottom:0;background:var(--surface);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));margin-top:18px;border-top:1px solid var(--line)}
+  .filters .fbody .chips{flex-wrap:wrap;overflow:visible}
+  .filters .fbody .toggle{width:100%}
+  .fs-extra{flex-direction:row!important;flex-wrap:wrap;gap:8px!important}
+  .fs-extra .btn{flex:1}
+  .tab-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .tab-head .head-actions{margin-inline-start:auto}
+  .active-chips{margin-top:8px}
+  .active-chips:empty{display:none}
+  /* bulk assignment is a desk job; keep phone rows clean */
+  .tbl.resp td.chk,#bulk{display:none!important}
+  .tbl.resp tr td.m-main{padding-inline-end:0!important}
+  .tbl.resp tr:has(td.call-td) td.m-main{padding-inline-end:0!important}
+  .tbl.resp td.nolbl::before{display:none}
+  /* problems: stages as one quiet row of pills */
+  .pipe{gap:6px;margin-bottom:10px}
+  .pipe button{flex:none;min-width:0;display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 14px;min-height:40px;font-size:13px;font-weight:600}
+  .pipe button b{display:inline;font-size:13.5px}
+  .kgrid .kcard .a{justify-content:flex-start}
+  .kgrid .kcard .a .btn{flex:0 0 auto;min-height:40px;padding-inline:16px;font-size:13.5px}
+  .kgrid .kcard .a .btn.primary{background:var(--accent-soft);color:var(--accent-fg);border-color:transparent}
+  .diff{font-size:12.5px}
+  .diff th{width:72px;padding:2px 0}
+  .diff td{padding:2px 4px}
+}
+
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1294,6 +1342,7 @@ const ICON={
   people:'<path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm-6 9a6 6 0 0 1 12 0M17 11a3 3 0 1 0 0-6M21 20a5 5 0 0 0-4-4.9"/>',
   queue:'<path d="M4 5h16v14H4zM8 11l3 3 5-6"/>',
   perf:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  filter:'<path d="M4 6h16M7 12h10M10 18h4"/>',
   dots:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
   home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   prob:'<path d="M12 4l9 16H3zM12 10v4M12 17h.01"/>',
@@ -1337,15 +1386,23 @@ function topbar(u,route){
       <button class="btn sm ghost" data-act="logout">خروج</button></div>
   </div></header>`;
 }
-function roleBanner(u,route){
-  if(route!=='list'&&route!=='people')return '';
-  if(bannerOff(u.role))return '';
-  const x=`<button class="banner-x" data-act="dismiss-banner" aria-label="بستن این راهنما">×</button>`;
-  if(u.role==='viewer')return `<div class="banner"><span class="banner-t"><b>سطح نمایشی:</b> فقط مشاهده. شماره تماس و کد ملی افراد برای این سطح پنهان است.</span>${x}</div>`;
-  if(u.role==='operator')return `<div class="banner"><span class="banner-t"><b>اپراتور ${esc(u.city)}:</b> محله‌هایی که به شما تخصیص داده شده را ثبت و ویرایش می‌کنید. هر ثبت شما پس از تأیید سرپرست نهایی می‌شود.</span>${x}</div>`;
-  if(u.role==='supervisor')return `<div class="banner"><span class="banner-t"><b>سرپرست ${esc(u.city)}:</b> ثبت‌های شما بدون نیاز به تأیید اعمال می‌شود؛ مدیر سایت می‌تواند آن‌ها را لغو کند.</span>${x}</div>`;
+function roleNote(u){
+  if(u.role==='viewer')return `<b>سطح نمایشی:</b> فقط مشاهده. شماره تماس و کد ملی افراد برای این سطح پنهان است.`;
+  if(u.role==='operator')return `<b>اپراتور ${esc(u.city)}:</b> محله‌هایی که به شما تخصیص داده شده را ثبت و ویرایش می‌کنید. هر ثبت شما پس از تأیید سرپرست نهایی می‌شود.`;
+  if(u.role==='supervisor')return `<b>سرپرست ${esc(u.city)}:</b> ثبت‌های شما بدون نیاز به تأیید اعمال می‌شود؛ مدیر سایت می‌تواند آن‌ها را لغو کند.`;
   return '';
 }
+function roleBanner(u,route){
+  if(route!=='list'&&route!=='people')return '';
+  if(bannerOff(u.role)||!roleNote(u))return '';
+  return `<div class="banner d-only"><span class="banner-t">${roleNote(u)}</span><button class="banner-x" data-act="dismiss-banner" aria-label="بستن این راهنما">×</button></div>`;
+}
+/* phone: filters live in a bottom sheet behind one «فیلتر» button */
+const fbtn=n=>`<button type="button" class="btn fbtn" data-act="fs-open" aria-label="فیلترها">${icon('filter')}<span>فیلتر</span><span class="cnt">${n?fa(n):''}</span></button>`;
+const fsFoot=(n,unit)=>`<div class="fs-foot"><button type="button" class="btn primary block" data-act="fs-close">نمایش <span class="fs-n">${num(n)}</span> ${unit}</button></div>`;
+const fsBack='<div class="fs-back" data-act="fs-close"></div>';
+const fsOpenAttr=()=>matchMedia('(max-width:860px)').matches&&!isMob()?'':'open';
+function setFcount(n,id){const el=$(id);if(el)el.textContent=n?fa(n):'';$$('.fbtn .cnt').forEach(x=>x.textContent=n?fa(n):'');}
 function pager(total,page,key){
   const pages=Math.max(1,Math.ceil(total/PAGE));if(pages<=1)return '';
   return `<nav class="pager" aria-label="صفحه‌ها"><button class="btn sm" data-act="page" data-k="${key}" data-v="${page-1}" ${page<=1?'disabled':''}>قبلی</button><span class="small muted">صفحه ${fa(page)} از ${fa(pages)}</span><button class="btn sm" data-act="page" data-k="${key}" data-v="${page+1}" ${page>=pages?'disabled':''}>بعدی</button></nav>`;
@@ -1416,15 +1473,17 @@ function listView(){
   const seg=(k,items)=>`<div class="seg" role="group">${items.map(([v,t])=>`<button type="button" data-act="setf" data-k="${k}" data-v="${v}">${t}</button>`).join('')}</div>`;
   const opsAll=db.users.filter(x=>x.role==='operator'&&(u.role==='admin'||x.city===u.city)).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
   return `
-  <section class="page-head">
+  <section class="page-head m-nosub">
     <div><h1>${ui.f.op==='me'?'محله‌های من':'پرونده محله‌ها'}</h1><p class="sub">${ui.f.op==='me'?num(all.filter(n=>n.op===u.id).length)+' محله · '+esc(u.city):num(all.length)+' پرونده · اطلاعات این نسخه نمونه و ساختگی است'}</p></div>
-    <div class="head-actions">${isReviewer()?`<button class="btn" data-act="export-nb">خروجی Excel</button>`:''}${canCreate()?`<button class="btn primary" data-act="new-nb">+ تشکیل پرونده جدید</button>`:''}</div>
+    <div class="head-actions">${isReviewer()?`<button class="btn d-only" data-act="export-nb">خروجی Excel</button>`:''}${canCreate()?`<button class="btn primary" data-act="new-nb">+ <span class="d-only">تشکیل </span>پرونده جدید</button>`:''}</div>
   </section>
-  <section class="stats">${st.map(s=>`<button class="stat" data-act="stat" data-k="${s.k}" data-v="${s.v}"><span class="v">${num(s.n)}</span><span class="k"><i style="background:var(${s.dot})"></i>${s.label}</span></button>`).join('')}</section>
+  <section class="stats d-only">${st.map(s=>`<button class="stat" data-act="stat" data-k="${s.k}" data-v="${s.v}"><span class="v">${num(s.n)}</span><span class="k"><i style="background:var(${s.dot})"></i>${s.label}</span></button>`).join('')}</section>
   <section class="list-grid">
-    <details class="filters card" ${matchMedia('(max-width:860px)').matches?'':'open'}>
+    ${fsBack}<details class="filters card" ${fsOpenAttr()}>
       <summary><h2>فیلترها <span class="fcount" id="fcount"></span></h2><button class="btn sm ghost" data-act="clearf">پاک کردن</button></summary>
       <div class="fbody">
+      <div class="fgroup m-only"><span>گروه‌بندی فهرست</span><div class="toggle" role="group">${[['need','وضعیت'],['district','منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div></div>
+      ${u.role==='admin'||u.role==='viewer'?`<label class="fgroup m-only"><span>شهر</span><select data-filter="city"><option value="">همه شهرها</option>${db.settings.cities.map(c=>`<option ${ui.f.city===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label>`:''}
       <label class="fgroup m-only"><span>مرتب‌سازی</span><select data-filter="sort" aria-label="مرتب‌سازی"><option value="name">مرتب‌سازی: نام</option><option value="code">مرتب‌سازی: کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select></label>
       <div class="fgroup"><span>عضویت در پرچمدار</span>${seg('flag',[['','همه'],['member','عضو'],['candidate','نامزد'],['none','غیرعضو']])}</div>
       <div class="fgroup"><span>وضعیت پرونده</span>${seg('active',[['','همه'],['yes','فعال'],['no','غیرفعال']])}</div>
@@ -1433,15 +1492,17 @@ function listView(){
       <label class="fgroup"><span>دسته مشکل باز</span>${sel('cat',db.settings.problemCats.map(c=>[c,c]),'همه دسته‌ها')}</label>
       <label class="fgroup"><span>اولویت مشکل باز</span>${sel('prio',opts(PRIO),'همه اولویت‌ها')}</label>
       <label class="fgroup"><span>نقش متولی</span>${sel('role',db.settings.trusteeRoles.map(c=>[c,c]),'همه نقش‌ها')}</label>
+      <div class="fgroup m-only fs-extra"><button class="btn" data-act="togglemap">${ui.showMap?'پنهان کردن نقشه':'نمایش روی نقشه'}</button>${isReviewer()?`<button class="btn" data-act="export-nb">خروجی Excel</button>`:''}</div>
       </div>
+      ${fsFoot(0,'محله')}
     </details>
     <div class="list-main">
-      <div class="toggle" role="group" aria-label="گروه‌بندی فهرست">${[['need','بر اساس وضعیت'],['district','بر اساس منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div>
-      ${u.role==='admin'||u.role==='viewer'?`<div class="city-strip" role="group" aria-label="شهر">${[['','همه شهرها',all.length],...db.settings.cities.map(c=>[c.name,c.name,all.filter(n=>n.city===c.name).length])].map(([v,t,c])=>`<button type="button" data-act="setf" data-k="city" data-v="${esc(v)}">${esc(t)}<span>${num(c)}</span></button>`).join('')}</div>`:''}
+      <div class="toggle d-only" role="group" aria-label="گروه‌بندی فهرست">${[['need','بر اساس وضعیت'],['district','بر اساس منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div>
+      ${u.role==='admin'||u.role==='viewer'?`<div class="city-strip d-only" role="group" aria-label="شهر">${[['','همه شهرها',all.length],...db.settings.cities.map(c=>[c.name,c.name,all.filter(n=>n.city===c.name).length])].map(([v,t,c])=>`<button type="button" data-act="setf" data-k="city" data-v="${esc(v)}">${esc(t)}<span>${num(c)}</span></button>`).join('')}</div>`:''}
       <div class="toolbar">
         <input type="search" id="q" data-filter="q" placeholder="جستجو در نام محله، کد، نشانی، کد پستی یا نام متولی…" value="${esc(ui.f.q)}" aria-label="جستجو">
         <select id="f-sort" class="d-only" data-filter="sort" aria-label="مرتب‌سازی"><option value="name">مرتب‌سازی: نام</option><option value="code">مرتب‌سازی: کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select>
-        <button class="btn" data-act="togglemap" aria-pressed="${ui.showMap}">${ui.showMap?'پنهان کردن نقشه':'نمایش نقشه'}</button>
+        <button class="btn d-only" data-act="togglemap" aria-pressed="${ui.showMap}">${ui.showMap?'پنهان کردن نقشه':'نمایش نقشه'}</button>${fbtn(0)}
       </div>
       <div class="active-chips" id="chips"></div>
       ${ui.showMap?`<div class="map" id="listmap" dir="ltr" aria-label="نقشه محله‌ها"></div>
@@ -1471,23 +1532,23 @@ function updateList(){
     dEl.innerHTML=`<option value="">${f.city?'همه مناطق '+esc(f.city):'همه مناطق'}</option>`+ds.map(d=>`<option value="${d}">منطقه ${fa(d)}</option>`).join('');}
   ['district','cat','prio','role','op'].forEach(k=>{const el=$('#f-'+k);if(el)el.value=f[k];});
   $$('[data-filter="sort"]').forEach(el=>el.value=f.sort);
-  const fc=Object.entries(f).filter(([k,v])=>k!=='sort'&&k!=='q'&&v).length;const fcEl=$('#fcount');if(fcEl)fcEl.textContent=fc?fa(fc):'';
+  const fc=Object.entries(f).filter(([k,v])=>k!=='sort'&&k!=='q'&&v).length;setFcount(fc,'#fcount');$$('.fs-n').forEach(x=>x.textContent=num(all0.length));$$('[data-filter="city"]').forEach(el=>el.value=f.city);
   $$('.stat').forEach(b=>{const k=b.dataset.k;const others=Object.entries(f).filter(([kk,v])=>kk!==k&&kk!=='sort'&&v).length;b.setAttribute('aria-pressed',String(k?f[k]===b.dataset.v&&!others:!Object.entries(f).some(([kk,v])=>kk!=='sort'&&v)));});
   const opLabel=v=>v==='me'?'محله‌های من':v==='none'?'بدون اپراتور':'اپراتور: '+uName(v);
   const labels={need:v=>NEED[v].t,city:v=>v,district:v=>'منطقه '+fa(v),flag:v=>FLAG[v].t,active:v=>v==='yes'?'فعال':'غیرفعال',cat:v=>v,prio:v=>'اولویت '+PRIO[v].t,role:v=>'متولی: '+v,q:v=>'«'+v+'»',op:opLabel,pend:()=>'در انتظار تأیید'};
   const act=Object.entries(f).filter(([k,v])=>k!=='sort'&&v);
-  $('#chips').innerHTML=act.length?`<span class="muted">فیلترهای فعال:</span>${act.map(([k,v])=>`<button data-act="unsetf" data-k="${k}" aria-label="حذف فیلتر">${esc(labels[k](v))} ×</button>`).join('')}`:'';
+  $('#chips').innerHTML=act.length?`<span class="muted d-only">فیلترهای فعال:</span>${act.map(([k,v])=>`<button data-act="unsetf" data-k="${k}" aria-label="حذف فیلتر">${esc(labels[k](v))} ×</button>`).join('')}`:'';
   const pages=Math.max(1,Math.ceil(list.length/PAGE));if(ui.page>pages)ui.page=pages;
   const mob=isMob();
   const rows=mob?list.slice(0,ui.page*PAGE):pageSlice(list,ui.page);
   const more=(k,pg)=>list.length>rows.length?`<button class="btn block more-btn" data-act="more" data-k="${k}">نمایش ${fa(Math.min(PAGE,list.length-rows.length))} مورد بیشتر · ${fa(list.length-rows.length)} باقی مانده</button>`:'';
   const chk=canAssign();
   $('#results').innerHTML=`<div class="result-head"><span><b class="num">${num(all0.length)}</b> محله${list.length>PAGE&&!mob?` · نمایش ${fa((ui.page-1)*PAGE+1)} تا ${fa(Math.min(ui.page*PAGE,list.length))}`:''}</span>${mob?'':pager(list.length,ui.page,'page')}</div>`+(list.length?`
-  <div class="table-wrap"><table class="tbl resp ${G==='need'?'g-need':''}"><thead><tr>${chk?`<th><input type="checkbox" data-act="selall" aria-label="انتخاب همه این صفحه" ${rows.filter(n=>canEdit(n)&&!n._st).every(n=>ui.sel.has(n.id))?'checked':''}></th>`:''}<th>کد</th><th>محله</th><th>شهر · منطقه</th><th>اپراتور</th><th>پرچمدار</th><th>متولیان</th><th>مشکلات باز</th><th>آخرین بررسی</th></tr></thead><tbody>
+  <div class="table-wrap"><table class="tbl resp ${G==='need'||mob?'g-need':''}"><thead><tr>${chk?`<th><input type="checkbox" data-act="selall" aria-label="انتخاب همه این صفحه" ${rows.filter(n=>canEdit(n)&&!n._st).every(n=>ui.sel.has(n.id))?'checked':''}></th>`:''}<th>کد</th><th>محله</th><th>شهر · منطقه</th><th>اپراتور</th><th>پرچمدار</th><th>متولیان</th><th>مشکلات باز</th><th>آخرین بررسی</th></tr></thead><tbody>
   ${rows.map(n=>{const op=openProblems(n);const lr=lastReview(n);const ds=lr?daysSince(lr):null;const k=nd.get(n.id).k;const gk=gKey(n);let hd='';if(gk!==null&&gk!==prevG){prevG=gk;hd=groupRow(gk);}return hd+`<tr data-act="open" data-id="${n.id}" tabindex="0">
     ${chk?`<td class="chk" data-l="">${canEdit(n)&&!n._st?`<input type="checkbox" data-act="sel" data-id="${n.id}" ${ui.sel.has(n.id)?'checked':''} aria-label="انتخاب ${esc(n.name)}">`:''}</td>`:''}
     <td data-l="کد" class="m-hide">${n.code?`<span class="code">${esc(n.code)}</span>`:'<span class="muted small">بدون کد</span>'}</td>
-    <td data-l="محله" class="m-main"><div class="nb-name">${G!=='none'?`<span class="st" style="background:var(${NEED[k].c})" title="${NEED[k].t}"></span>`:''}${esc(n.name)} ${n.flag!=='none'?`<span class="pill ${FLAG[n.flag].c} m-only">${FLAG[n.flag].t}</span>`:''}${stBadge(n)}${!n.active?' <span class="pill mute">غیرفعال</span>':''}${hasPending(n)&&!n._st&&u.role!=='viewer'?' <span class="pend-dot" title="ثبت در انتظار تأیید"></span>':''}</div><div class="nb-addr ${G==='need'?'why':''}">${G==='need'?nd.get(n.id).r:esc(n.address)}</div></td>
+    <td data-l="محله" class="m-main"><div class="nb-name">${G!=='none'||mob?`<span class="st" style="background:var(${NEED[k].c})" title="${NEED[k].t}"></span>`:''}${esc(n.name)} ${n.flag!=='none'?`<span class="pill ${FLAG[n.flag].c} m-only">${FLAG[n.flag].t}</span>`:''}${stBadge(n)}${!n.active?' <span class="pill mute">غیرفعال</span>':''}${hasPending(n)&&!n._st&&u.role!=='viewer'?' <span class="pend-dot" title="ثبت در انتظار تأیید"></span>':''}</div><div class="nb-addr ${G==='need'||mob?'why':''}">${G==='need'||mob?nd.get(n.id).r:esc(n.address)}</div></td>
     <td data-l="شهر · منطقه">${esc(n.city)} · ${fa(n.district)}</td>
     <td data-l="اپراتور" class="small ${u.role==='operator'?'m-hide':''}">${n.op?esc(uName(n.op)):'<span class="muted">—</span>'}</td>
     <td data-l="پرچمدار" class="m-hide">${n.flag==='none'?'<span class="muted small">غیرعضو</span>':`<span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span>`}</td>
@@ -1726,14 +1787,15 @@ function peopleView(){
   const f=ui.pf,all=db.people.filter(vis);
   const sel=(k,items,ph)=>`<select data-pfilter="${k}" id="pf-${k}"><option value="">${ph}</option>${items.map(([v,t])=>`<option value="${esc(v)}" ${String(f[k])===String(v)?'selected':''}>${esc(t)}</option>`).join('')}</select>`;
   const c=cityOf(f.city);
-  return `<section class="page-head">
+  return `<section class="page-head m-nosub">
     <div><h1>${f.mine?'افراد محله‌های من':'پرونده افراد'}</h1><p class="sub">${f.mine?num(pFiltered().length)+' نفر':num(all.length)+' نفر · متولیان و افراد مؤثر محله‌ها'}</p></div>
-    <div class="head-actions">${!isViewer()?`<button class="btn" data-act="export-people">خروجی Excel</button>`:''}${canCreate()?`<button class="btn primary" data-act="new-person">+ ثبت فرد جدید</button>`:''}</div>
+    <div class="head-actions">${!isViewer()?`<button class="btn d-only" data-act="export-people">خروجی Excel</button>`:''}${canCreate()?`<button class="btn primary" data-act="new-person">+ <span class="d-only">ثبت </span>فرد جدید</button>`:''}</div>
   </section>
   <section class="list-grid">
-    <details class="filters card" ${matchMedia('(max-width:860px)').matches?'':'open'}>
+    ${fsBack}<details class="filters card" ${fsOpenAttr()}>
       <summary><h2>فیلترها <span class="fcount" id="pfcount"></span></h2><button class="btn sm ghost" data-act="clearpf">پاک کردن</button></summary>
       <div class="fbody">
+      <div class="fgroup m-only"><span>دسته‌های سریع</span>${peopleChips()}</div>
       <label class="fgroup"><span>شهر</span>${sel('city',db.settings.cities.map(c=>[c.name,c.name]),'همه شهرها')}</label>
       <label class="fgroup"><span>منطقه</span>${sel('district',c?Array.from({length:c.d},(_,i)=>[i+1,'منطقه '+fa(i+1)]):DISTRICT_OPTS(),'همه مناطق')}</label>
       <label class="fgroup"><span>نقش در محله</span>${sel('role',db.settings.trusteeRoles.map(r=>[r,r]),'همه نقش‌ها')}</label>
@@ -1742,11 +1804,13 @@ function peopleView(){
       <label class="fgroup"><span>آخرین ارتباط</span>${sel('contact',[['30','بیش از ۳۰ روز پیش یا هرگز'],['90','بیش از ۹۰ روز پیش یا هرگز'],['none','هرگز ارتباط ثبت نشده']],'همه')}</label>
       <label class="fgroup"><span>جنسیت</span>${sel('gender',opts({m:{t:'مرد'},f:{t:'زن'}}),'همه')}</label>
       ${seeNid()?`<label class="fgroup"><span>کد ملی</span>${sel('nid',[['yes','ثبت شده'],['no','ثبت نشده']],'همه')}</label>`:''}
+      ${!isViewer()?`<div class="fgroup m-only fs-extra"><button class="btn" data-act="export-people">خروجی Excel</button></div>`:''}
       </div>
+      ${fsFoot(0,'نفر')}
     </details>
     <div class="list-main">
-      ${peopleChips()}
-      <div class="toolbar"><input type="search" data-pfilter="q" id="pq" placeholder="جستجو در نام، موبایل، کد ملی، شغل یا نام محله…" value="${esc(f.q)}" aria-label="جستجوی افراد"></div>
+      <div class="d-only">${peopleChips()}</div>
+      <div class="toolbar"><input type="search" data-pfilter="q" id="pq" placeholder="جستجو در نام، موبایل، شغل یا محله…" value="${esc(f.q)}" aria-label="جستجوی افراد">${fbtn(0)}</div>
       <div id="presults"></div>
     </div>
   </section>`;
@@ -1767,17 +1831,17 @@ function updatePeople(){
   if(grouped){const nc=p=>{const lc=lastContact(p);return !lc||daysSince(lc)>90?0:1;};list=[...list].sort((a,b)=>nc(a)-nc(b));}
   const mob=isMob();
   const rows=mob?list.slice(0,ui.pPage*PAGE):pageSlice(list,ui.pPage);
-  const pc=Object.entries(ui.pf).filter(([k,v])=>k!=='q'&&v).length;const pcEl=$('#pfcount');if(pcEl)pcEl.textContent=pc?fa(pc):'';
+  const pc=Object.entries(ui.pf).filter(([k,v])=>k!=='q'&&v).length;setFcount(pc,'#pfcount');$$('.fs-n').forEach(x=>x.textContent=num(list.length));
   const more=list.length>rows.length?`<button class="btn block more-btn" data-act="more" data-k="pPage">نمایش ${fa(Math.min(PAGE,list.length-rows.length))} نفر بیشتر · ${fa(list.length-rows.length)} باقی مانده</button>`:'';
   $('#presults').innerHTML=`<div class="result-head"><span><b class="num">${num(list.length)}</b> نفر</span>${mob?'':pager(list.length,ui.pPage,'pPage')}</div>`+(list.length?`
   <div class="table-wrap"><table class="tbl resp"><thead><tr><th>نام</th><th>موبایل</th><th>محله و نقش</th><th>همکاری</th><th>مهارت</th><th>آخرین ارتباط</th></tr></thead><tbody>
   ${rows.map(p=>{const ls=linksOf(p.id).filter(x=>vis(x.l));const lc=lastContact(p);const gk=grouped?(!lc||daysSince(lc)>90?'need':'rest'):null;let hd='';if(gk&&gk!==prevG){prevG=gk;hd=`<tr class="grp-row"><td colspan="7">${gk==='need'?'<span class="st" style="background:var(--warn)"></span><b>نیازمند تماس</b><small>بیش از ۹۰ روز بی‌ارتباط یا بدون سابقه</small>':'<span class="st" style="background:var(--ok)"></span><b>سایر افراد</b><small>ارتباط در ۹۰ روز اخیر</small>'}</td></tr>`;}return hd+`<tr data-act="open-p" data-id="${p.id}" tabindex="0">
-    <td data-l="نام" class="m-main"><div class="nb-name">${esc(p.name)} ${stBadge(p)}</div><div class="nb-addr">${esc(p.job||'')}${p.birth?' · متولد '+fa(p.birth):''}</div></td>
+    <td data-l="نام" class="m-main"><div class="nb-name">${esc(p.name)} ${stBadge(p)}</div><div class="nb-addr m-hide">${esc(p.job||'')}${p.birth?' · متولد '+fa(p.birth):''}</div></td>
     <td data-l="موبایل" class="${seePhone()&&p.mobile?'m-hide':''}"><span class="phone">${showPhone(p.mobile)}</span></td>
-    <td data-l="محله و نقش" class="small">${ls.slice(0,2).map(x=>`${esc(x.n.name)} <span class="muted">(${esc(x.l.roles.join('، '))})</span>`).join('<br>')}${ls.length>2?`<br><span class="muted">+${fa(ls.length-2)} محله دیگر</span>`:''}${!ls.length?'<span class="muted">بدون محله</span>':''}</td>
+    <td data-l="محله و نقش" class="small nolbl">${mob?(ls.length?`${esc(ls[0].n.name)} <span class="muted">(${esc(ls[0].l.roles.join('، '))})${ls.length>1?' +'+fa(ls.length-1)+' محله':''}</span>`:''):ls.slice(0,2).map(x=>`${esc(x.n.name)} <span class="muted">(${esc(x.l.roles.join('، '))})</span>`).join('<br>')+(ls.length>2?`<br><span class="muted">+${fa(ls.length-2)} محله دیگر</span>`:'')}${!ls.length?'<span class="muted">بدون محله</span>':''}</td>
     <td data-l="همکاری" class="m-hide"><span class="pill ${COOP[p.coop]?.c||'mute'}">${COOP[p.coop]?.t||'—'}</span></td>
     <td data-l="مهارت" class="small m-hide">${(p.skills||[]).map(esc).join('، ')||'—'}</td>
-    <td data-l="آخرین ارتباط" class="small">${lc?`<span class="m-hide">${fmtDate(lc)}</span><div class="small ${daysSince(lc)>90?'crit':'muted'}">${fa(daysSince(lc))} روز پیش</div>`:'<span class="muted">ثبت نشده</span>'}</td>${seePhone()&&p.mobile?`<td class="m-only call-td" data-l=""><a class="call" href="tel:${p.mobile}" aria-label="تماس با ${esc(p.name)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="${VERB_IC.contact}"/></svg></a></td>`:''}</tr>`;}).join('')}
+    <td data-l="آخرین ارتباط" class="small nolbl">${lc?`<span class="m-hide">${fmtDate(lc)}</span><div class="small ${daysSince(lc)>90?'crit':'muted'}"><span class="m-only">آخرین ارتباط </span>${fa(daysSince(lc))} روز پیش</div>`:'<span class="muted"><span class="m-only">ارتباطی </span>ثبت نشده</span>'}</td>${seePhone()&&p.mobile?`<td class="m-only call-td" data-l=""><a class="call" href="tel:${p.mobile}" aria-label="تماس با ${esc(p.name)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="${VERB_IC.contact}"/></svg></a></td>`:''}</tr>`;}).join('')}
   </tbody></table></div>${mob?more:pager(list.length,ui.pPage,'pPage')}`:`<div class="card empty"><b>فردی با این مشخصات پیدا نشد.</b><button class="btn" data-act="clearpf">پاک کردن فیلترها</button></div>`);
 }
 function personView(p){
@@ -1973,7 +2037,7 @@ function moreSheet(){
   d.innerHTML=`<div class="sheet"><header><h2>سایر</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header>
     ${items.length?`<div class="sheet-list">${items.map(x=>`<a class="sheet-item" href="#${x.h}" ${x.tab?`data-tab="${x.tab}"`:''}><span class="sheet-ic">${icon(x.ic)}</span><span><b>${x.t}</b><small>${x.d}</small></span></a>`).join('')}</div>`:''}
     <div class="acct-body">
-      <div class="acct-who"><span class="avatar">${esc(initials(u.name))}</span><span><b>${esc(u.name)}</b><small><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(u.city||'')}</small></span></div>
+      ${roleNote(u)?`<p class="acct-note">${roleNote(u)}</p>`:''}<div class="acct-who"><span class="avatar">${esc(initials(u.name))}</span><span><b>${esc(u.name)}</b><small><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(u.city||'')}</small></span></div>
       ${installEvt?`<button type="button" class="btn block" data-act="install">نصب برنامه روی گوشی</button>`:''}
       <label class="field"><span>ورود آزمایشی با نقش دیگر</span><select data-change="persona" id="persona-m">${groups.map(([r,us])=>`<optgroup label="${LEVEL[r].t}">${us.map(x=>`<option value="${x.id}" ${x.id===u.id?'selected':''}>${esc(x.name)}${x.city?' · '+esc(x.city):''}</option>`).join('')}</optgroup>`).join('')}</select></label>
       <button type="button" class="btn block danger" data-act="logout">خروج از حساب</button></div></div>`;
@@ -2002,11 +2066,15 @@ function problemsView(){
   const title=u.role==='operator'?'مشکلات محله‌های من':u.role==='supervisor'?'مشکلات محله‌های '+esc(u.city):'مشکلات همه‌ی محله‌ها';
   const st=(k,t,n)=>`<button type="button" data-act="stage" data-v="${k}" aria-pressed="${f.stage===k}"><b>${num(n)}</b>${t}</button>`;
   const chip=(k,t,n)=>`<button type="button" data-act="prchip" data-v="${k}" aria-pressed="${f.chip===k}">${t}${n!=null?' '+num(n):''}</button>`;
-  return `<section class="page-head"><div><h1>${title}</h1><p class="sub">${num(open.length)} مشکل باز · ${num(open.filter(x=>x.p.prio==='critical').length)} بحرانی</p></div></section>
+  const nf=(f.chip?1:0)+(f.org?1:0);
+  const orgSel=`<select data-prorg aria-label="نهاد ارجاع"><option value="">همه‌ی نهادها</option>${orgs.map(o=>`<option ${f.org===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  const chips=`${chip('','همه',null)}${chip('critical','بحرانی',open.filter(x=>x.p.prio==='critical').length)}${chip('stale','بی‌پیگیری بیش از ۱۴ روز',open.filter(x=>x.d>=14).length)}`;
+  return `<section class="page-head m-nosub"><div><h1>${title}</h1><p class="sub">${num(open.length)} مشکل باز · ${num(open.filter(x=>x.p.prio==='critical').length)} بحرانی</p></div></section>
   <div class="pipe" role="group" aria-label="مرحله">${st('open','همه‌ی باز',open.length)}<span class="arr" aria-hidden="true"></span>${st('new','ثبت‌شده',cnt('new'))}${st('referred','ارجاع‌شده',cnt('referred'))}${st('progress','در حال پیگیری',cnt('progress'))}${st('solved','حل‌شده',cnt('solved'))}</div>
-  <div class="chips" role="group" aria-label="فیلتر">${chip('','همه',null)}${chip('critical','بحرانی',list.filter?open.filter(x=>x.p.prio==='critical').length:0)}${chip('stale','بی‌پیگیری بیش از ۱۴ روز',open.filter(x=>x.d>=14).length)}
-    <select data-prorg aria-label="نهاد ارجاع"><option value="">همه‌ی نهادها</option>${orgs.map(o=>`<option ${f.org===o?'selected':''}>${esc(o)}</option>`).join('')}</select></div>
-  <div class="toolbar"><input type="search" data-prq value="${esc(f.q)}" placeholder="جستجوی عنوان مشکل یا نام محله…" aria-label="جستجوی مشکل"></div>
+  <div class="chips d-only" role="group" aria-label="فیلتر">${chips}${orgSel}</div>
+  ${fsBack}<details class="filters card m-only" open><summary><h2>فیلترها <span class="fcount">${nf?fa(nf):''}</span></h2><button class="btn sm ghost" data-act="clearprf">پاک کردن</button></summary>
+    <div class="fbody"><div class="fgroup"><span>وضعیت پیگیری</span><div class="chips" role="group">${chips}</div></div><label class="fgroup"><span>نهاد ارجاع</span>${orgSel}</label></div>${fsFoot(list.length,'مشکل')}</details>
+  <div class="toolbar"><input type="search" data-prq value="${esc(f.q)}" placeholder="جستجوی عنوان مشکل یا نام محله…" aria-label="جستجوی مشکل">${fbtn(nf)}</div>
   <p class="small muted" style="margin:8px 0">${num(list.length)} مشکل</p>
   ${shown.length?`<div class="kgrid">${shown.map(({p,n,d})=>kcard({cls:p.prio==='critical'?'red':p.prio==='high'?'orange':'gray',
     t:`<a href="#n-${n.id}" data-act="open-prob" data-id="${n.id}" data-pid="${p.id}">${esc(p.title)}</a>`,
@@ -2056,8 +2124,11 @@ function queueView(){
     const groups=[];const seen=new Set();
     list.slice().sort((a,b)=>a.t-b.t).forEach(c=>{const k=c.grp||c.id;if(seen.has(k))return;seen.add(k);groups.push(list.filter(x=>(x.grp||x.id)===k));});
     const shown=groups.slice(0,PAGE);
-    body=`<div class="tab-head"><div class="toolbar" style="flex:1"><select data-qf="op" aria-label="اپراتور"><option value="">همه اپراتورها</option>${authors.map(a=>`<option value="${a.id}" ${ui.qf.op===a.id?'selected':''}>${esc(a.name)}${u.role==='admin'?' · '+esc(a.city):''}</option>`).join('')}</select><select data-qf="ent" aria-label="نوع"><option value="">همه انواع</option>${Object.entries(ENT).map(([k,t])=>`<option value="${k}" ${ui.qf.ent===k?'selected':''}>${t}</option>`).join('')}</select></div>
-      ${groups.length?`<div class="head-actions"><button class="btn sm" data-act="qselall">انتخاب همه (${fa(shown.length)})</button><button class="btn sm primary" data-act="qap-sel" ${ui.qsel.size?'':'disabled'}>تأیید انتخاب‌شده‌ها (${fa(ui.qsel.size)})</button></div>`:''}</div>
+    const qsel=`<select data-qf="op" aria-label="اپراتور"><option value="">همه اپراتورها</option>${authors.map(a=>`<option value="${a.id}" ${ui.qf.op===a.id?'selected':''}>${esc(a.name)}${u.role==='admin'?' · '+esc(a.city):''}</option>`).join('')}</select>`,qent=`<select data-qf="ent" aria-label="نوع"><option value="">همه انواع</option>${Object.entries(ENT).map(([k,t])=>`<option value="${k}" ${ui.qf.ent===k?'selected':''}>${t}</option>`).join('')}</select>`;
+    const nq=(ui.qf.op?1:0)+(ui.qf.ent?1:0);
+    body=`<div class="tab-head"><div class="toolbar d-only" style="flex:1">${qsel}${qent}</div>${fbtn(nq)}
+      ${fsBack}<details class="filters card m-only" open><summary><h2>فیلترها <span class="fcount">${nq?fa(nq):''}</span></h2><button class="btn sm ghost" data-act="clearqf">پاک کردن</button></summary><div class="fbody"><label class="fgroup"><span>اپراتور</span>${qsel}</label><label class="fgroup"><span>نوع ثبت</span>${qent}</label></div>${fsFoot(groups.length,'مورد')}</details>
+      ${groups.length?`<div class="head-actions"><button class="btn sm" data-act="qselall">انتخاب همه<span class="d-only"> (${fa(shown.length)})</span></button><button class="btn sm primary" data-act="qap-sel" ${ui.qsel.size?'':'disabled'}>تأیید <span class="d-only">انتخاب‌شده‌ها </span>(${fa(ui.qsel.size)})</button></div>`:''}</div>
     ${groups.length?`<p class="small muted">${fa(groups.length)} مورد · قدیمی‌ترین در بالا${groups.length>PAGE?` · ${fa(PAGE)} مورد اول نمایش داده می‌شود`:''}</p><div class="stack">${shown.map(g=>qCard(g)).join('')}</div>`:`<div class="card empty"><b>موردی برای تأیید نیست.</b><span class="small">ثبت‌های جدید اپراتورها اینجا نمایش داده می‌شود.</span></div>`}`;
   }else if(ui.qTab==='sup'){
     const list=db.changes.filter(c=>c.st==='auto'&&c.t>Date.now()-30*DAY).slice(0,PAGE);
@@ -2067,7 +2138,7 @@ function queueView(){
     const list=db.changes.filter(c=>c.rv&&(c.st==='approved'||c.st==='rejected'||c.st==='revoked')&&(u.role==='admin'||c.rv.uid===u.id)).sort((a,b)=>b.rv.t-a.rv.t).slice(0,PAGE);
     body=list.length?`<div class="table-wrap"><table class="tbl resp" style="min-width:640px"><thead><tr><th>زمان</th><th>کاربر</th><th>اقدام</th><th>پرونده</th><th>نتیجه</th></tr></thead><tbody>${list.map(c=>chRow(c)).join('')}</tbody></table></div>`:'<div class="card empty"><b>هنوز موردی بررسی نشده است.</b></div>';
   }
-  return `<section class="page-head"><div><h1>${u.role==='admin'?'کارتابل':'کارتابل تأیید'}</h1><p class="sub">${u.role==='supervisor'?'ثبت‌های اپراتورهای '+esc(u.city):'ثبت‌های همه شهرها'}</p></div></section>
+  return `<section class="page-head m-nosub"><div><h1>${u.role==='admin'?'کارتابل':'کارتابل تأیید'}</h1><p class="sub">${u.role==='supervisor'?'ثبت‌های اپراتورهای '+esc(u.city):'ثبت‌های همه شهرها'}</p></div></section>
   <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${ui.qTab===k}" data-act="qtab" data-tab="${k}">${l}${k==='pending'?`<span class="cnt">${fa(pendingCount())}</span>`:''}</button>`).join('')}</div>${body}`;
 }
 function qCard(g){
@@ -2570,6 +2641,8 @@ function render(){
   else if(route==='admin'&&isAdmin())body=adminView();
   else{route='list';body=listView();}
   app.innerHTML=topbar(u,route)+`<main class="wrap">${roleBanner(u,route)}${body}</main>`;
+  if(ui.fsOpen&&ui.fsOpen!==(location.hash||'#'))ui.fsOpen=null;
+  document.body.classList.toggle('fs-open',!!ui.fsOpen&&ui.fsOpen===(location.hash||'#')&&isMob()&&!!$('.filters'));
   document.title='پرچمدار';
   if(route==='list'){
     const el=$('#listmap');if(el){listMap=makeMap(el);if(listMap)listMap.setView([32.6,53.5],5);}
@@ -2593,6 +2666,9 @@ function currentP(){const h=location.hash.slice(1);return h.startsWith('p-')?get
 const refreshTab=n=>{$('#tabpanel').innerHTML=tabPanel(n,canEdit(n));};
 
 document.addEventListener('click',e=>{const a=e.target.closest('[data-close-dlg]');if(a){$('#dlg').close();}});
+/* the filter sheet's header must not fold the sheet closed */
+app.addEventListener('click',e=>{if(document.body.classList.contains('fs-open')&&e.target.closest('.filters summary')&&!e.target.closest('button'))e.preventDefault();},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs-open')){ui.fsOpen=null;document.body.classList.remove('fs-open');}});
 app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   if(b.tagName==='INPUT'&&b.type==='checkbox')e.stopPropagation();
@@ -2610,7 +2686,11 @@ app.addEventListener('click',e=>{
     case 'clearf':e.preventDefault();Object.assign(ui.f,{...F0,sort:ui.f.sort});$('#q').value='';ui.page=1;saveFilters();updateList();break;
     case 'stat':Object.assign(ui.f,{...F0,sort:ui.f.sort});if(b.dataset.k)ui.f[b.dataset.k]=b.dataset.v;$('#q').value='';ui.page=1;saveFilters();updateList();break;
     case 'page':ui[b.dataset.k]=Number(b.dataset.v);if(b.dataset.k==='page')updateList();else if(b.dataset.k==='pPage')updatePeople();else render();(b.closest('.list-main,.card,main')||app).scrollIntoView({block:'start'});break;
-    case 'togglemap':ui.showMap=!ui.showMap;render();break;
+    case 'togglemap':ui.showMap=!ui.showMap;ui.fsOpen=null;render();break;
+    case 'fs-open':ui.fsOpen=location.hash||'#';$$('.filters').forEach(d=>d.open=true);document.body.classList.add('fs-open');break;
+    case 'fs-close':ui.fsOpen=null;document.body.classList.remove('fs-open');break;
+    case 'clearprf':e.preventDefault();ui.prf={...PRF0,stage:ui.prf.stage};render();break;
+    case 'clearqf':e.preventDefault();ui.qf={op:'',ent:''};render();break;
     case 'sel':ui.sel.has(id)?ui.sel.delete(id):ui.sel.add(id);updateBulk();break;
     case 'selall':{const rows=pageSlice(filtered(),ui.page).filter(x=>canEdit(x)&&!x._st);const all=rows.every(x=>ui.sel.has(x.id));rows.forEach(x=>all?ui.sel.delete(x.id):ui.sel.add(x.id));updateList();break;}
     case 'bulk-clear':ui.sel.clear();updateList();break;
@@ -2656,7 +2736,7 @@ app.addEventListener('click',e=>{
     case 'verb':doVerb(b.dataset.v);break;
     case 'jump':$('#'+b.dataset.to)?.scrollIntoView({behavior:'smooth',block:'start'});break;
     case 'home-all':ui.homeAll=true;render();$('#g-urg')?.scrollIntoView({block:'start'});break;
-    case 'group':ui.group=b.dataset.v;ui.page=1;ui.okOpen=false;$$('[data-act="group"]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));updateList();break;
+    case 'group':ui.group=b.dataset.v;ui.page=1;ui.okOpen=false;$$('[data-act="group"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===b.dataset.v)));updateList();break;
     case 'ok-open':ui.okOpen=true;updateList();break;
     case 'stage':ui.prf.stage=b.dataset.v;ui.prf.page=1;render();break;
     case 'prchip':ui.prf.chip=b.dataset.v;ui.prf.page=1;render();break;

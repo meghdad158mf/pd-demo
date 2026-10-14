@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-+DRyzWr+1tUi7p+J6un+YjPNB1BVngL9R88Le51Q/qU='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-m5LHDoYiRM90V4aO/hpyyqtVRIWsoALWZmtpgTSZ5XM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1575,7 +1575,7 @@ function topbar(u,route){
   const cur=h=>route===h||(h==='list'&&route.startsWith('n-'))||(h==='people'&&route.startsWith('p-'))||(h==='perf'&&route.startsWith('u-')&&u.role!=='operator')||(h==='me'&&route==='u-'+u.id);
   const groups=Object.keys(LEVEL).map(r=>[r,db.users.filter(x=>x.active&&x.role===r)]).filter(g=>g[1].length);
   return `<header class="top"><div class="top-in">
-    <a class="brand" href="#${defaultRoute(u)}">${brandSvg(42)}<span><b>پرچمدار</b><small>سامانه پرونده محله‌ها</small></span></a>
+    <a class="brand" href="#${defaultRoute(u)}">${brandSvg(42)}<span><b>پرچمدار</b><small>سامانه مدیریت</small></span></a>
     <button type="button" class="gsearch ${['list','problems','people'].includes(route)?'gs-own':''}" data-act="search">${icon('search')}<span>جستجو در محله، فرد، مشکل…</span></button>
     <nav class="nav" aria-label="بخش‌ها">${navItems(u).map(([h,t,ic,c])=>`<a href="#${h}" ${cur(h)?'aria-current="page"':''}>${icon(ic)}<span>${t}</span>${c?`<em class="badge">${fa(c>99?'99+':c)}</em>`:''}</a>`).join('')}
       ${moreItems(u).filter(x=>x.s).map(x=>`<a href="#${x.h}" class="nav-x" ${cur(x.h)?'aria-current="page"':''}>${icon(x.ic)}<span>${x.s}</span></a>`).join('')}
@@ -1675,7 +1675,7 @@ function loginView(){
       <button class="btn primary block" type="submit">دریافت کد ورود</button>`;
   const demoNid=un=>{const u=db.users.find(x=>x.username===un);return u?`<button type="button" data-act="fillnid" data-nid="${u.nid}">${LEVEL[u.role].t}: <span class="num">${fa(u.nid)}</span></button>`:'';};
   return `<div class="login"><div class="login-box">
-    <div class="login-brand">${brandSvg(112)}<div><b>پرچمدار</b><small>سامانه پرونده محله‌ها</small></div></div>
+    <div class="login-brand">${brandSvg(112)}<div><b>پرچمدار</b><small>سامانه مدیریت</small></div></div>
     <form class="card login-card" id="loginform" novalidate data-step="${a.step}">${body}</form>
     <div class="demo-row"><span>ورود آزمایشی:</span><button type="button" data-act="demo" data-u="admin">مدیر سامانه</button><i></i><button type="button" data-act="demo" data-u="supervisor">رابط استانی</button><i></i><button type="button" data-act="demo" data-u="operator">کارشناس محله</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>
     ${a.step==='nid'?`<div class="demo-row demo-nid"><span>کد ملی آزمایشی:</span>${demoNid('operator')}${demoNid('supervisor')}${demoNid('admin')}</div>`:''}

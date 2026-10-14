@@ -777,6 +777,37 @@ a.btn{text-decoration:none}
 @media (min-width:721px){#dlg.as-sheet{width:min(440px,92vw)}}
 @media (max-width:720px){.acct-btn{display:none}}
 
+/* ---- v13: stat strip (style E) — numbers in the title row, coloured by meaning ---- */
+@media (min-width:721px){
+  .page-head:has(.stats){align-items:center}
+  .page-head .stats{display:flex;gap:0;margin:0;margin-inline:auto;flex:0 1 auto;grid-template-columns:none}
+  .stat,.pipe button,.kpis>div{--c:var(--navy)}
+  .stat,.pipe button{flex:0 0 auto;min-width:118px;background:transparent;border:0;border-radius:10px;box-shadow:none;display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:6px 18px 9px;position:relative;text-align:start;transition:background .15s;cursor:pointer;color:var(--muted)}
+  .stat:hover,.pipe button:hover{background:color-mix(in srgb,var(--c) 7%,transparent);border-color:transparent}
+  .stat+.stat::before,.pipe button+button::before,.pipe .arr+button::before{content:"";position:absolute;inset-inline-start:0;top:10px;bottom:10px;width:1px;background:var(--line)}
+  .stat .v,.pipe button b{font-size:24px;line-height:1.15;color:var(--c);font-weight:800;display:block}
+  .stat .k,.pipe button{font-size:12.5px;white-space:nowrap}
+  .stat .k{color:var(--muted)}.stat .k i{display:none}
+  .stat[aria-pressed="true"],.pipe button[aria-pressed="true"]{box-shadow:none;border-color:transparent}
+  .stat[aria-pressed="true"] .k,.pipe button[aria-pressed="true"]{color:var(--fg);font-weight:700}
+  .stat[aria-pressed="true"]::after,.pipe button[aria-pressed="true"]::after{content:"";position:absolute;inset-inline:18px;bottom:0;height:3px;border-radius:3px;background:var(--c)}
+  .pipe{gap:0;margin-bottom:14px;overflow:visible}
+  .pipe button:first-child{padding-inline-start:4px}.pipe button:first-child[aria-pressed="true"]::after{inset-inline-start:4px}
+  /* performance numbers: same strip, not clickable */
+  .kpis{display:flex!important;flex-wrap:wrap;gap:0!important;margin-block-end:16px}
+  .kpis>div{background:transparent!important;border:0!important;border-radius:0;padding:4px 20px 6px;position:relative;min-width:110px}
+  .kpis>div:first-child{padding-inline-start:4px}
+  .kpis>div+div::before{content:"";position:absolute;inset-inline-start:0;top:8px;bottom:8px;width:1px;background:var(--line)}
+  .kpis b{font-size:24px;color:var(--c)}
+  .kpis span{white-space:nowrap}
+  .kpis .warnbox{--c:var(--warn)}.kpis .warnbox span{color:var(--warn-ink)}
+}
+@media (min-width:721px) and (max-width:1240px){
+  .page-head:has(.stats){flex-wrap:wrap}
+  .page-head .stats{order:3;flex-basis:100%;margin-inline:0}
+  .page-head .stats .stat:first-child{padding-inline-start:4px}
+}
+
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1606,9 +1637,9 @@ function listView(){
   return `
   <section class="page-head m-nosub">
     <div><h1>${u.role==='operator'?'محله‌های من':'پرونده محله‌ها'}</h1><p class="sub">${u.role==='operator'?num(all.length)+' محله، '+esc(u.city):num(all.length)+' پرونده، اطلاعات این نسخه نمونه و ساختگی است'}</p></div>
+    <div class="stats d-only" role="group" aria-label="آمار و فیلتر سریع">${st.map(s=>`<button class="stat" style="--c:var(${s.dot==='--accent'?'--navy':s.dot})" data-act="stat" data-k="${s.k}" data-v="${s.v}"><span class="v">${num(s.n)}</span><span class="k"><i style="background:var(${s.dot})"></i>${s.label}</span></button>`).join('')}</div>
     <div class="head-actions">${isReviewer()?`<button class="btn d-only" data-act="export-nb">خروجی Excel</button>`:''}${canCreate()?`<button class="btn primary" data-act="new-nb">+ <span class="d-only">تشکیل </span>پرونده جدید</button>`:''}</div>
   </section>
-  <section class="stats d-only">${st.map(s=>`<button class="stat" data-act="stat" data-k="${s.k}" data-v="${s.v}"><span class="v">${num(s.n)}</span><span class="k"><i style="background:var(${s.dot})"></i>${s.label}</span></button>`).join('')}</section>
   <section class="list-grid">
     ${fsBack}<details class="filters card" ${fsOpenAttr()}>
       <summary><h2>فیلترها <span class="fcount" id="fcount"></span></h2><button class="btn sm ghost" data-act="clearf">پاک کردن</button></summary>

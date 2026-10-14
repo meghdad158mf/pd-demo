@@ -714,6 +714,9 @@ dialog.as-full{height:100dvh;max-height:100dvh}
 .fold[open] .hchev{transform:rotate(180deg)}
 .fold>summary h3{margin:0}
 .fold[open]>summary{margin-bottom:10px}
+.card.sec.fold:not([open]){padding-block:6px}
+.fold>.kv{margin:0}
+.fold[open]>summary{margin-bottom:6px}
 .fold:not([open]){padding-block:8px}
 .fold>summary h3{line-height:1.4}
 a.btn{text-decoration:none}
@@ -723,6 +726,29 @@ a.btn{text-decoration:none}
   .p-acts .btn{flex:1}
   .p-acts .btn.primary{flex:1.6}
   .d-head:has(.p-acts){flex-wrap:wrap}
+}
+
+.diff-more>summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--accent-fg);padding:6px 0;list-style:none}
+.diff-more>summary::-webkit-details-marker{display:none}
+.diff-more>summary::before{content:"+ "}
+.diff-more[open]>summary{display:none}
+@media (max-width:720px){.qcard footer .btn{min-height:44px}.qline{padding-block:8px}}
+/* ---- v11: performance page ---- */
+.fold-tools{display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px}
+.fold-tools:empty{display:none}
+.grid2>.fold{margin:0}
+@media (max-width:720px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px}
+  .kpis .kx{display:none}
+  .kpis div{padding:8px 6px;text-align:center}
+  .kpis b{font-size:18px}
+  .kpis span{font-size:11.5px;line-height:1.4;display:block}
+  .page-head:has(.seg){flex-wrap:wrap}
+  .page-head .seg{width:100%;flex-wrap:nowrap}
+  .page-head .head-actions:has(.seg){width:100%;flex:1 1 100%}
+  .page-head .seg button{flex:1;padding-inline:6px}
+  .grid2.wide-first{gap:10px}
+  .fold{margin-top:10px}
 }
 
 @media (max-width:1080px){.d-aside{order:0}}
@@ -1477,6 +1503,9 @@ function pager(total,page,key){
   return `<nav class="pager" aria-label="صفحه‌ها"><button class="btn sm" data-act="page" data-k="${key}" data-v="${page-1}" ${page<=1?'disabled':''}>قبلی</button><span class="small muted">صفحه ${fa(page)} از ${fa(pages)}</span><button class="btn sm" data-act="page" data-k="${key}" data-v="${page+1}" ${page>=pages?'disabled':''}>بعدی</button></nav>`;
 }
 const pageSlice=(a,page)=>a.slice((page-1)*PAGE,page*PAGE);
+const FCH='<span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>';
+/* a card that is open on desktop and folded on the phone */
+const fold=(title,meta,body,cls='')=>`<details class="card sec fold ${cls}" data-fk="${esc(title)}" ${(ui.folds?.[title]??!isMob())?'open':''}><summary><h3>${title}</h3>${meta?`<span class="muted small">${meta}</span>`:''}${FCH}</summary>${body}</details>`;
 const segP=()=>`<div class="seg" role="group" aria-label="بازه زمانی">${PERIODS.map(([v,t])=>`<button type="button" data-act="period" data-v="${v}" aria-pressed="${ui.period===v}">${t}</button>`).join('')}</div>`;
 function chRow(c,showUser=true){
   const link=c.ent==='person'||c.ent==='contact'?(getP(c.pid)?`#p-${c.pid}`:''):(c.nb&&findN(c.nb)?`#n-${c.nb}`:'');
@@ -1992,23 +2021,22 @@ function userView(u){
   </section>
   ${returned.length&&!self&&isReviewer()?`<section class="card sec returned"><div class="sec-h"><h3>برگشت‌خورده برای اصلاح (${fa(returned.length)})</h3></div>
     <div class="stack">${returned.map(c=>`<div class="ret-item"><div><b>${esc(c.txt)}</b> · <a href="${c.pid?'#p-'+c.pid:'#n-'+c.nb}">${esc(c.tn)}</a><div class="small muted">${esc(uName(c.rv.uid))} · ${relTime(c.rv.t)}</div><div class="rej-note"><b>دلیل:</b> ${esc(c.rv.note||'—')}</div></div>${self?`<div class="head-actions">${target(c)||c.op!=='delete'?`<button class="btn sm primary" data-act="fix" data-cid="${c.id}">اصلاح و ارسال دوباره</button>`:''}<button class="btn sm ghost" data-act="dismiss" data-cid="${c.id}">بستن</button></div>`:''}</div>`).join('')}</div></section>`:''}
-  <div class="mini-stats kpis">
-    <div><b>${num(inP.length)}</b><span>ثبت در بازه</span></div>
-    <div><b>${num(ap)}</b><span>تأییدشده</span></div>
-    <div><b>${num(pd)}</b><span>در انتظار تأیید</span></div>
-    <div><b>${num(rj)}</b><span>برگشت‌خورده</span></div>
-    ${u.role==='operator'?`<div><b>${fa(pct(ap,ap+rj))}٪</b><span>نرخ تأیید</span></div><div><b>${num(nbs.length)}</b><span>محله تخصیص‌یافته</span></div><div class="${stale.length?'warnbox':''}"><b>${num(stale.length)}</b><span>محله بی‌بررسی بیش از ۶۰ روز</span></div>`:`<div><b>${num(reviewed)}</b><span>بررسی ثبت‌های اپراتورها</span></div>`}
-  </div>
+  ${(()=>{const op=u.role==='operator';
+    const all=[['in',num(inP.length),'ثبت در بازه'],['ap',num(ap),'تأییدشده'],['pd',num(pd),'در انتظار تأیید'],['rj',num(rj),'برگشت‌خورده'],
+      ...(op?[['rate',fa(pct(ap,ap+rj))+'٪','نرخ تأیید'],['nbs',num(nbs.length),'محله تخصیص‌یافته'],['stale',num(stale.length),'محله بی‌بررسی بیش از ۶۰ روز']]:[['rev',num(reviewed),'بررسی ثبت‌های اپراتورها']])];
+    const main=op?['in','rate','stale']:['in','ap','rev'];
+    return `<div class="mini-stats kpis">${all.map(([k,v,t])=>`<div class="${main.includes(k)?'km':'kx'} ${k==='stale'&&stale.length?'warnbox':''}"><b>${v}</b><span>${t}</span></div>`).join('')}</div>
+    <div class="m-only">${fold('آمار بیشتر','',`<dl class="kv">${all.filter(x=>!main.includes(x[0])).map(([k,v,t])=>`<dt>${t}</dt><dd class="num">${v}</dd>`).join('')}</dl>`)}</div>`;})()}
   <div class="grid2 wide-first">
-    <div class="card sec"><h3>فعالیت ۳۰ روز اخیر</h3><div class="bars" role="img" aria-label="تعداد ثبت در هر روز">${days.map(d=>`<i style="height:${Math.round(d.c*100/mx)}%" title="${fa(d.c)} ثبت · ${new Date(d.st).toLocaleDateString('fa-IR',{month:'long',day:'numeric'})}"></i>`).join('')}</div><div class="bars-axis small muted"><span>۳۰ روز پیش</span><span>امروز</span></div></div>
-    <div class="card sec"><h3>نوع ثبت‌ها در بازه</h3>${byEnt.length?`<dl class="kv">${byEnt.map(([k,v])=>`<dt>${ENT[k]}</dt><dd class="num">${num(v)}</dd>`).join('')}</dl>`:'<p class="muted small">در این بازه ثبتی نیست.</p>'}</div>
+    ${fold('فعالیت ۳۰ روز اخیر','',`<div class="bars" role="img" aria-label="تعداد ثبت در هر روز">${days.map(d=>`<i style="height:${Math.round(d.c*100/mx)}%" title="${fa(d.c)} ثبت · ${new Date(d.st).toLocaleDateString('fa-IR',{month:'long',day:'numeric'})}"></i>`).join('')}</div><div class="bars-axis small muted"><span>۳۰ روز پیش</span><span>امروز</span></div>`)}
+    ${fold('نوع ثبت‌ها در بازه','',byEnt.length?`<dl class="kv">${byEnt.map(([k,v])=>`<dt>${ENT[k]}</dt><dd class="num">${num(v)}</dd>`).join('')}</dl>`:'<p class="muted small">در این بازه ثبتی نیست.</p>')}
   </div>
-  ${u.role==='operator'?`<section class="card sec"><div class="sec-h"><h3>محله‌های تخصیص‌یافته (${fa(nbs.length)})</h3><a class="btn sm" href="#list" data-act="list-op" data-id="${u.id}">همه در فهرست محله‌ها</a></div>
+  ${u.role==='operator'?fold('محله‌های تخصیص‌یافته',fa(nbs.length)+' محله',`<div class="fold-tools"><a class="btn sm" href="#list" data-act="list-op" data-id="${u.id}">همه در فهرست محله‌ها</a></div>
     ${nbs.length?`<div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:520px"><thead><tr><th>محله</th><th>منطقه</th><th>مشکلات باز</th><th>آخرین بررسی</th></tr></thead><tbody>${sortedNb.slice(0,12).map(n=>{const lr=lastReview(n);return `<tr data-act="open" data-id="${n.id}" tabindex="0"><td data-l="محله" class="m-main"><b>${esc(n.name)}</b></td><td data-l="منطقه" class="num">${fa(n.district)}</td><td data-l="مشکلات باز" class="num">${fa(openProblems(n).length)}</td><td data-l="آخرین بررسی" class="small ${!lr||daysSince(lr)>60?'crit':''}">${lr?fa(daysSince(lr))+' روز پیش':'بدون بررسی'}</td></tr>`;}).join('')}</tbody></table></div>${nbs.length>12?`<p class="small muted">به ترتیب قدیمی‌ترین بررسی؛ ${fa(nbs.length-12)} محله دیگر در فهرست محله‌ها.</p>`:''}`:'<p class="muted small">هنوز محله‌ای به این اپراتور تخصیص داده نشده است.</p>'}
-  </section>`:''}
-  <section class="card sec"><div class="sec-h"><h3>همه ثبت‌ها (${fa(actList.length)})</h3>${pager(actList.length,ui.uPage,'uPage')}</div>
+  `):''}
+  ${fold('همه ثبت‌ها',fa(actList.length)+' مورد',`<div class="fold-tools">${pager(actList.length,ui.uPage,'uPage')}</div>
     ${actList.length?`<div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:560px"><thead><tr><th>زمان</th><th>اقدام</th><th>پرونده</th><th>وضعیت</th></tr></thead><tbody>${pageSlice(actList,ui.uPage).map(c=>chRow(c,false)).join('')}</tbody></table></div>`:'<p class="muted small">هنوز ثبتی ندارد.</p>'}
-  </section>`;
+  `)}`;
 }
 
 function todayTasks(u,nbs){
@@ -2169,7 +2197,11 @@ function diffHtml(c){
   const data=c.op==='create'?(o?strip(o):c.data):c.data;if(!data)return '';
   const keys=Object.keys(data).filter(k=>!DIFF_SKIP.has(k)&&!(c.op==='create'&&(data[k]===''||data[k]==null||(Array.isArray(data[k])&&!data[k].length))));
   if(!keys.length)return '';
-  return `<table class="diff"><tbody>${keys.map(k=>`<tr><th>${FL[k]||k}</th>${c.op==='update'?`<td class="old">${esc(fmtVal(k,o?.[k]))}</td><td class="arrow">←</td>`:''}<td class="new">${esc(fmtVal(k,data[k]))}</td></tr>`).join('')}</tbody></table>`;
+  const row=k=>`<tr><th>${FL[k]||k}</th>${c.op==='update'?`<td class="old">${esc(fmtVal(k,o?.[k]))}</td><td class="arrow">←</td>`:''}<td class="new">${esc(fmtVal(k,data[k]))}</td></tr>`;
+  /* phone: the first rows tell the story; the rest open on demand */
+  const PRI=['title','name','summary','result','prio','status','mobile','roles','type','date'];
+  if(isMob()&&keys.length>3){const ks=[...keys].sort((a,b)=>(PRI.indexOf(a)+1||99)-(PRI.indexOf(b)+1||99));return `<table class="diff"><tbody>${ks.slice(0,2).map(row).join('')}</tbody></table><details class="diff-more"><summary>${fa(keys.length-2)} مورد دیگر</summary><table class="diff"><tbody>${ks.slice(2).map(row).join('')}</tbody></table></details>`;}
+  return `<table class="diff"><tbody>${keys.map(row).join('')}</tbody></table>`;
 }
 function fmtVal(k,v){
   if(v==null||v===''||(Array.isArray(v)&&!v.length))return '—';
@@ -2252,30 +2284,31 @@ function perfView(){
   const th=(k,t)=>`<th><button class="sortbtn" data-act="psort" data-k="${k}" aria-pressed="${sk===k}">${t}${sk===k?' ▾':''}</button></th>`;
   const sups=u.role==='admin'?db.users.filter(x=>x.role==='supervisor'&&(!ui.perfCity||x.city===ui.perfCity)).map(sv=>{const rv=db.changes.filter(c=>c.rv?.uid===sv.id&&c.rv.t>=s);const delay=rv.length?rv.reduce((a,c)=>a+(c.rv.t-c.t),0)/rv.length/H:0;const own=db.changes.filter(c=>c.uid===sv.id&&c.t>=s).length;const waiting=db.changes.filter(c=>c.st==='pending'&&getU(c.uid)?.city===sv.city).length;return {sv,rv:rv.length,rej:rv.filter(c=>c.st==='rejected').length,delay,own,waiting};}):[];
   return `<section class="page-head"><div><h1>عملکرد اپراتورها</h1><p class="sub">${u.role==='supervisor'?esc(u.city)+' · ':''}${fa(active.length)} اپراتور فعال</p></div>
-    <div class="head-actions">${u.role==='admin'?`<select data-act-change="perfcity" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.map(c=>`<option ${ui.perfCity===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select>`:''}${segP()}<button class="btn" data-act="export-perf">خروجی Excel</button></div></section>
+    <div class="head-actions">${u.role==='admin'?`<select data-act-change="perfcity" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.map(c=>`<option ${ui.perfCity===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select>`:''}${segP()}<button class="btn d-only" data-act="export-perf">خروجی Excel</button></div></section>
   <div class="mini-stats kpis">
-    <div><b>${num(tot.sub)}</b><span>کل ثبت‌ها در بازه</span></div>
-    <div><b>${num(tot.ap)}</b><span>تأییدشده</span></div>
-    <div><b>${num(tot.pd)}</b><span>در انتظار تأیید (اکنون)</span></div>
-    <div><b>${fa(pct(tot.ap,tot.ap+tot.rj))}٪</b><span>نرخ تأیید</span></div>
-    <div class="${idle?'warnbox':''}"><b>${num(idle)}</b><span>اپراتور بدون ثبت در بازه</span></div>
+    <div class="km"><b>${num(tot.sub)}</b><span>کل ثبت‌ها در بازه</span></div>
+    <div class="kx"><b>${num(tot.ap)}</b><span>تأییدشده</span></div>
+    <div class="kx"><b>${num(tot.pd)}</b><span>در انتظار تأیید (اکنون)</span></div>
+    <div class="km"><b>${fa(pct(tot.ap,tot.ap+tot.rj))}٪</b><span>نرخ تأیید</span></div>
+    <div class="km ${idle?'warnbox':''}"><b>${num(idle)}</b><span>اپراتور بدون ثبت در بازه</span></div>
   </div>
+  <div class="m-only">${fold('آمار بیشتر','',`<dl class="kv"><dt>تأییدشده</dt><dd class="num">${num(tot.ap)}</dd><dt>در انتظار تأیید (اکنون)</dt><dd class="num">${num(tot.pd)}</dd></dl>`)}</div>
   <div class="table-wrap"><table class="tbl resp perf"><thead><tr>${th('name','اپراتور')}${th('city','شهر')}${th('nbs','محله')}${th('sub','ثبت‌ها')}${th('ap','تأیید')}${th('rj','برگشت')}${th('pd','در انتظار')}${th('rate','نرخ تأیید')}${th('ad','روز فعال')}${th('stale','محله بی‌بررسی')}${th('last','آخرین فعالیت')}</tr></thead><tbody>
   ${rows.map(r=>`<tr data-act="open-u" data-id="${r.u.id}" tabindex="0" class="${r.u.active?'':'inactive'}">
     <td data-l="اپراتور" class="m-main"><b>${esc(r.u.name)}</b>${r.u.active?'':' <span class="pill mute">غیرفعال</span>'}</td>
-    <td data-l="شهر">${esc(r.u.city)}</td>
-    <td data-l="محله" class="num">${num(r.nbs)}</td>
+    <td data-l="شهر" class="${u.role==='admin'?'':'m-hide'}">${esc(r.u.city)}</td>
+    <td data-l="محله" class="num m-hide">${num(r.nbs)}</td>
     <td data-l="ثبت‌ها" class="num"><div class="meter"><i style="width:${Math.round(r.sub*100/mx)}%"></i></div>${num(r.sub)}</td>
-    <td data-l="تأیید" class="num">${num(r.ap)}</td>
+    <td data-l="تأیید" class="num m-hide">${num(r.ap)}</td>
     <td data-l="برگشت" class="num ${r.rj?'crit':''}">${num(r.rj)}</td>
-    <td data-l="در انتظار" class="num">${num(r.pd)}</td>
-    <td data-l="نرخ تأیید" class="num">${r.ap+r.rj?fa(r.rate)+'٪':'—'}</td>
+    <td data-l="در انتظار" class="num m-hide">${num(r.pd)}</td>
+    <td data-l="نرخ تأیید" class="num m-hide">${r.ap+r.rj?fa(r.rate)+'٪':'—'}</td>
     <td data-l="روز فعال" class="num m-hide">${num(r.ad)}</td>
-    <td data-l="محله بی‌بررسی" class="num ${r.stale>r.nbs/2&&r.nbs?'crit':''}">${num(r.stale)}</td>
-    <td data-l="آخرین فعالیت" class="small ${Date.now()-r.last>7*DAY?'crit':'muted'}">${relTime(r.last)}</td></tr>`).join('')}
+    <td data-l="بی‌بررسی" class="num ${r.stale>r.nbs/2&&r.nbs?'crit':''}">${num(r.stale)}</td>
+    <td data-l="آخرین فعالیت" class="small m-hide ${Date.now()-r.last>7*DAY?'crit':'muted'}">${relTime(r.last)}</td></tr>`).join('')}
   </tbody></table></div>
-  <p class="small muted">«محله بی‌بررسی»: محله‌های تخصیص‌یافته‌ای که بیش از ۶۰ روز بررسی تأییدشده ندارند. روی هر اپراتور بزنید تا ریز ثبت‌هایش را ببینید.</p>
-  ${sups.length?`<section class="card sec"><h3>سرپرستان</h3><div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:640px"><thead><tr><th>سرپرست</th><th>شهر</th><th>بررسی ثبت‌ها</th><th>عدم تأیید</th><th>میانگین زمان بررسی</th><th>ثبت مستقیم</th><th>در انتظار اکنون</th></tr></thead><tbody>${sups.map(x=>`<tr data-act="open-u" data-id="${x.sv.id}" tabindex="0"><td data-l="سرپرست"><b>${esc(x.sv.name)}</b></td><td data-l="شهر">${esc(x.sv.city)}</td><td data-l="بررسی ثبت‌ها" class="num">${num(x.rv)}</td><td data-l="عدم تأیید" class="num">${num(x.rej)}</td><td data-l="میانگین زمان بررسی" class="num ${x.delay>48?'crit':''}">${x.rv?fa(Math.round(x.delay))+' ساعت':'—'}</td><td data-l="ثبت مستقیم" class="num">${num(x.own)}</td><td data-l="در انتظار اکنون" class="num ${x.waiting>20?'crit':''}">${num(x.waiting)}</td></tr>`).join('')}</tbody></table></div></section>`:''}`;
+  <p class="small muted m-hide">«محله بی‌بررسی»: محله‌های تخصیص‌یافته‌ای که بیش از ۶۰ روز بررسی تأییدشده ندارند. روی هر اپراتور بزنید تا ریز ثبت‌هایش را ببینید.</p>
+  ${sups.length?fold('سرپرستان',fa(sups.length)+' نفر',`<div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:640px"><thead><tr><th>سرپرست</th><th>شهر</th><th>بررسی ثبت‌ها</th><th>عدم تأیید</th><th>میانگین زمان بررسی</th><th>ثبت مستقیم</th><th>در انتظار اکنون</th></tr></thead><tbody>${sups.map(x=>`<tr data-act="open-u" data-id="${x.sv.id}" tabindex="0"><td data-l="سرپرست"><b>${esc(x.sv.name)}</b></td><td data-l="شهر">${esc(x.sv.city)}</td><td data-l="بررسی ثبت‌ها" class="num">${num(x.rv)}</td><td data-l="عدم تأیید" class="num">${num(x.rej)}</td><td data-l="میانگین زمان بررسی" class="num ${x.delay>48?'crit':''}">${x.rv?fa(Math.round(x.delay))+' ساعت':'—'}</td><td data-l="ثبت مستقیم" class="num">${num(x.own)}</td><td data-l="در انتظار اکنون" class="num ${x.waiting>20?'crit':''}">${num(x.waiting)}</td></tr>`).join('')}</tbody></table></div>`):''}`;
 }
 
 /* ================= admin ================= */
@@ -2744,6 +2777,8 @@ function currentP(){const h=location.hash.slice(1);return h.startsWith('p-')?get
 const refreshTab=n=>{$('#tabpanel').innerHTML=tabPanel(n,canEdit(n));};
 
 document.addEventListener('click',e=>{const a=e.target.closest('[data-close-dlg]');if(a){$('#dlg').close();}});
+/* remember which folded cards the user opened, across re-renders */
+app.addEventListener('toggle',e=>{const d=e.target;if(d.dataset?.fk)(ui.folds||(ui.folds={}))[d.dataset.fk]=d.open;},true);
 /* the filter sheet's header must not fold the sheet closed */
 app.addEventListener('click',e=>{if(document.body.classList.contains('fs-open')&&e.target.closest('.filters summary')&&!e.target.closest('button'))e.preventDefault();},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs-open')){ui.fsOpen=null;document.body.classList.remove('fs-open');}});

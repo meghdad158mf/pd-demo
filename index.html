@@ -585,7 +585,8 @@ dialog.as-full{height:100dvh;max-height:100dvh}
   .who{display:none}
   .acct{display:grid;place-items:center}
   .top-in{flex-wrap:nowrap;gap:10px}
-  .brand span{display:none}
+  .brand span{display:block;min-width:0}
+  .brand b{font-size:17px}
   .gsearch{max-width:none;min-height:42px}
   .tbl.resp.g-need td:not(.m-main):not(.chk){display:none!important}
   .tbl.resp tr.grp-row{display:block;padding:0}
@@ -884,10 +885,10 @@ a.btn{text-decoration:none}
   .filters{position:static}
   .grid2{grid-template-columns:minmax(0,1fr)}
 }
+@media (max-width:340px){.brand small{display:none}}
 @media (max-width:560px){
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .mini-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .brand small{display:none}
   .who{margin-inline-start:0;width:100%}
   .who select{flex:1;max-width:none}
   .review{grid-template-columns:minmax(0,1fr);gap:4px}

@@ -1,6 +1,6 @@
 /* Parchamdar service worker: makes the app installable and keeps the shell for quick start.
    Network first, so a new version shows on the next open; working offline is not a goal yet. */
-const CACHE = 'parchamdar-shell-v14';
+const CACHE = 'parchamdar-shell-v15';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

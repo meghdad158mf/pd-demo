@@ -733,6 +733,14 @@ a.btn{text-decoration:none}
 .diff-more>summary::before{content:"+ "}
 .diff-more[open]>summary{display:none}
 @media (max-width:720px){.qcard footer .btn{min-height:44px}.qline{padding-block:8px}}
+.mapbtn{display:none}
+.fs-extra:empty{display:none}
+@media (max-width:720px){
+  .mapbtn{display:inline-flex;align-items:center;gap:6px;flex:none;min-height:46px;padding-inline:12px}
+  .mapbtn svg{width:18px;height:18px}
+  .mapbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-fg)}
+  #listmap{height:52vh;min-height:280px;margin-top:10px}
+}
 /* ---- v11: performance page ---- */
 .fold-tools{display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px}
 .fold-tools:empty{display:none}
@@ -1451,6 +1459,7 @@ const ICON={
   queue:'<path d="M4 5h16v14H4zM8 11l3 3 5-6"/>',
   perf:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
   filter:'<path d="M4 6h16M7 12h10M10 18h4"/>',
+  map:'<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/>',
   dots:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
   home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   prob:'<path d="M12 4l9 16H3zM12 10v4M12 17h.01"/>',
@@ -1602,7 +1611,7 @@ function listView(){
       <label class="fgroup"><span>دسته مشکل باز</span>${sel('cat',db.settings.problemCats.map(c=>[c,c]),'همه دسته‌ها')}</label>
       <label class="fgroup"><span>اولویت مشکل باز</span>${sel('prio',opts(PRIO),'همه اولویت‌ها')}</label>
       <label class="fgroup"><span>نقش متولی</span>${sel('role',db.settings.trusteeRoles.map(c=>[c,c]),'همه نقش‌ها')}</label>
-      <div class="fgroup m-only fs-extra"><button class="btn" data-act="togglemap">${ui.showMap?'پنهان کردن نقشه':'نمایش روی نقشه'}</button>${isReviewer()?`<button class="btn" data-act="export-nb">خروجی Excel</button>`:''}</div>
+      <div class="fgroup m-only fs-extra">${isReviewer()?`<button class="btn" data-act="export-nb">خروجی Excel</button>`:''}</div>
       </div>
       ${fsFoot(0,'محله')}
     </details>
@@ -1610,9 +1619,9 @@ function listView(){
       <div class="toggle d-only" role="group" aria-label="گروه‌بندی فهرست">${[['need','بر اساس وضعیت'],['district','بر اساس منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div>
       ${u.role==='admin'||u.role==='viewer'?`<div class="city-strip d-only" role="group" aria-label="شهر">${[['','همه شهرها',all.length],...db.settings.cities.map(c=>[c.name,c.name,all.filter(n=>n.city===c.name).length])].map(([v,t,c])=>`<button type="button" data-act="setf" data-k="city" data-v="${esc(v)}">${esc(t)}<span>${num(c)}</span></button>`).join('')}</div>`:''}
       <div class="toolbar">
-        <input type="search" id="q" data-filter="q" placeholder="جستجو در نام محله، کد، نشانی، کد پستی یا نام متولی…" value="${esc(ui.f.q)}" aria-label="جستجو">
+        <input type="search" id="q" data-filter="q" placeholder="${isMob()?'نام محله، کد یا متولی…':'جستجو در نام محله، کد، نشانی، کد پستی یا نام متولی…'}" value="${esc(ui.f.q)}" aria-label="جستجو">
         <select id="f-sort" class="d-only" data-filter="sort" aria-label="مرتب‌سازی"><option value="name">مرتب‌سازی: نام</option><option value="code">مرتب‌سازی: کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select>
-        <button class="btn d-only" data-act="togglemap" aria-pressed="${ui.showMap}">${ui.showMap?'پنهان کردن نقشه':'نمایش نقشه'}</button>${fbtn(0)}
+        <button class="btn d-only" data-act="togglemap" aria-pressed="${ui.showMap}">${ui.showMap?'پنهان کردن نقشه':'نمایش نقشه'}</button><button type="button" class="btn mapbtn" data-act="togglemap" aria-pressed="${ui.showMap}" aria-label="${ui.showMap?'بستن نقشه':'نمایش روی نقشه'}">${icon('map')}<span>نقشه</span></button>${fbtn(0)}
       </div>
       <div class="active-chips" id="chips"></div>
       ${ui.showMap?`<div class="map" id="listmap" dir="ltr" aria-label="نقشه محله‌ها"></div>

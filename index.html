@@ -688,6 +688,43 @@ dialog.as-full{height:100dvh;max-height:100dvh}
 .hsec:first-of-type{margin-top:22px}
 .hsec.hot>summary{border-color:var(--bad);background:var(--bad-soft)}
 
+/* ---- v9: dossier on the phone ---- */
+.d-menu{flex:none}
+.sheet-note{padding:4px 18px 16px}
+@media (max-width:720px){
+  .d-head{flex-wrap:nowrap;position:relative}
+  .d-head .d-title{min-width:0;flex:1}
+  .d-menu{position:absolute;inset-inline-end:8px;top:8px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+  .d-head .d-title .row:first-child{padding-inline-end:50px}
+  .kpi4{gap:6px}
+  .kpi4 div{padding:8px 4px}
+  .kpi4 b{font-size:17px}
+  .kpi4 span{font-size:11.5px}
+  .nb-aside .map{height:200px}
+  .nb-aside .kv,.nb-aside .sec-h,.d-status{display:none}
+  .nb-aside .sec{padding-block:10px}
+  .d-head:has(.d-menu) .d-title{padding-inline-end:48px}
+}
+
+/* ---- v10: person file ---- */
+.fold>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer;min-height:40px}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary .muted{margin-inline-start:auto}
+.fold .hchev{color:var(--muted);display:grid;transition:transform .2s}
+.fold[open] .hchev{transform:rotate(180deg)}
+.fold>summary h3{margin:0}
+.fold[open]>summary{margin-bottom:10px}
+.fold:not([open]){padding-block:8px}
+.fold>summary h3{line-height:1.4}
+a.btn{text-decoration:none}
+@media (max-width:720px){
+  .p-phone{font-size:14px;color:var(--muted);direction:ltr;text-align:end}
+  .p-acts{display:flex!important;gap:8px;width:100%;margin-top:4px}
+  .p-acts .btn{flex:1}
+  .p-acts .btn.primary{flex:1.6}
+  .d-head:has(.p-acts){flex-wrap:wrap}
+}
+
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1635,16 +1672,16 @@ function dossierView(n){
       <h1>محله ${esc(n.name)}</h1>
       <div class="row"><span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span>${n.active?'':'<span class="pill mute">پرونده غیرفعال</span>'}${hasCritical(n)?'<span class="pill bad">مشکل بحرانی باز</span>':''}</div>
       <span class="d-loc m-only small"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>${esc(n.address)||'نشانی ثبت نشده'}</span><a href="#nbmap" data-act="to-map">${n.lat!=null?'نقشه':'تعیین موقعیت'}</a></span>
-      <span class="muted small">اپراتور مسئول: ${n.op?`<a href="#u-${n.op}">${esc(uName(n.op))}</a>`:'تعیین نشده'} · آخرین ویرایش: ${esc(n.updatedBy)} · ${relTime(n.updatedAt)}</span>
+      <span class="muted small">اپراتور مسئول: ${n.op?`<a href="#u-${n.op}">${esc(uName(n.op))}</a>`:'تعیین نشده'}<span class="m-hide"> · آخرین ویرایش: ${esc(n.updatedBy)} · ${relTime(n.updatedAt)}</span></span>
     </div>
-    ${ed?`<button class="btn" data-act="edit-nb">ویرایش مشخصات</button>`:''}
+    ${ed?`<button class="btn d-only" data-act="edit-nb">ویرایش مشخصات</button><button type="button" class="icon-btn d-menu m-only" data-act="nb-menu" aria-label="گزینه‌های پرونده" aria-haspopup="dialog">${icon('dots')}</button>`:''}
   </section>
   <div class="d-grid">
     <div class="d-main" style="min-width:0">
       <div class="tabs tabs4" role="tablist">${tabs.map(([k,t,c])=>`<button role="tab" aria-selected="${ui.tab===k}" data-act="tab" data-tab="${k}">${t}${c!=null?`<span class="cnt">${fa(c)}</span>`:''}</button>`).join('')}</div>
       <div id="tabpanel">${tabPanel(n,ed)}</div>
     </div>
-    <aside class="d-aside">
+    <aside class="d-aside nb-aside">
       <div class="card" style="overflow:hidden">
         <div class="map ${ui.picking?'picking':''}" id="nbmap" dir="ltr" aria-label="نقشه موقعیت محله"></div>
         <div class="sec">
@@ -1657,7 +1694,7 @@ function dossierView(n){
           ${n.lat!=null?`<a class="small" href="https://www.openstreetmap.org/?mlat=${n.lat}&mlon=${n.lng}#map=16/${n.lat}/${n.lng}" target="_blank" rel="noopener">باز کردن در نقشه کامل ↗</a>`:''}
         </div>
       </div>
-      <div class="card sec">
+      <div class="card sec d-status">
         <div class="sec-h"><h3>وضعیت فعلی</h3>${ed&&!n._st?`<button class="btn sm" data-act="edit-status">تغییر وضعیت</button>`:''}</div>
         <dl class="kv">
           <dt>فعالیت</dt><dd><span class="dot ${n.active?'':'off'}">${n.active?'فعال':'غیرفعال'}</span></dd>
@@ -1669,6 +1706,17 @@ function dossierView(n){
     </aside>
   </div>
   ${ed?`<button class="fab" data-act="fab" aria-haspopup="dialog"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>ثبت</span></button>`:''}`;
+}
+/* phone: the file's secondary actions live behind «⋯» */
+function nbMenu(n){
+  const d=$('#dlg');d.classList.remove('as-full');d.onchange=null;
+  const it=[['edit-nb','ویرایش مشخصات','نام، نشانی، کد پستی، جمعیت و اپراتور','admin'],...(!n._st?[['edit-status','تغییر وضعیت','فعال یا غیرفعال، عضویت در پرچمدار','flag']]:[]),['pick',n.lat!=null?'ویرایش موقعیت روی نقشه':'تعیین موقعیت روی نقشه','مرکز محله روی نقشه','pin']];
+  if(!ICON.pin)ICON.pin='<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>';
+  if(!ICON.flag)ICON.flag='<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>';
+  d.innerHTML=`<div class="sheet"><header><h2>پرونده ${esc(n.name)}</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header><div class="sheet-list">${it.map(([k,t,h,ic])=>`<button type="button" class="sheet-item" data-k="${k}"><span class="sheet-ic">${icon(ic)}</span><span><b>${t}</b><small>${h}</small></span></button>`).join('')}</div><p class="small muted sheet-note">آخرین ویرایش: ${esc(n.updatedBy)}، ${relTime(n.updatedAt)}</p></div>`;
+  d.classList.add('as-sheet');
+  d.onclick=e=>{if(e.target.closest('[data-close]')){d.close();return;}const b=e.target.closest('[data-k]');if(!b)return;d.onclick=null;({'edit-nb':()=>nbForm(n),'edit-status':()=>statusForm(n),pick:()=>locForm(n)})[b.dataset.k]();};
+  if(!d.open)d.showModal();
 }
 /* quick-add sheet: the operator's main actions on a file, one tap from anywhere in the dossier */
 function quickSheet(n){
@@ -1887,8 +1935,10 @@ function personView(p){
   <section class="d-head">
     <div class="d-title" style="flex-direction:row;align-items:center;gap:14px"><span class="avatar lg">${esc(initials(p.name))}</span>
       <div style="display:flex;flex-direction:column;gap:6px"><h1>${esc(p.name)}</h1>
-      <div class="row"><span class="pill ${COOP[p.coop]?.c||'mute'}">${COOP[p.coop]?.t||'—'}</span>${ls.map(x=>`<span class="tag">${esc(x.l.roles[0])} · ${esc(x.n.name)}</span>`).slice(0,3).join('')}</div></div></div>
-    ${ed?`<div class="head-actions"><button class="btn" data-act="edit-person">ویرایش مشخصات</button><button class="btn primary" data-act="add-contact">+ ثبت ارتباط</button></div>`:''}
+      <div class="row"><span class="pill ${COOP[p.coop]?.c||'mute'}">${COOP[p.coop]?.t||'—'}</span>${ls.map(x=>`<span class="tag d-only">${esc(x.l.roles[0])} · ${esc(x.n.name)}</span>`).slice(0,3).join('')}</div>
+      ${p.mobile?`<span class="phone m-only p-phone">${showPhone(p.mobile)}</span>`:''}</div></div>
+    ${ed?`<div class="head-actions d-only"><button class="btn" data-act="edit-person">ویرایش مشخصات</button><button class="btn primary" data-act="add-contact">+ ثبت ارتباط</button></div><button type="button" class="icon-btn d-menu m-only" data-act="edit-person" aria-label="ویرایش مشخصات"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></svg></button>`:''}
+    ${(p.mobile&&seePhone())||ed?`<div class="p-acts m-only">${p.mobile&&seePhone()?`<a class="btn" href="tel:${p.mobile}">تماس</a><a class="btn" href="sms:${p.mobile}">پیامک</a>`:''}${ed?`<button class="btn primary" data-act="add-contact">+ ثبت ارتباط</button>`:''}</div>`:''}
   </section>
   <div class="d-grid">
     <div class="stack" style="min-width:0">
@@ -1899,9 +1949,9 @@ function personView(p){
         ${contacts.length?`<ul class="timeline">${contacts.map(c=>`<li><div class="when">${fmtDate(c.date)} · ${esc(c.type)} · ${esc(c.by)}</div><div class="what">${esc(c.summary)} ${stBadge(c)}</div>${c.result?`<div class="note">نتیجه: ${esc(c.result)}</div>`:''}${rvInline(c)}</li>`).join('')}</ul>`:'<p class="muted small">ارتباطی ثبت نشده است.</p>'}
       </div>
       ${ideas.length?`<div class="card sec"><h3>ایده‌ها و طرح‌های پیشنهادی</h3><div class="stack">${ideas.map(({i,n})=>`<div class="link-row"><span class="tag">${esc(i.type)}</span><b>${esc(i.title)}</b><span class="pill ${ISTAT[i.status].c}">${ISTAT[i.status].t}</span><a class="small" href="#n-${n.id}">${esc(n.name)}</a></div>`).join('')}</div></div>`:''}
-      ${hist.length?`<div class="card sec"><h3>تاریخچه تغییرات</h3><div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:520px"><tbody>${hist.map(c=>chRow(c)).join('')}</tbody></table></div></div>`:''}
+      ${hist.length?`<details class="card sec fold"><summary><h3>تاریخچه تغییرات</h3><span class="muted small">${fa(hist.length)} مورد</span><span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></summary><div class="table-wrap" style="border:0"><table class="tbl resp" style="min-width:520px"><tbody>${hist.map(c=>chRow(c)).join('')}</tbody></table></div></details>`:''}
     </div>
-    <aside class="d-aside"><div class="card sec"><h3>مشخصات</h3>
+    <aside class="d-aside"><details class="card sec fold" ${isMob()?'':'open'}><summary><h3>مشخصات</h3><span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>
       <dl class="kv">
         <dt>موبایل</dt><dd><span class="phone">${showPhone(p.mobile)}</span></dd>
         <dt>کد ملی</dt><dd class="num">${showNid(p.nid)}</dd>
@@ -1914,8 +1964,8 @@ function personView(p){
         <dt>ثبت توسط</dt><dd>${esc(uName(p.by))}</dd>
       </dl>
       ${p.note?`<p class="small muted">${esc(p.note)}</p>`:''}
-      ${p.mobile&&seePhone()?`<div class="head-actions"><a class="btn sm" href="tel:${p.mobile}">تماس</a><a class="btn sm" href="sms:${p.mobile}">پیامک</a></div>`:''}
-    </div></aside>
+      ${p.mobile&&seePhone()?`<div class="head-actions d-only"><a class="btn sm" href="tel:${p.mobile}">تماس</a><a class="btn sm" href="sms:${p.mobile}">پیامک</a></div>`:''}
+    </details></aside>
   </div>`;
 }
 
@@ -2759,6 +2809,7 @@ app.addEventListener('click',e=>{
     case 'dismiss-banner':try{localStorage.setItem(KEY+'-banner-'+me().role,'1');}catch(x){}b.closest('.banner')?.remove();break;
     case 'to-map':e.preventDefault();$('#nbmap')?.scrollIntoView({behavior:'smooth',block:'center'});break;
     case 'fab':quickSheet(n);break;
+    case 'nb-menu':nbMenu(n);break;
     case 'search':openSearch();break;
     case 'account':case 'more-menu':e.preventDefault();moreSheet();break;
     case 'verb':doVerb(b.dataset.v);break;

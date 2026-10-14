@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-loNZK380lL6Q3KEwQ6N0oNrGFDR5cGEAB0tH0VLzA4M='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-8V4yqP4m4awEaXMUicwFIWYQEILlPfibKde22Qvh3UE='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1640,7 +1640,7 @@ function chRow(c,showUser=true){
 
 /* ---- login: national ID → one-time SMS code (→ password for the site admin).
    The demo simulates the SMS on screen; the real version sends it from the server. ---- */
-const OTP_TTL=120e3,OTP_GAP=60e3,OTP_TRIES=5,LOCK_MS=15*60e3,REMEMBER_MS=30*DAY;
+const OTP_TTL=120e3,OTP_GAP=OTP_TTL,OTP_TRIES=5,LOCK_MS=15*60e3,REMEMBER_MS=30*DAY;
 const ADMIN_DEMO_PW='parchamdar1405';
 const pwHash=p=>{let h=0x811c9dc5;for(const c of 'pd:'+p){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(16);};
 function makeNid(r){for(;;){const d=Array.from({length:9},()=>Math.floor(r()*10));if(d.every(x=>x===d[0]))continue;const m=d.reduce((a,x,i)=>a+x*(10-i),0)%11;return d.join('')+(m<2?m:11-m);}}
@@ -1682,7 +1682,7 @@ function loginView(){
       ${err}
       <label class="lg-rem"><input type="checkbox" id="lg-rem" ${a.rem?'checked':''}><span>مرا به خاطر بسپار</span></label>
       <button class="btn primary block" type="submit">تأیید و ورود</button>
-      <div class="otp-foot"><span id="otp-timer" class="small muted"></span><span><button type="button" class="linkish" data-act="otp-resend" id="otp-resend">ارسال دوباره</button><button type="button" class="linkish" data-act="otp-back">تغییر کد ملی</button></span></div>`;
+      <div class="otp-foot"><span id="otp-timer" class="small muted"></span><span><button type="button" class="linkish" data-act="otp-resend" id="otp-resend" ${Date.now()<a.exp?'disabled':''}>ارسال دوباره</button><button type="button" class="linkish" data-act="otp-back">تغییر کد ملی</button></span></div>`;
   else if(a.step==='pw')body=`<h1>رمز عبور مدیر</h1>
       <label class="field"><input type="password" id="lg-pw" aria-label="رمز عبور" autocomplete="current-password" dir="ltr"></label>
       ${err}
@@ -1704,7 +1704,7 @@ function loginView(){
 /* countdown on the code step */
 setInterval(()=>{const t=document.getElementById('otp-timer');const a=ui.auth;if(!t||!a||a.step!=='code')return;const now=Date.now();
   const left=Math.max(0,a.exp-now),s=Math.ceil(left/1000);t.textContent=left?`اعتبار کد: ${fa(Math.floor(s/60))}:${fa(String(s%60).padStart(2,'0'))}`:'کد منقضی شد';
-  const r=document.getElementById('otp-resend');if(r){const w=Math.ceil((OTP_GAP-(now-a.sent))/1000);r.disabled=w>0;r.textContent=w>0?`ارسال دوباره (${fa(w)})`:'ارسال دوباره';}},500);
+  const r=document.getElementById('otp-resend');if(r)r.disabled=left>0;},500);
 
 /* ================= neighborhoods list ================= */
 const hayN=new WeakMap();

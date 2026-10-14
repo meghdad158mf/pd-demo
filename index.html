@@ -609,7 +609,7 @@ dialog.as-full{height:100dvh;max-height:100dvh}
 }
 
 /* ---- v7: calmer phone screens — filters in a bottom sheet ---- */
-.fbtn,.fs-foot,.fs-back,.acct-note{display:none}
+.fbtn,.fs-foot,.fs-back{display:none}
 .acct-note{font-size:13px;line-height:1.8;color:var(--muted);margin:0 0 14px;padding:10px 12px;background:var(--surface-2);border-radius:10px}
 @media (max-width:720px){
   .m-nosub .sub{display:none}
@@ -760,10 +760,22 @@ a.btn{text-decoration:none}
 }
 
 /* phone: pages with their own search box show only that one */
-@media (max-width:720px){.gsearch.gs-own{display:none}}
 
 .perf-sort{display:flex;align-items:center;gap:10px;margin:4px 0 10px;font-size:13.5px;color:var(--muted)}
 .perf-sort select{flex:1}
+
+/* ---- v12: desktop top bar — one row; account & demo switch live in the account menu ---- */
+.acct-btn{margin-inline-start:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px 3px 4px;font:inherit;color:var(--fg);cursor:pointer;flex:none;min-height:42px}
+.acct-btn:hover{border-color:var(--accent)}
+.acct-btn .avatar{width:32px;height:32px;font-size:13px}
+.acct-n{display:flex;flex-direction:column;line-height:1.25;text-align:start}
+.acct-n b{font-size:13px;font-weight:700;white-space:nowrap}
+.acct-n small{font-size:11px;color:var(--muted)}
+.acct-btn svg{color:var(--muted)}
+@media (max-width:1200px){.acct-n{display:none}.acct-btn{padding:3px}}
+.gsearch.gs-own{display:none!important}
+@media (min-width:721px){#dlg.as-sheet{width:min(440px,92vw)}}
+@media (max-width:720px){.acct-btn{display:none}}
 
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
@@ -817,7 +829,7 @@ a.btn{text-decoration:none}
 @media (max-width:1080px){
   .d-grid{grid-template-columns:minmax(0,1fr)}
   .d-aside{position:static;order:1}
-  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
 @media (max-width:860px){
   .list-grid{grid-template-columns:minmax(0,1fr)}
@@ -1496,11 +1508,7 @@ function topbar(u,route){
     <nav class="nav" aria-label="بخش‌ها">${navItems(u).map(([h,t,ic,c])=>`<a href="#${h}" ${cur(h)?'aria-current="page"':''}>${icon(ic)}<span>${t}</span>${c?`<em class="badge">${fa(c>99?'99+':c)}</em>`:''}</a>`).join('')}
       ${moreItems(u).filter(x=>x.s).map(x=>`<a href="#${x.h}" class="nav-x" ${cur(x.h)?'aria-current="page"':''}>${icon(x.ic)}<span>${x.s}</span></a>`).join('')}
       <a href="#" role="button" class="nav-more" data-act="more-menu" aria-haspopup="dialog" ${moreItems(u).some(x=>cur(x.h))||(route.startsWith('u-')&&u.role!=='operator')?'aria-current="page"':''}>${icon('dots')}<span>سایر</span></a></nav>
-    <div class="who">
-      <button class="btn sm" data-act="install" ${installEvt?'':'hidden'}>نصب برنامه</button>
-      <label for="persona" class="demo-lbl">ورود آزمایشی:</label>
-      <select id="persona" data-change="persona">${groups.map(([r,us])=>`<optgroup label="${LEVEL[r].t}">${us.map(x=>`<option value="${x.id}" ${x.id===u.id?'selected':''}>${esc(x.name)}${x.city?'، '+esc(x.city):''}</option>`).join('')}</optgroup>`).join('')}</select>
-      <button class="btn sm ghost" data-act="logout">خروج</button></div>
+    <button type="button" class="acct-btn" data-act="more-menu" aria-haspopup="dialog" aria-label="حساب کاربری"><span class="avatar">${esc(initials(u.name))}</span><span class="acct-n"><b>${esc(u.name)}</b><small>${LEVEL[u.role].t}</small></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
   </div></header>`;
 }
 function roleNote(u){
@@ -1512,6 +1520,8 @@ function roleNote(u){
 function roleBanner(u,route){
   if(route!=='list'&&route!=='people')return '';
   if(bannerOff(u.role)||!roleNote(u))return '';
+  /* shown once; afterwards the same note stays in the account menu */
+  try{localStorage.setItem(KEY+'-banner-'+u.role,'1');}catch(x){}
   return `<div class="banner d-only"><span class="banner-t">${roleNote(u)}</span><button class="banner-x" data-act="dismiss-banner" aria-label="بستن این راهنما">×</button></div>`;
 }
 /* phone: filters live in a bottom sheet behind one «فیلتر» button */
@@ -1588,6 +1598,8 @@ function listView(){
     {k:'prio',v:'critical',label:'با مشکل بحرانی باز',n:all.filter(hasCritical).length,dot:'--bad'});
   if(u.role!=='viewer')st.push({k:'pend',v:'yes',label:'دارای ثبت در انتظار تأیید',n:all.filter(hasPending).length,dot:'--warn'});
   else st.push({k:'active',v:'no',label:'پرونده غیرفعال',n:all.filter(n=>!n.active).length,dot:'--mute'});
+  const KEEP={operator:['','need:urgent','need:review','pend:yes'],viewer:['','flag:member','flag:candidate','active:no']}[u.role]||['','flag:member','prio:critical','pend:yes'];
+  const st4=KEEP.map(k=>st.find(s=>(s.k?s.k+':'+s.v:'')===k)).filter(Boolean);st.length=0;st.push(...st4);
   const sel=(k,items,ph)=>`<select id="f-${k}" data-filter="${k}"><option value="">${ph}</option>${items.map(([v,t])=>`<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select>`;
   const seg=(k,items)=>`<div class="seg" role="group">${items.map(([v,t])=>`<button type="button" data-act="setf" data-k="${k}" data-v="${v}">${t}</button>`).join('')}</div>`;
   const opsAll=db.users.filter(x=>x.role==='operator'&&(u.role==='admin'||x.city===u.city)).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
@@ -2160,8 +2172,8 @@ function moreSheet(){
   const u=me();const d=$('#dlg');d.classList.remove('as-full');d.classList.add('as-sheet');
   const groups=Object.keys(LEVEL).map(r=>[r,db.users.filter(x=>x.active&&x.role===r)]).filter(g=>g[1].length);
   const items=moreItems(u);
-  d.innerHTML=`<div class="sheet"><header><h2>سایر</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header>
-    ${items.length?`<div class="sheet-list">${items.map(x=>`<a class="sheet-item" href="#${x.h}" ${x.tab?`data-tab="${x.tab}"`:''}><span class="sheet-ic">${icon(x.ic)}</span><span><b>${x.t}</b><small>${x.d}</small></span></a>`).join('')}</div>`:''}
+  d.innerHTML=`<div class="sheet"><header><h2>${isMob()?'سایر':'حساب کاربری'}</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header>
+    ${items.length?`<div class="sheet-list m-only">${items.map(x=>`<a class="sheet-item" href="#${x.h}" ${x.tab?`data-tab="${x.tab}"`:''}><span class="sheet-ic">${icon(x.ic)}</span><span><b>${x.t}</b><small>${x.d}</small></span></a>`).join('')}</div>`:''}
     <div class="acct-body">
       ${roleNote(u)?`<p class="acct-note">${roleNote(u)}</p>`:''}<div class="acct-who"><span class="avatar">${esc(initials(u.name))}</span><span><b>${esc(u.name)}</b><small><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(u.city||'')}</small></span></div>
       ${installEvt?`<button type="button" class="btn block" data-act="install">نصب برنامه روی گوشی</button>`:''}

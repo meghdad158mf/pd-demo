@@ -6,7 +6,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1f5fad">
+<meta name="theme-color" content="#0b3d3a">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -24,16 +24,16 @@
    Layout: sticky top bar (bottom tab bar on phones) · list = filters + map + compact rows · dossier = tabs first, map aside */
 :root{
   --bg:#f4f6f9; --surface:#ffffff; --surface-2:#eff2f6; --line:#dfe4eb; --fg:#13213a; --muted:#56657a;
-  --navy:#132b4f;
-  --accent:#1d4f8f; --accent-ink:#ffffff; --accent-soft:#e8eef8; --accent-fg:#1b4680;
-  --flag:#c58a12; --flag-soft:#fbf0d6; --flag-ink:#77520a;
+  --navy:#0b3d3a;
+  --accent:#0f5f58; --accent-ink:#ffffff; --accent-soft:#e1f0ee; --accent-fg:#0d524c;
+  --flag:#c4911a; --flag-soft:#fbf1d8; --flag-ink:#77520a;
   --cand:#d9ae52; --cand-soft:#fffaf0; --cand-ink:#7a5a14;
-  --ok:#1b875a; --ok-soft:#e2f3ea; --ok-ink:#156a46;
+  --ok:#2f8a3b; --ok-soft:#e4f3e3; --ok-ink:#226b2c;
   --warn:#d4560d; --warn-soft:#fdebdf; --warn-ink:#9c3d08;
   --bad:#c9363b; --bad-soft:#fbe6e7; --bad-ink:#9f262b;
   --mute:#94a1b4; --mute-soft:#edf0f4; --mute-ink:#4f5d72;
   --shadow:0 1px 2px rgba(15,28,46,.04),0 8px 24px rgba(15,28,46,.06);
-  --tile-filter:saturate(.75); --grid:rgba(31,95,173,.06);
+  --tile-filter:saturate(.75); --grid:rgba(15,95,88,.06);
   --font:'IRANSansX','IRANSansX Static',Tahoma,'Segoe UI',system-ui,sans-serif;
   --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
   --r:10px;
@@ -446,7 +446,7 @@ button.dp-title:hover{background:var(--surface-2)}
 .d-loc a{flex:none;font-weight:700;padding:6px 2px}
 .login{justify-content:flex-start;padding-block:56px 40px;background:linear-gradient(180deg,var(--navy) 0,var(--navy) 300px,var(--bg) 300px)}
 .login-brand b{color:#fff}.login-brand small{color:rgba(255,255,255,.72)}
-.login-card{box-shadow:0 18px 40px rgba(19,43,79,.18)}
+.login-card{box-shadow:0 18px 40px rgba(11,61,58,.18)}
 .brand b{letter-spacing:-.01em}
 .cl{background:transparent;border:0}
 .cl span{display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--navy) 88%,transparent);color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--navy) 22%,transparent),var(--shadow);font-weight:800;font-size:13px;font-variant-numeric:tabular-nums;cursor:pointer}
@@ -468,7 +468,7 @@ button.dp-title:hover{background:var(--surface-2)}
 .more-fields>summary::before{content:"";width:8px;height:8px;border-inline-end:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .15s ease;margin-top:-4px}
 .more-fields[open]>summary::before{transform:rotate(-135deg);margin-top:2px}
 .more-in{display:flex;flex-direction:column;gap:14px;padding:4px 14px 16px}
-.fab{position:fixed;z-index:1150;inset-inline-end:max(20px,env(safe-area-inset-left,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:6px;height:56px;padding:0 22px 0 18px;border:0;border-radius:999px;background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:15px;box-shadow:0 10px 24px rgba(19,43,79,.32);cursor:pointer;transition:transform .12s ease}
+.fab{position:fixed;z-index:1150;inset-inline-end:max(20px,env(safe-area-inset-left,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:6px;height:56px;padding:0 22px 0 18px;border:0;border-radius:999px;background:var(--navy);color:#fff;font:inherit;font-weight:800;font-size:15px;box-shadow:0 10px 24px rgba(11,61,58,.32);cursor:pointer;transition:transform .12s ease}
 .fab svg{color:var(--flag)}
 .fab:active{transform:scale(.96)}
 .sheet header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}

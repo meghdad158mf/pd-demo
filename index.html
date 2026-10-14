@@ -810,7 +810,7 @@ a.btn{text-decoration:none}
 
 /* ---- v14: SMS login ---- */
 .login-help{font-size:13.5px;color:var(--muted);line-height:1.9;margin:-4px 0 4px}
-.sms-sim{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent-fg);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.9}
+.sms-sim{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent-fg);border-radius:12px;padding:6px 14px;font-size:13px}
 .sms-sim .sms-h{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;margin-bottom:2px}
 .sms-sim .sms-h small{font-size:11.5px;opacity:.8}
 .sms-sim b.num{font-size:18px;letter-spacing:2px}
@@ -1618,28 +1618,26 @@ function sendOtp(a){const u=db.users.find(x=>x.active&&x.nid===a.nid);a.uid=u?.i
 function badTry(a,fail,msg){a.tries=(a.tries||0)+1;
   if(a.tries>=OTP_TRIES){try{localStorage.setItem(lockKey(a.nid),String(Date.now()+LOCK_MS));}catch(x){}ui.auth={step:'nid',nid:a.nid,err:'تلاش‌های ناموفق زیاد شد؛ ورود با این کد ملی ۱۵ دقیقه بسته شد.'};render();return;}
   fail((msg||'کد واردشده درست نیست.')+` ${fa(OTP_TRIES-a.tries)} تلاش دیگر باقی است.`);}
-const smsSim=a=>`<div class="sms-sim" role="note"><div class="sms-h"><b>شبیه‌ساز پیامک</b><small>فقط در نسخه‌ی نمایشی؛ در نسخه‌ی اصلی پیامک واقعی می‌رسد</small></div>${a.uid?`<div>به ${maskMobile(getU(a.uid).mobile)}:<br>کد ورود پرچمدار: <b class="num"><bdi dir="ltr">${fa(a.code)}</bdi></b></div>`:'<div>پیامکی ارسال نشد: این کد ملی در سامانه ثبت نیست یا کاربر غیرفعال است.</div>'}</div>`;
+const smsSim=a=>`<div class="sms-sim" role="note"><small>پیامک آزمایشی</small>${a.uid?`<b class="num"><bdi dir="ltr">${fa(a.code)}</bdi></b>`:'<span>ارسال نشد</span>'}</div>`;
 function loginView(){
   const a=ui.auth||(ui.auth={step:'nid'});
   const err=`<span class="errmsg" id="lg-err" ${a.err?'':'hidden'}>${esc(a.err||'')}</span>`;
   let body;
   if(a.step==='code')body=`<h1>کد ورود</h1>
-      <p class="login-help">اگر کد ملی <b class="num">${fa(a.nid)}</b> در سامانه ثبت شده باشد، کد ورود به شماره‌ی همراه ثبت‌شده پیامک شد.</p>
+      <p class="login-help">کد به شماره‌ی ثبت‌شده پیامک شد.</p>
       ${smsSim(a)}
-      <label class="field"><span>کد ۵ رقمی</span><input type="text" id="lg-code" class="otp-in" inputmode="numeric" autocomplete="one-time-code" dir="ltr" maxlength="5"></label>
+      <label class="field"><input type="text" id="lg-code" aria-label="کد ورود" class="otp-in" inputmode="numeric" autocomplete="one-time-code" dir="ltr" maxlength="5"></label>
       ${err}
-      <label class="lg-rem"><input type="checkbox" id="lg-rem" ${a.rem?'checked':''}><span>این دستگاه را تا ۳۰ روز به خاطر بسپار</span></label>
+      <label class="lg-rem"><input type="checkbox" id="lg-rem" ${a.rem?'checked':''}><span>مرا به خاطر بسپار</span></label>
       <button class="btn primary block" type="submit">تأیید و ورود</button>
       <div class="otp-foot"><span id="otp-timer" class="small muted"></span><span><button type="button" class="linkish" data-act="otp-resend" id="otp-resend">ارسال دوباره</button><button type="button" class="linkish" data-act="otp-back">تغییر کد ملی</button></span></div>`;
   else if(a.step==='pw')body=`<h1>رمز عبور مدیر</h1>
-      <p class="login-help">کد پیامکی درست بود. برای ورود مدیر سایت، رمز عبور را هم وارد کنید.</p>
-      <label class="field"><span>رمز عبور</span><input type="password" id="lg-pw" autocomplete="current-password" dir="ltr"></label>
+      <label class="field"><input type="password" id="lg-pw" aria-label="رمز عبور" autocomplete="current-password" dir="ltr"></label>
       ${err}
-      <p class="small muted">رمز مدیر در نسخه‌ی نمایشی: <b dir="ltr">${ADMIN_DEMO_PW}</b></p>
+      <p class="small muted">رمز آزمایشی: <b dir="ltr">${ADMIN_DEMO_PW}</b></p>
       <button class="btn primary block" type="submit">ورود</button>
       <div class="otp-foot"><span></span><button type="button" class="linkish" data-act="otp-back">انصراف</button></div>`;
   else body=`<h1>ورود به سامانه</h1>
-      <p class="login-help">کد ملی خود را وارد کنید تا کد ورود به شماره‌ی همراه ثبت‌شده‌ی شما پیامک شود.</p>
       <label class="field"><span>کد ملی</span><input type="text" id="lg-nid" inputmode="numeric" autocomplete="username" dir="ltr" maxlength="10" value="${esc(a.nid||'')}" placeholder="۱۰ رقم"></label>
       ${err}
       <button class="btn primary block" type="submit">دریافت کد ورود</button>`;
@@ -1647,8 +1645,8 @@ function loginView(){
   return `<div class="login"><div class="login-box">
     <div class="login-brand">${brandSvg(48)}<div><b>پرچمدار</b><small>سامانه پرونده محله‌ها</small></div></div>
     <form class="card login-card" id="loginform" novalidate data-step="${a.step}">${body}</form>
-    <div class="demo-row"><span>ورود آزمایشی بدون پیامک:</span><button type="button" data-act="demo" data-u="admin">مدیر سایت</button><i></i><button type="button" data-act="demo" data-u="supervisor">سرپرست</button><i></i><button type="button" data-act="demo" data-u="operator">اپراتور</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>
-    ${a.step==='nid'?`<div class="demo-row demo-nid"><span>کد ملی آزمایشی برای امتحان ورود پیامکی:</span>${demoNid('operator')}${demoNid('supervisor')}${demoNid('admin')}</div>`:''}
+    <div class="demo-row"><span>ورود آزمایشی:</span><button type="button" data-act="demo" data-u="admin">مدیر سایت</button><i></i><button type="button" data-act="demo" data-u="supervisor">سرپرست</button><i></i><button type="button" data-act="demo" data-u="operator">اپراتور</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>
+    ${a.step==='nid'?`<div class="demo-row demo-nid"><span>کد ملی آزمایشی:</span>${demoNid('operator')}${demoNid('supervisor')}${demoNid('admin')}</div>`:''}
   </div><p class="login-foot">نسخه نمایشی، داده‌ها ساختگی‌اند و فقط در همین مرورگر ذخیره می‌شوند</p></div>`;
 }
 /* countdown on the code step */

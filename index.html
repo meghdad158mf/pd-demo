@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-1BsGhUHP4K+ciURTnVOXlQvZgq7hNIZHGWsoxsUonkQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-tKWce1Q0gvdv/VYBgsilAE45a37ktHqv/CgcvwPt8m0='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -959,7 +959,8 @@ const qnorm=s=>normDigits(String(s||'')).toLowerCase().replace(/ي/g,'ی').repla
 const PAGE=50;
 
 /* ================= enums ================= */
-const FLAG={member:{t:'عضو پرچمدار',c:'flag i-flag'},candidate:{t:'نامزد عضویت',c:'cand i-flag'},none:{t:'غیرعضو',c:'mute'}};
+const FLAG={member:{t:'پرچم‌سرا',c:'flag i-flag'},candidate:{t:'نامزد پرچم‌سرا',c:'cand i-flag'},none:{t:'غیر عضو',c:'mute'}};
+const PFLAG={member:{t:'پرچمدار',c:'flag i-flag'},none:{t:'غیرعضو',c:'mute'}};
 const PSTAT={new:{t:'ثبت‌شده',c:'mute'},progress:{t:'در حال پیگیری',c:'acc'},referred:{t:'ارجاع‌شده',c:'warn'},solved:{t:'حل‌شده',c:'ok'},stopped:{t:'متوقف',c:'bad'}};
 const isOpen=p=>p.status!=='solved'&&p.status!=='stopped';
 const PRIO={critical:{t:'بحرانی',c:'bad',w:4},high:{t:'بالا',c:'warn',w:3},mid:{t:'متوسط',c:'acc',w:2},low:{t:'کم',c:'mute',w:1}};
@@ -975,7 +976,7 @@ const COOP={active:{t:'همکاری فعال',c:'ok'},low:{t:'همکاری کم'
 const CTYPES=['تماس تلفنی','جلسه حضوری','پیامک','بازدید','دعوت به برنامه'];
 const PERIODS=[['7','۷ روز'],['30','۳۰ روز'],['90','۹۰ روز'],['all','همه']];
 const opts=o=>Object.entries(o).map(([k,v])=>[k,v.t]);
-const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'حاضران',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'شغل',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'عضویت پرچمدار',flagSince:'عضو از',op:'کارشناس مسئول',steps:'مراحل'};
+const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'حاضران',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'شغل',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
 const DIFF_SKIP=new Set(['id','links','problems','ideas','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
 
 /* ================= seeded random ================= */
@@ -1080,14 +1081,14 @@ function seed(){
       P('تجمع پسماند در انتهای خیابان گلبرگ','پسماند و محیط زیست','mid','شهرداری منطقه','',[S(70,'علی رضایی','ثبت گزارش مردمی','new'),S(64,'علی رضایی','پیگیری با واحد خدمات شهری','referred','شهرداری منطقه'),S(51,'علی رضایی','نصب دو مخزن جدید و افزایش نوبت جمع‌آوری','solved','شهرداری منطقه','رضایت اهالی در جلسه ماهانه تأیید شد')]),
       P('کمبود فضای ورزشی برای نوجوانان','آموزشی و فرهنگی','mid','','زمین چمن مدرسه شهید رجایی بعد از ساعت آموزشی بسته است.',[S(9,'علی رضایی','ثبت در جلسه با متولیان','new')])],
      ideas:[I('طرح','باغچه‌های مشترک بوستان هفت‌حوض','approved','واگذاری ۱۲ قطعه باغچه به خانواده‌ها با نظارت شورایاری.','سمیه رحیمی'),I('ایده','جشنواره سالانه محله نارمک','running','جشنواره غذا و صنایع دستی با محوریت میدانچه‌ها.','حاج محمود اکبری'),I('ایده','کتابخانه کوچک در صحن مسجد','proposed','قفسه کتاب امانی برای کودکان و نوجوانان.')],
-     reviews:[Rv(12,'بازدید میدانی','علی رضایی','کارشناس شهرداری، مهدی فرهادی','بازدید از کوچه‌های ضلع شرقی بوستان و بررسی نقاط تاریک.','نصب ۱۴ پایه چراغ تصویب شد؛ اجرا ظرف سه هفته.'),Rv(45,'جلسه با متولیان','علی رضایی','چهار نفر از متولیان','جلسه ماهانه؛ مرور مشکلات باز و طرح باغچه‌های مشترک.','طرح باغچه‌ها برای تصویب به شورایاری ارسال شد.'),Rv(110,'بررسی دفتری','مریم احمدی','','بررسی پرونده برای تمدید عضویت پرچمدار.','عضویت تمدید شد.')]},
+     reviews:[Rv(12,'بازدید میدانی','علی رضایی','کارشناس شهرداری، مهدی فرهادی','بازدید از کوچه‌های ضلع شرقی بوستان و بررسی نقاط تاریک.','نصب ۱۴ پایه چراغ تصویب شد؛ اجرا ظرف سه هفته.'),Rv(45,'جلسه با متولیان','علی رضایی','چهار نفر از متولیان','جلسه ماهانه؛ مرور مشکلات باز و طرح باغچه‌های مشترک.','طرح باغچه‌ها برای تصویب به شورایاری ارسال شد.'),Rv(110,'بررسی دفتری','مریم احمدی','','بررسی پرونده برای تمدید عضویت پرچم‌سرا.','عضویت تمدید شد.')]},
     {name:'تهرانپارس',district:4,lat:35.7480,lng:51.5450,flag:'candidate',pop:61000,address:'تهران، تهرانپارس، فلکه دوم، خیابان ۱۹۶ شرقی',postal:'1653915511',
-     desc:'محله‌ای پرجمعیت با بافت مسکونی و تجاری. پرونده برای عضویت در پرچمدار در حال بررسی است.',
+     desc:'محله‌ای پرجمعیت با بافت مسکونی و تجاری. پرونده برای پیوستن به پرچم‌سرا در حال بررسی است.',
      trustees:[T('عباس قربانی',['معتمد محله','کسبه'],'09127778899','رئیس اتحادیه کسبه خیابان جشنواره'),T('لیلا مرادی',['مدیر مدرسه'],'09198887766','دبستان دخترانه فرشتگان')],
      problems:[P('آب‌گرفتگی معبر پس از بارندگی','زیرساخت و معابر','critical','آب و فاضلاب','در بارندگی هفته گذشته آب وارد زیرزمین سه ساختمان شد.',[S(6,'علی رضایی','ثبت گزارش مردمی همراه با تصویر','new')]),
       P('ترافیک ورودی فلکه دوم در ساعت مدرسه','ترافیک و حمل‌ونقل','high','پلیس راهور','',[S(20,'علی رضایی','ثبت مشکل','new'),S(15,'علی رضایی','درخواست حضور مأمور راهور در ساعت ۷ تا ۸','referred','پلیس راهور')])],
      ideas:[I('طرح','پیاده‌راه آخر هفته در خیابان جشنواره','review','بستن خیابان در عصر پنجشنبه برای بازارچه محلی.','عباس قربانی')],
-     reviews:[Rv(6,'گزارش مردمی','علی رضایی','','گزارش آب‌گرفتگی در خیابان ۱۹۶ شرقی.','مشکل ثبت و فوری ارجاع شد.'),Rv(30,'جلسه با متولیان','علی رضایی','عباس قربانی، لیلا مرادی','بررسی شرایط عضویت در پرچمدار.','پیش از تصویب، فهرست متولیان باید تکمیل شود.')]},
+     reviews:[Rv(6,'گزارش مردمی','علی رضایی','','گزارش آب‌گرفتگی در خیابان ۱۹۶ شرقی.','مشکل ثبت و فوری ارجاع شد.'),Rv(30,'جلسه با متولیان','علی رضایی','عباس قربانی، لیلا مرادی','بررسی شرایط پیوستن به پرچم‌سرا.','پیش از تصویب، فهرست متولیان باید تکمیل شود.')]},
     {name:'یوسف‌آباد',district:6,lat:35.7310,lng:51.4060,flag:'member',fs:300,pop:38000,address:'تهران، یوسف‌آباد، خیابان ابن‌سینا، کوچه نهم',postal:'1433834561',
      desc:'محله‌ای مرکزی با جمعیت سالمند قابل توجه و شبکه فعال پزشکان و کسبه.',
      trustees:[T('دکتر کاوه بهرامی',['پزشک/سلامت','معتمد محله'],'09121112222'),T('نسرین یزدانی',['فعال فرهنگی'],'09361234321','مدیر فرهنگسرای محله'),T('حمید شریف‌زاده',['کسبه'],'09122223344')],
@@ -1258,7 +1259,7 @@ function seedPending(){
       if(x<.3){commit({ent:'review',op:'create',nb:n.id,data:{date:isoDay(new Date(t)),type:pick(RTYPES),by:u.name,uid:u.id,participants:'',summary:pick(REV_SUM),result:pick(REV_RES)},txt:'ثبت بررسی',tn:n.name},u,t);}
       else if(x<.5){const op=n.problems.filter(isOpen);if(op.length){const p=pick(op);commit({ent:'step',op:'create',nb:n.id,par:p.id,data:{date:isoDay(new Date(t)),by:u.name,uid:u.id,action:pick(STEP_ACT),status:'referred',org:p.org||'شهرداری منطقه',note:''},txt:'افزودن مرحله پیگیری به «'+p.title+'»',tn:n.name},u,t);}}
       else if(x<.7){const [title,cat]=pick(PROBS);commit({ent:'problem',op:'create',nb:n.id,data:{title,cat,prio:pick(['high','mid']),org:'',desc:'',created:isoDay(new Date(t)),status:'new',steps:[{id:uid(),date:isoDay(new Date(t)),by:u.name,uid:u.id,action:'ثبت مشکل',status:'new',org:'',note:''}]},txt:'ثبت مشکل «'+title+'»',tn:n.name},u,t);}
-      else if(x<.85){const g=uid();const nm=pick(FM)+' '+pick(LN);const ptid=uid();const c1=commit({ent:'person',op:'create',tid:ptid,pid:ptid,data:{name:nm,mobile:'0912'+String(1e6+r(9e6)),nid:'',gender:'m',birth:1350+r(30),job:pick(JOBS),edu:pick(EDU),skills:[],coop:'active',note:'',contacts:[],by:u.id,created:t},txt:'ثبت فرد «'+nm+'»',tn:nm,grp:g},u,t);
+      else if(x<.85){const g=uid();const nm=pick(FM)+' '+pick(LN);const ptid=uid();const c1=commit({ent:'person',op:'create',tid:ptid,pid:ptid,data:{name:nm,mobile:'0912'+String(1e6+r(9e6)),nid:'',gender:'m',birth:1350+r(30),job:pick(JOBS),edu:pick(EDU),skills:[],coop:'active',pflag:'none',note:'',contacts:[],by:u.id,created:t},txt:'ثبت فرد «'+nm+'»',tn:nm,grp:g},u,t);
         commit({ent:'link',op:'create',nb:n.id,data:{pid:c1.tid,roles:['معتمد محله'],note:''},txt:'افزودن متولی «'+nm+'»',tn:n.name,grp:g},u,t);}
       else{commit({ent:'nb',op:'update',nb:n.id,tid:n.id,data:{pop:(n.pop||40000)+5000,desc:n.desc||'محله‌ای مسکونی با مشارکت خوب اهالی در برنامه‌های مسجد.'},txt:'ویرایش مشخصات محله',tn:n.name},u,t);}
     }
@@ -1291,12 +1292,12 @@ function flush(){clearTimeout(saveT);saveT=null;if(db)idb.set(KEY,db).catch(()=>
 function persist(){ver++;if(seeding)return;clearTimeout(saveT);saveT=setTimeout(flush,150);}
 addEventListener('pagehide',()=>{if(saveT)flush();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&saveT)flush();});
-function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureGeo();ensureAuth();persist();}
+function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureGeo();ensureAuth();ensurePFlag();persist();}
 
 let session=null;
 try{session=sessionStorage.getItem(KEY+'-u');if(!session){const r=JSON.parse(localStorage.getItem(KEY+'-remember')||'null');if(r&&r.exp>Date.now()){session=r.u;sessionStorage.setItem(KEY+'-u',session);}}}catch(e){}
 const F0={q:'',city:'',district:'',flag:'',active:'',cat:'',prio:'',role:'',op:'',pend:'',need:'',sort:'name'};
-const PF0={q:'',city:'',district:'',role:'',skill:'',gender:'',coop:'',contact:'',nid:'',mine:''};
+const PF0={q:'',city:'',district:'',role:'',skill:'',gender:'',coop:'',pflag:'',contact:'',nid:'',mine:''};
 const PRF0={stage:'open',chip:'',org:'',q:'',page:1};
 const ui={tab:'summary',pFilter:'open',roleFilter:'',openProb:{},picking:false,adminTab:'users',page:1,pPage:1,uPage:1,logPage:1,usersPage:1,
   f:{...F0},pf:{...PF0},sel:new Set(),period:'30',qTab:'pending',qf:{op:'',ent:''},qsel:new Set(),perfSort:'sub',perfCity:'',showMap:!matchMedia('(max-width:720px)').matches,
@@ -1619,6 +1620,11 @@ const OTP_TTL=120e3,OTP_GAP=60e3,OTP_TRIES=5,LOCK_MS=15*60e3,REMEMBER_MS=30*DAY;
 const ADMIN_DEMO_PW='parchamdar1405';
 const pwHash=p=>{let h=0x811c9dc5;for(const c of 'pd:'+p){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(16);};
 function makeNid(r){for(;;){const d=Array.from({length:9},()=>Math.floor(r()*10));if(d.every(x=>x===d[0]))continue;const m=d.reduce((a,x,i)=>a+x*(10-i),0)%11;return d.join('')+(m<2?m:11-m);}}
+const pfPill=p=>p.pflag==='member'?`<span class="pill flag i-flag">پرچمدار</span> `:'';
+/* وضعیت پرچمدار افراد: داده‌ی قدیمی این فیلد را ندارد؛ نمونه‌ی آزمایشی برای متولیان محله‌های پرچم‌سرا */
+function ensurePFlag(){let ch=false;const r=rng(91);
+  db.people.forEach(p=>{if(p.pflag)return;const mem=linksOf(p.id).some(x=>x.n.flag==='member');p.pflag=mem&&r()<.7?'member':'none';ch=true;});
+  if(ch)persist();}
 function ensureAuth(){let ch=false;const r=rng(77);const used=new Set(db.users.map(u=>u.nid).filter(Boolean));
   db.users.forEach(u=>{if(!u.nid){let n;do n=makeNid(r);while(used.has(n));used.add(n);u.nid=n;ch=true;}
     if(!u.mobile){u.mobile='091'+String(Math.floor(r()*1e8)).padStart(8,'0');ch=true;}
@@ -1710,8 +1716,8 @@ function listView(){
   if(u.role==='operator'){const mine=all;st.push({k:'need',v:'urgent',label:'نیازمند اقدام فوری',n:mine.filter(n=>nbNeed(n).k==='urgent').length,dot:'--bad'},
     {k:'need',v:'review',label:'نیازمند بررسی',n:mine.filter(n=>nbNeed(n).k==='review').length,dot:'--warn'});}
   st.push({k:'',v:'',label:'همه محله‌ها',n:all.length,dot:'--accent'},
-    {k:'flag',v:'member',label:'عضو پرچمدار',n:all.filter(n=>n.flag==='member').length,dot:'--flag'},
-    {k:'flag',v:'candidate',label:'نامزد عضویت',n:all.filter(n=>n.flag==='candidate').length,dot:'--cand'},
+    {k:'flag',v:'member',label:'پرچم‌سرا',n:all.filter(n=>n.flag==='member').length,dot:'--flag'},
+    {k:'flag',v:'candidate',label:'نامزد پرچم‌سرا',n:all.filter(n=>n.flag==='candidate').length,dot:'--cand'},
     {k:'prio',v:'critical',label:'با مشکل بحرانی باز',n:all.filter(hasCritical).length,dot:'--bad'});
   if(u.role!=='viewer')st.push({k:'pend',v:'yes',label:'دارای ثبت در انتظار تأیید',n:all.filter(hasPending).length,dot:'--warn'});
   else st.push({k:'active',v:'no',label:'پرونده غیرفعال',n:all.filter(n=>!n.active).length,dot:'--mute'});
@@ -1733,7 +1739,7 @@ function listView(){
       <div class="fgroup m-only"><span>گروه‌بندی فهرست</span><div class="toggle" role="group">${[['need','وضعیت'],['district','منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div></div>
       ${showCity?`<label class="fgroup m-only"><span>شهر</span><select data-filter="city"><option value="">همه شهرها</option>${myCities.map(c=>`<option ${ui.f.city===c?'selected':''}>${esc(c)}</option>`).join('')}</select></label>`:''}
       <label class="fgroup m-only"><span>مرتب‌سازی</span><select data-filter="sort" aria-label="مرتب‌سازی"><option value="name">مرتب‌سازی: نام</option><option value="code">مرتب‌سازی: کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select></label>
-      <div class="fgroup"><span>عضویت در پرچمدار</span>${seg('flag',[['','همه'],['member','عضو'],['candidate','نامزد'],['none','غیرعضو']])}</div>
+      <div class="fgroup"><span>پرچم‌سرا</span>${seg('flag',[['','همه'],['member','پرچم‌سرا'],['candidate','نامزد'],['none','غیر عضو']])}</div>
       <div class="fgroup"><span>وضعیت پرونده</span>${seg('active',[['','همه'],['yes','فعال'],['no','غیرفعال']])}</div>
       <label class="fgroup"><span>منطقه شهرداری</span><select id="f-district" data-filter="district"></select></label>
       ${u.role!=='viewer'&&u.role!=='operator'?`<label class="fgroup"><span>کارشناس مسئول</span><select id="f-op" data-filter="op"><option value="">همه</option>${u.role==='operator'?'<option value="me">فقط محله‌های من</option>':''}<option value="none">بدون کارشناس</option>${opsAll.map(o=>`<option value="${o.id}">${esc(o.name)}${u.role==='admin'?'، '+esc(o.city):''}</option>`).join('')}</select></label>`:''}
@@ -1754,7 +1760,7 @@ function listView(){
       </div>
       <div class="active-chips" id="chips"></div>
       ${ui.showMap?`<div class="map" id="listmap" dir="ltr" aria-label="نقشه محله‌ها"></div>
-      <div class="legend"><span><i style="background:var(--flag)"></i>عضو پرچمدار</span><span><i style="background:var(--cand)"></i>نامزد عضویت</span><span><i style="background:var(--mute)"></i>غیرعضو</span><span><i style="background:transparent;border:2px solid var(--mute)"></i>پرونده غیرفعال</span></div>`:''}
+      <div class="legend"><span><i style="background:var(--flag)"></i>پرچم‌سرا</span><span><i style="background:var(--cand)"></i>نامزد پرچم‌سرا</span><span><i style="background:var(--mute)"></i>غیر عضو</span><span><i style="background:transparent;border:2px solid var(--mute)"></i>پرونده غیرفعال</span></div>`:''}
       <div id="bulk"></div>
       <div id="results"></div>
     </div>
@@ -1792,14 +1798,14 @@ function updateList(){
   const more=(k,pg)=>list.length>rows.length?`<button class="btn block more-btn" data-act="more" data-k="${k}">نمایش ${fa(Math.min(PAGE,list.length-rows.length))} مورد بیشتر، ${fa(list.length-rows.length)} باقی مانده</button>`:'';
   const chk=canAssign();
   $('#results').innerHTML=`<div class="result-head"><span><b class="num">${num(all0.length)}</b> محله${list.length>PAGE&&!mob?`، نمایش ${fa((ui.page-1)*PAGE+1)} تا ${fa(Math.min(ui.page*PAGE,list.length))}`:''}</span>${mob?'':pager(list.length,ui.page,'page')}</div>`+(list.length?`
-  <div class="table-wrap"><table class="tbl resp ${G==='need'||mob?'g-need':''}"><thead><tr>${chk?`<th><input type="checkbox" data-act="selall" aria-label="انتخاب همه این صفحه" ${rows.filter(n=>canEdit(n)&&!n._st).every(n=>ui.sel.has(n.id))?'checked':''}></th>`:''}<th>کد</th><th>محله</th><th>شهر، منطقه</th><th>کارشناس</th><th>پرچمدار</th><th>متولیان</th><th>مشکلات باز</th><th>آخرین بررسی</th></tr></thead><tbody>
+  <div class="table-wrap"><table class="tbl resp ${G==='need'||mob?'g-need':''}"><thead><tr>${chk?`<th><input type="checkbox" data-act="selall" aria-label="انتخاب همه این صفحه" ${rows.filter(n=>canEdit(n)&&!n._st).every(n=>ui.sel.has(n.id))?'checked':''}></th>`:''}<th>کد</th><th>محله</th><th>شهر، منطقه</th><th>کارشناس</th><th>پرچم‌سرا</th><th>متولیان</th><th>مشکلات باز</th><th>آخرین بررسی</th></tr></thead><tbody>
   ${rows.map(n=>{const op=openProblems(n);const lr=lastReview(n);const ds=lr?daysSince(lr):null;const k=nd.get(n.id).k;const gk=gKey(n);let hd='';if(gk!==null&&gk!==prevG){prevG=gk;hd=groupRow(gk);}return hd+`<tr data-act="open" data-id="${n.id}" tabindex="0">
     ${chk?`<td class="chk" data-l="">${canEdit(n)&&!n._st?`<input type="checkbox" data-act="sel" data-id="${n.id}" ${ui.sel.has(n.id)?'checked':''} aria-label="انتخاب ${esc(n.name)}">`:''}</td>`:''}
     <td data-l="کد" class="m-hide">${n.code?`<span class="code">${esc(n.code)}</span>`:'<span class="muted small">بدون کد</span>'}</td>
     <td data-l="محله" class="m-main"><div class="nb-name">${G!=='none'||mob?`<span class="st" style="background:var(${NEED[k].c})" title="${NEED[k].t}"></span>`:''}${esc(n.name)} ${n.flag!=='none'?`<span class="pill ${FLAG[n.flag].c} m-only">${FLAG[n.flag].t}</span>`:''}${stBadge(n)}${!n.active?' <span class="pill mute">غیرفعال</span>':''}${hasPending(n)&&!n._st&&u.role!=='viewer'?' <span class="pend-dot" title="ثبت در انتظار تأیید"></span>':''}</div><div class="nb-addr ${G==='need'||mob?'why':''}">${G==='need'||mob?nd.get(n.id).r:esc(n.address)}</div></td>
     <td data-l="شهر، منطقه">${esc(n.city)}، ${fa(n.district)}</td>
     <td data-l="کارشناس" class="small ${u.role==='operator'?'m-hide':''}">${n.op?esc(uName(n.op)):'<span class="muted">—</span>'}</td>
-    <td data-l="پرچمدار" class="m-hide">${n.flag==='none'?'<span class="muted small">غیرعضو</span>':`<span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span>`}</td>
+    <td data-l="پرچم‌سرا" class="m-hide">${n.flag==='none'?'<span class="muted small">غیر عضو</span>':`<span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span>`}</td>
     <td data-l="متولیان" class="num m-hide">${fa(n.links.filter(l=>!l._st).length)}</td>
     <td data-l="مشکلات باز" class="num">${fa(op.length)}${op.some(p=>p.prio==='critical')?' <span class="crit">، بحرانی</span>':''}</td>
     <td data-l="آخرین بررسی" class="small">${lr?`<span class="m-hide">${fmtDate(lr)}</span><div class="small ${ds>60?'crit':'muted'}">${fa(ds)} روز پیش</div>`:'<span class="crit">بدون بررسی</span>'}</td></tr>`;}).join('')}
@@ -1877,8 +1883,8 @@ function dossierView(n){
         <div class="sec-h"><h3>وضعیت فعلی</h3>${ed&&!n._st?`<button class="btn sm" data-act="edit-status">تغییر وضعیت</button>`:''}</div>
         <dl class="kv">
           <dt>فعالیت</dt><dd><span class="dot ${n.active?'':'off'}">${n.active?'فعال':'غیرفعال'}</span></dd>
-          <dt>پرچمدار</dt><dd><span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span></dd>
-          ${n.flag==='member'&&n.flagSince?`<dt>عضو از</dt><dd>${fmtDate(n.flagSince)}</dd>`:''}
+          <dt>پرچم‌سرا</dt><dd><span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span></dd>
+          ${n.flag==='member'&&n.flagSince?`<dt>پرچم‌سرا از</dt><dd>${fmtDate(n.flagSince)}</dd>`:''}
           <dt>جمعیت تقریبی</dt><dd class="num">${n.pop?num(n.pop)+' نفر':'—'}</dd>
         </dl>
       </div>
@@ -1889,7 +1895,7 @@ function dossierView(n){
 /* phone: the file's secondary actions live behind «⋯» */
 function nbMenu(n){
   const d=$('#dlg');d.classList.remove('as-full');d.onchange=null;
-  const it=[['edit-nb','ویرایش مشخصات','نام، نشانی، کد پستی، جمعیت و کارشناس','admin'],...(!n._st?[['edit-status','تغییر وضعیت','فعال یا غیرفعال، عضویت در پرچمدار','flag']]:[]),['pick',n.lat!=null?'ویرایش موقعیت روی نقشه':'تعیین موقعیت روی نقشه','مرکز محله روی نقشه','pin']];
+  const it=[['edit-nb','ویرایش مشخصات','نام، نشانی، کد پستی، جمعیت و کارشناس','admin'],...(!n._st?[['edit-status','تغییر وضعیت','فعال یا غیرفعال، عضویت پرچم‌سرا','flag']]:[]),['pick',n.lat!=null?'ویرایش موقعیت روی نقشه':'تعیین موقعیت روی نقشه','مرکز محله روی نقشه','pin']];
   if(!ICON.pin)ICON.pin='<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>';
   if(!ICON.flag)ICON.flag='<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>';
   d.innerHTML=`<div class="sheet"><header><h2>پرونده ${esc(n.name)}</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header><div class="sheet-list">${it.map(([k,t,h,ic])=>`<button type="button" class="sheet-item" data-k="${k}"><span class="sheet-ic">${icon(ic)}</span><span><b>${t}</b><small>${h}</small></span></button>`).join('')}</div><p class="small muted sheet-note">آخرین ویرایش: ${esc(n.updatedBy)}، ${relTime(n.updatedAt)}</p></div>`;
@@ -1968,7 +1974,7 @@ function trusteesTab(n,ed){
     ${list.length?`<div class="grid2">${list.map(l=>{const p=getP(l.pid);if(!p)return '';const other=myLinks(p.id).filter(x=>x.n!==n&&!x.l._st);return `<div class="card person">
       <div class="top-row"><a class="person-link" href="#p-${p.id}"><span class="avatar">${esc(initials(p.name))}</span><div><div class="name">${esc(p.name)}</div>${p.mobile?`<div class="phone">${showPhone(p.mobile)}</div>`:''}</div></a>
       ${ed?`<button class="btn sm ghost" data-act="edit-link" data-id="${l.id}">ویرایش</button>`:''}</div>
-      <div class="tags">${l.roles.map(r=>`<span class="tag">${esc(r)}</span>`).join('')}${p.coop?`<span class="pill ${COOP[p.coop].c}">${COOP[p.coop].t}</span>`:''}${stBadge(l)}${stBadge(p)}</div>
+      <div class="tags">${l.roles.map(r=>`<span class="tag">${esc(r)}</span>`).join('')}${pfPill(p)}${p.coop?`<span class="pill ${COOP[p.coop].c}">${COOP[p.coop].t}</span>`:''}${stBadge(l)}${stBadge(p)}</div>
       ${l.note?`<div class="muted small">${esc(l.note)}</div>`:''}
       ${other.length?`<div class="small muted">در محله‌های دیگر: ${other.map(x=>`<a href="#n-${x.n.id}">${esc(x.n.name)}</a>`).join('، ')}</div>`:''}
       ${rvInline(l)}
@@ -2034,6 +2040,7 @@ function pFiltered(){
     if(f.skill&&!(p.skills||[]).includes(f.skill))return false;
     if(f.gender&&p.gender!==f.gender)return false;
     if(f.coop&&p.coop!==f.coop)return false;
+    if(f.pflag&&(p.pflag||'none')!==f.pflag)return false;
     if(f.nid==='yes'&&!p.nid)return false;
     if(f.nid==='no'&&p.nid)return false;
     if(f.contact){const lc=lastContact(p);if(f.contact==='none'){if(lc)return false;}else if(lc&&daysSince(lc)<Number(f.contact))return false;}
@@ -2058,6 +2065,7 @@ function peopleView(){
       <label class="fgroup"><span>منطقه</span>${sel('district',c?Array.from({length:c.d},(_,i)=>[i+1,'منطقه '+fa(i+1)]):DISTRICT_OPTS(),'همه مناطق')}</label>
       <label class="fgroup"><span>نقش در محله</span>${sel('role',db.settings.trusteeRoles.map(r=>[r,r]),'همه نقش‌ها')}</label>
       <label class="fgroup"><span>مهارت</span>${sel('skill',db.settings.skills.map(r=>[r,r]),'همه مهارت‌ها')}</label>
+      <label class="fgroup"><span>پرچمدار</span>${sel('pflag',opts(PFLAG),'همه')}</label>
       <label class="fgroup"><span>میزان همکاری</span>${sel('coop',opts(COOP),'همه')}</label>
       <label class="fgroup"><span>آخرین ارتباط</span>${sel('contact',[['30','بیش از ۳۰ روز پیش یا هرگز'],['90','بیش از ۹۰ روز پیش یا هرگز'],['none','هرگز ارتباط ثبت نشده']],'همه')}</label>
       <label class="fgroup"><span>جنسیت</span>${sel('gender',opts({m:{t:'مرد'},f:{t:'زن'}}),'همه')}</label>
@@ -2081,7 +2089,8 @@ function peopleChips(){
   const top=Object.entries(rc).sort((a,b)=>b[1]-a[1]).slice(0,5);
   const need=base.filter(p=>{const lc=lastContact(p);return !lc||daysSince(lc)>90;}).length;
   const chip=(k,v,t,n)=>`<button type="button" data-act="pchip" data-k="${k}" data-v="${esc(v)}" aria-pressed="${String(f[k])===String(v)}">${t}${n!=null?' '+num(n):''}</button>`;
-  return `<div class="chips" role="group" aria-label="دسته‌های سریع">${chip('contact','90','نیازمند تماس',need)}${top.map(([r,n])=>chip('role',r,esc(r),n)).join('')}</div>`;
+  const pm=base.filter(p=>p.pflag==='member').length;
+  return `<div class="chips" role="group" aria-label="دسته‌های سریع">${chip('pflag','member','پرچمدار',pm)}${chip('contact','90','نیازمند تماس',need)}${top.map(([r,n])=>chip('role',r,esc(r),n)).join('')}</div>`;
 }
 function updatePeople(){
   let list=pFiltered();const pages=Math.max(1,Math.ceil(list.length/PAGE));if(ui.pPage>pages)ui.pPage=pages;
@@ -2094,7 +2103,7 @@ function updatePeople(){
   $('#presults').innerHTML=`<div class="result-head"><span><b class="num">${num(list.length)}</b> نفر</span>${mob?'':pager(list.length,ui.pPage,'pPage')}</div>`+(list.length?`
   <div class="table-wrap"><table class="tbl resp"><thead><tr><th>نام</th><th>موبایل</th><th>محله و نقش</th><th>همکاری</th><th>مهارت</th><th>آخرین ارتباط</th></tr></thead><tbody>
   ${rows.map(p=>{const ls=myLinks(p.id).filter(x=>vis(x.l));const lc=lastContact(p);const gk=grouped?(!lc||daysSince(lc)>90?'need':'rest'):null;let hd='';if(gk&&gk!==prevG){prevG=gk;hd=`<tr class="grp-row"><td colspan="7">${gk==='need'?'<span class="st" style="background:var(--warn)"></span><b>نیازمند تماس</b><small>بیش از ۹۰ روز بی‌ارتباط یا بدون سابقه</small>':'<span class="st" style="background:var(--ok)"></span><b>سایر افراد</b><small>ارتباط در ۹۰ روز اخیر</small>'}</td></tr>`;}return hd+`<tr data-act="open-p" data-id="${p.id}" tabindex="0">
-    <td data-l="نام" class="m-main"><div class="nb-name">${esc(p.name)} ${stBadge(p)}</div><div class="nb-addr m-hide">${esc(p.job||'')}${p.birth?'، متولد '+fa(p.birth):''}</div></td>
+    <td data-l="نام" class="m-main"><div class="nb-name">${esc(p.name)} ${pfPill(p)}${stBadge(p)}</div><div class="nb-addr m-hide">${esc(p.job||'')}${p.birth?'، متولد '+fa(p.birth):''}</div></td>
     <td data-l="موبایل" class="${seePhone()&&p.mobile?'m-hide':''}"><span class="phone">${showPhone(p.mobile)}</span></td>
     <td data-l="محله و نقش" class="small nolbl">${mob?(ls.length?`${esc(ls[0].n.name)} <span class="muted">(${esc(ls[0].l.roles.join('، '))})${ls.length>1?' +'+fa(ls.length-1)+' محله':''}</span>`:''):ls.slice(0,2).map(x=>`${esc(x.n.name)} <span class="muted">(${esc(x.l.roles.join('، '))})</span>`).join('<br>')+(ls.length>2?`<br><span class="muted">+${fa(ls.length-2)} محله دیگر</span>`:'')}${!ls.length?'<span class="muted">بدون محله</span>':''}</td>
     <td data-l="همکاری" class="m-hide"><span class="pill ${COOP[p.coop]?.c||'mute'}">${COOP[p.coop]?.t||'—'}</span></td>
@@ -2113,7 +2122,7 @@ function personView(p){
   <section class="d-head">
     <div class="d-title" style="flex-direction:row;align-items:center;gap:14px"><span class="avatar lg">${esc(initials(p.name))}</span>
       <div style="display:flex;flex-direction:column;gap:6px"><h1>${esc(p.name)}</h1>
-      <div class="row"><span class="pill ${COOP[p.coop]?.c||'mute'}">${COOP[p.coop]?.t||'—'}</span>${ls.map(x=>`<span class="tag d-only">${esc(x.l.roles[0])}، ${esc(x.n.name)}</span>`).slice(0,3).join('')}</div>
+      <div class="row"><span class="pill ${(PFLAG[p.pflag]||PFLAG.none).c}">${(PFLAG[p.pflag]||PFLAG.none).t}</span><span class="pill ${COOP[p.coop]?.c||'mute'}">${COOP[p.coop]?.t||'—'}</span>${ls.map(x=>`<span class="tag d-only">${esc(x.l.roles[0])}، ${esc(x.n.name)}</span>`).slice(0,3).join('')}</div>
       ${p.mobile?`<span class="phone m-only p-phone">${showPhone(p.mobile)}</span>`:''}</div></div>
     ${ed?`<div class="head-actions d-only"><button class="btn" data-act="edit-person">ویرایش مشخصات</button><button class="btn primary" data-act="add-contact">+ ثبت ارتباط</button></div><button type="button" class="icon-btn d-menu m-only" data-act="edit-person" aria-label="ویرایش مشخصات"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/></svg></button>`:''}
     ${(p.mobile&&seePhone())||ed?`<div class="p-acts m-only">${p.mobile&&seePhone()?`<a class="btn" href="tel:${p.mobile}">تماس</a><a class="btn" href="sms:${p.mobile}">پیامک</a>`:''}${ed?`<button class="btn primary" data-act="add-contact">+ ثبت ارتباط</button>`:''}</div>`:''}
@@ -2363,6 +2372,7 @@ function fmtVal(k,v){
   if(k==='gender')return GENDER[v]||v;
   if(k==='coop')return COOP[v]?.t||v;
   if(k==='flag')return FLAG[v]?.t||v;
+  if(k==='pflag')return PFLAG[v]?.t||v;
   if(k==='date'||k==='flagSince')return fmtDate(v);
   if(k==='pid')return getP(v)?.name||'—';
   if(k==='op')return uName(v);
@@ -2471,7 +2481,7 @@ function adminView(){
   ${t==='users'?adminUsers():t==='code'?adminCode():t==='cats'?adminCats():adminLog()}`;
 }
 function adminUsers(){
-  const rows=[['مشاهده پرونده همه محله‌ها و افراد','✓','✓','✓','✓'],['دیدن شماره تماس افراد','✓','✓','✓','—'],['دیدن کامل کد ملی','✓','✓','پوشیده','—'],['ثبت و ویرایش در پرونده محله و افراد','✓','شهر خود','محله‌های تخصیص‌یافته','—'],['نیاز ثبت‌ها به تأیید','—','خیر (مدیر می‌تواند لغو کند)','بله، تأیید رابط استانی','—'],['تأیید یا برگشت ثبت کارشناسان','✓','شهر خود','—','—'],['تخصیص محله به کارشناس','✓','شهر خود','—','—'],['تشکیل پرونده محله جدید','✓','✓','پس از تأیید رابط استانی','—'],['تغییر عضویت پرچمدار','✓','—','—','—'],['حذف پرونده محله','✓','—','—','—'],['مدیریت کاربران، دسته‌بندی‌ها و فرمول کد','✓','—','—','—']];
+  const rows=[['مشاهده پرونده همه محله‌ها و افراد','✓','✓','✓','✓'],['دیدن شماره تماس افراد','✓','✓','✓','—'],['دیدن کامل کد ملی','✓','✓','پوشیده','—'],['ثبت و ویرایش در پرونده محله و افراد','✓','شهر خود','محله‌های تخصیص‌یافته','—'],['نیاز ثبت‌ها به تأیید','—','خیر (مدیر می‌تواند لغو کند)','بله، تأیید رابط استانی','—'],['تأیید یا برگشت ثبت کارشناسان','✓','شهر خود','—','—'],['تخصیص محله به کارشناس','✓','شهر خود','—','—'],['تشکیل پرونده محله جدید','✓','✓','پس از تأیید رابط استانی','—'],['تغییر وضعیت پرچم‌سرای محله','✓','—','—','—'],['تغییر وضعیت پرچمدار افراد','✓','✓','با تأیید رابط استانی','—'],['حذف پرونده محله','✓','—','—','—'],['مدیریت کاربران، دسته‌بندی‌ها و فرمول کد','✓','—','—','—']];
   const cell=v=>v==='✓'?'<span class="yes">✓</span>':v==='—'?'<span class="no">—</span>':`<span class="small">${v}</span>`;
   const cnt=r=>db.users.filter(u=>u.role===r).length;
   const f=ui.uf,q=qnorm(f.q);
@@ -2704,9 +2714,9 @@ function locForm(n){
 }
 function statusForm(n){
   const fields=[{name:'active',label:'وضعیت پرونده',type:'select',options:yesno,value:n.active?'yes':'no'}];
-  if(isAdmin())fields.push({name:'flag',label:'عضویت در پرچمدار',type:'select',options:opts(FLAG),value:n.flag},{name:'flagSince',label:'تاریخ عضویت',type:'date',max:'today',value:n.flagSince||today(),hint:'فقط برای محله‌های عضو.'});
+  if(isAdmin())fields.push({name:'flag',label:'وضعیت پرچم‌سرا',type:'select',options:opts(FLAG),value:n.flag},{name:'flagSince',label:'پرچم‌سرا از تاریخ',type:'date',max:'today',value:n.flagSince||today(),hint:'فقط برای محله‌های پرچم‌سرا.'});
   fields.push({name:'note',label:'توضیح تغییر',type:'textarea',hint:'در تاریخچه بررسی‌ها ثبت می‌شود.'});
-  openForm({title:'تغییر وضعیت محله',intro:isAdmin()?null:'تغییر عضویت پرچمدار فقط در اختیار مدیر سامانه است.',fields,
+  openForm({title:'تغییر وضعیت محله',intro:isAdmin()?null:'تغییر وضعیت پرچم‌سرا فقط در اختیار مدیر سامانه است.',fields,
     onSubmit:v=>{
       const u=me();const data={active:v.active==='yes'};
       if(v.flag){data.flag=v.flag;data.flagSince=v.flag==='member'?v.flagSince:'';}
@@ -2761,6 +2771,7 @@ function personForm(p,linkTo,q){
     {more:1,name:'job',label:'شغل',value:p?.job},
     {more:1,name:'edu',label:'تحصیلات',type:'select',options:[['','—'],...EDU.map(e=>[e,e])],value:p?.edu},
     {more:1,name:'skills',label:'مهارت‌ها',type:'multi',options:s.skills,value:p?.skills||[]},
+    {name:'pflag',label:'وضعیت پرچمدار',type:'select',options:opts(PFLAG),value:p?.pflag||'none'},
     {more:1,name:'coop',label:'میزان همکاری',type:'select',options:opts(COOP),value:p?.coop||'active'},
     {more:1,name:'note',label:'یادداشت',type:'textarea',value:p?.note},
   ];
@@ -2983,8 +2994,8 @@ app.addEventListener('click',e=>{
     case 'selall':{const rows=pageSlice(filtered(),ui.page).filter(x=>canEdit(x)&&!x._st);const all=rows.every(x=>ui.sel.has(x.id));rows.forEach(x=>all?ui.sel.delete(x.id):ui.sel.add(x.id));updateList();break;}
     case 'bulk-clear':ui.sel.clear();updateList();break;
     case 'bulk-assign':{const op=$('#bulk-op').value;let k=0;const grp=uid();ui.sel.forEach(nid=>{const x=findN(nid);if(x&&x.op!==op&&canEdit(x)){commit({ent:'nb',op:'update',nb:x.id,tid:x.id,data:{op},txt:'تخصیص به '+(op?uName(op):'هیچ کارشناسی'),tn:x.name,grp});k++;}});ui.sel.clear();updateList();toast(fa(k)+' محله تخصیص داده شد');break;}
-    case 'export-nb':{const list=filtered();downloadCSV('parchamdar-mahalleha.csv',[['کد','محله','شهر','منطقه','کارشناس','پرچمدار','وضعیت','متولیان','مشکلات باز','آخرین بررسی','نشانی','کد پستی'],...list.map(x=>[x.code,x.name,x.city,x.district,uName(x.op),FLAG[x.flag].t,x.active?'فعال':'غیرفعال',x.links.filter(l=>!l._st).length,openProblems(x).length,lastReview(x),x.address,x.postal])]);break;}
-    case 'export-people':{const list=pFiltered();downloadCSV('parchamdar-afrad.csv',[['نام','موبایل','کد ملی','جنسیت','سال تولد','شغل','تحصیلات','مهارت‌ها','همکاری','محله‌ها و نقش‌ها','آخرین ارتباط'],...list.map(x=>[x.name,seePhone()?x.mobile:'',seeNid()?x.nid:'',GENDER[x.gender]||'',x.birth||'',x.job||'',x.edu||'',(x.skills||[]).join('، '),COOP[x.coop]?.t||'',myLinks(x.id).filter(y=>!y.l._st).map(y=>y.n.name+' ('+y.l.roles.join('، ')+')').join(' | '),lastContact(x)])]);break;}
+    case 'export-nb':{const list=filtered();downloadCSV('parchamdar-mahalleha.csv',[['کد','محله','شهر','منطقه','کارشناس','پرچم‌سرا','وضعیت','متولیان','مشکلات باز','آخرین بررسی','نشانی','کد پستی'],...list.map(x=>[x.code,x.name,x.city,x.district,uName(x.op),FLAG[x.flag].t,x.active?'فعال':'غیرفعال',x.links.filter(l=>!l._st).length,openProblems(x).length,lastReview(x),x.address,x.postal])]);break;}
+    case 'export-people':{const list=pFiltered();downloadCSV('parchamdar-afrad.csv',[['نام','موبایل','کد ملی','جنسیت','سال تولد','شغل','تحصیلات','مهارت‌ها','پرچمدار','همکاری','محله‌ها و نقش‌ها','آخرین ارتباط'],...list.map(x=>[x.name,seePhone()?x.mobile:'',seeNid()?x.nid:'',GENDER[x.gender]||'',x.birth||'',x.job||'',x.edu||'',(x.skills||[]).join('، '),(PFLAG[x.pflag]||PFLAG.none).t,COOP[x.coop]?.t||'',myLinks(x.id).filter(y=>!y.l._st).map(y=>y.n.name+' ('+y.l.roles.join('، ')+')').join(' | '),lastContact(x)])]);break;}
     case 'export-perf':{const s=periodStart();const ops=db.users.filter(x=>x.role==='operator'&&(isAdmin()||inProv(x.city)));downloadCSV('parchamdar-amalkard.csv',[['کارشناس','شهر','محله‌ها','ثبت در بازه','تأیید','برگشت','در انتظار','آخرین فعالیت'],...ops.map(o=>{const m=db.changes.filter(c=>c.uid===o.id);const ip=m.filter(c=>c.t>=s);return [o.name,o.city,db.nb.filter(x=>x.op===o.id).length,ip.length,ip.filter(c=>c.st==='approved').length,ip.filter(c=>c.st==='rejected').length,m.filter(c=>c.st==='pending').length,o.last?new Date(o.last).toLocaleString('fa-IR'):''];})]);break;}
     case 'new-nb':nbForm(null);break;
     case 'edit-nb':nbForm(n);break;
@@ -3119,7 +3130,7 @@ render();
   let saved=null;
   try{saved=await idb.get(KEY);}catch(e){}
   if(saved&&saved.v===DBV){db=saved;ver++;}else freshDb();
-  ensureGeo();ensureAuth();
+  ensureGeo();ensureAuth();ensurePFlag();
   render();
 })();
 /* PWA: register the service worker only where the page is served as the installable app */

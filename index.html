@@ -2,6 +2,8 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-KbxLBGZDmwyMDoK0DglwMI4bOhi6N6kYJYEQ8zUrAMo='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1f5fad">
@@ -900,7 +902,7 @@ a.btn{text-decoration:none}
 <dialog id="dlg"></dialog>
 <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 (function(){
 'use strict';
@@ -1614,7 +1616,7 @@ function finishLogin(u,how,remember){
   u.last=Date.now();(db.logins||(db.logins=[])).unshift({uid:u.id,t:Date.now(),how,dev:devLabel()});if(db.logins.length>500)db.logins.length=500;persist();
   location.hash=defaultRoute(u);render();
 }
-function sendOtp(a){const u=db.users.find(x=>x.active&&x.nid===a.nid);a.uid=u?.id||null;a.code=String(Math.floor(10000+Math.random()*90000));a.exp=Date.now()+OTP_TTL;a.sent=Date.now();a.tries=a.tries||0;}
+function sendOtp(a){const u=db.users.find(x=>x.active&&x.nid===a.nid);a.uid=u?.id||null;a.code=String(10000+crypto.getRandomValues(new Uint32Array(1))[0]%90000);a.exp=Date.now()+OTP_TTL;a.sent=Date.now();a.tries=a.tries||0;}
 function badTry(a,fail,msg){a.tries=(a.tries||0)+1;
   if(a.tries>=OTP_TRIES){try{localStorage.setItem(lockKey(a.nid),String(Date.now()+LOCK_MS));}catch(x){}ui.auth={step:'nid',nid:a.nid,err:'تلاش‌های ناموفق زیاد شد؛ ورود با این کد ملی ۱۵ دقیقه بسته شد.'};render();return;}
   fail((msg||'کد واردشده درست نیست.')+` ${fa(OTP_TRIES-a.tries)} تلاش دیگر باقی است.`);}
@@ -1847,7 +1849,7 @@ function dossierView(n){
             <dt>کد پستی</dt><dd class="num">${n.postal?fa(n.postal):'—'}</dd>
             <dt>مختصات</dt><dd class="num" dir="ltr" style="text-align:right">${n.lat!=null?fa(n.lat.toFixed(5))+', '+fa(n.lng.toFixed(5)):'ثبت نشده'}</dd>
           </dl>
-          ${n.lat!=null?`<a class="small" href="https://www.openstreetmap.org/?mlat=${n.lat}&mlon=${n.lng}#map=16/${n.lat}/${n.lng}" target="_blank" rel="noopener">باز کردن در نقشه کامل ↗</a>`:''}
+          ${n.lat!=null?`<a class="small" href="https://www.openstreetmap.org/?mlat=${n.lat}&mlon=${n.lng}#map=16/${n.lat}/${n.lng}" target="_blank" rel="noopener noreferrer">باز کردن در نقشه کامل ↗</a>`:''}
         </div>
       </div>
       <div class="card sec d-status">
@@ -2865,7 +2867,7 @@ function openFix(c){
 /* ================= CSV export (opens in Excel; UTF-8 with BOM) ================= */
 function downloadCSV(name,rows){
   if(!document.querySelector('link[rel="manifest"]')){toast('دریافت فایل در این پیش‌نمایش ممکن نیست؛ در نسخه نصبی (index.html) کار می‌کند');return;}
-  const csv='﻿'+rows.map(r=>r.map(v=>{v=String(v??'');return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\r\n');
+  const csv='﻿'+rows.map(r=>r.map(v=>{v=String(v??'');if(/^[=+\-@\t\r]/.test(v))v="'"+v;return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\r\n');
   try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);toast('فایل آماده شد');}catch(e){toast('دانلود در این پیش‌نمایش ممکن نیست');}
 }
 

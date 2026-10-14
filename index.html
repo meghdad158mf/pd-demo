@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-m5LHDoYiRM90V4aO/hpyyqtVRIWsoALWZmtpgTSZ5XM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-z8F2FwA6gKxpEED7kG7SZtuNocpkiWCkLql6b6r49kM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -967,7 +967,7 @@ const PSTAT={new:{t:'ثبت‌شده',c:'mute'},progress:{t:'در حال پیگ�
 const isOpen=p=>p.status!=='solved'&&p.status!=='stopped';
 const PRIO={critical:{t:'بحرانی',c:'bad',w:4},high:{t:'بالا',c:'warn',w:3},mid:{t:'متوسط',c:'acc',w:2},low:{t:'کم',c:'mute',w:1}};
 const ISTAT={proposed:{t:'پیشنهادی',c:'mute'},review:{t:'در حال بررسی',c:'mute'},approved:{t:'مصوب',c:'acc'},running:{t:'در حال اجرا',c:'acc'},done:{t:'اجراشده',c:'ok'}};
-const RTYPES=['بازدید میدانی','جلسه با متولیان','تماس تلفنی','گزارش مردمی','بررسی دفتری'];
+const RTYPES=['بازدید میدانی','جلسه با متولیان','تماس تلفنی','گزارش مردمی'];
 const LEVEL={admin:{t:'مدیر سامانه',c:'flag'},supervisor:{t:'رابط استانی',c:'acc'},operator:{t:'کارشناس محله',c:'mute'},viewer:{t:'نمایشی',c:'mute'}};
 const CST={pending:{t:'در انتظار تأیید',c:'warn i-clock'},approved:{t:'تأییدشده',c:'ok'},rejected:{t:'برگشت برای اصلاح',c:'bad i-back'},auto:{t:'ثبت رابط استانی',c:'acc'},admin:{t:'ثبت مدیر',c:'mute'},revoked:{t:'لغو با عدم تأیید مدیر',c:'bad'},withdrawn:{t:'پس‌گرفته',c:'mute'}};
 const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',review:'بررسی',contact:'ارتباط با فرد'};
@@ -978,8 +978,8 @@ const COOP={active:{t:'همکاری فعال',c:'ok'},low:{t:'همکاری کم'
 const CTYPES=['تماس تلفنی','جلسه حضوری','پیامک','بازدید','دعوت به برنامه'];
 const PERIODS=[['7','۷ روز'],['30','۳۰ روز'],['90','۹۰ روز'],['all','همه']];
 const opts=o=>Object.entries(o).map(([k,v])=>[k,v.t]);
-const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'حاضران',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'شغل',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
-const DIFF_SKIP=new Set(['id','links','problems','ideas','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
+const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'شغل',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
+const DIFF_SKIP=new Set(['id','rv','links','problems','ideas','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
 
 /* ================= seeded random ================= */
 function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
@@ -1083,7 +1083,7 @@ function seed(){
       P('تجمع پسماند در انتهای خیابان گلبرگ','پسماند و محیط زیست','mid','شهرداری منطقه','',[S(70,'علی رضایی','ثبت گزارش مردمی','new'),S(64,'علی رضایی','پیگیری با واحد خدمات شهری','referred','شهرداری منطقه'),S(51,'علی رضایی','نصب دو مخزن جدید و افزایش نوبت جمع‌آوری','solved','شهرداری منطقه','رضایت اهالی در جلسه ماهانه تأیید شد')]),
       P('کمبود فضای ورزشی برای نوجوانان','آموزشی و فرهنگی','mid','','زمین چمن مدرسه شهید رجایی بعد از ساعت آموزشی بسته است.',[S(9,'علی رضایی','ثبت در جلسه با متولیان','new')])],
      ideas:[I('طرح','باغچه‌های مشترک بوستان هفت‌حوض','approved','واگذاری ۱۲ قطعه باغچه به خانواده‌ها با نظارت شورایاری.','سمیه رحیمی'),I('ایده','جشنواره سالانه محله نارمک','running','جشنواره غذا و صنایع دستی با محوریت میدانچه‌ها.','حاج محمود اکبری'),I('ایده','کتابخانه کوچک در صحن مسجد','proposed','قفسه کتاب امانی برای کودکان و نوجوانان.')],
-     reviews:[Rv(12,'بازدید میدانی','علی رضایی','کارشناس شهرداری، مهدی فرهادی','بازدید از کوچه‌های ضلع شرقی بوستان و بررسی نقاط تاریک.','نصب ۱۴ پایه چراغ تصویب شد؛ اجرا ظرف سه هفته.'),Rv(45,'جلسه با متولیان','علی رضایی','چهار نفر از متولیان','جلسه ماهانه؛ مرور مشکلات باز و طرح باغچه‌های مشترک.','طرح باغچه‌ها برای تصویب به شورایاری ارسال شد.'),Rv(110,'بررسی دفتری','مریم احمدی','','بررسی پرونده برای تمدید عضویت پرچم‌سرا.','عضویت تمدید شد.')]},
+     reviews:[Rv(12,'بازدید میدانی','علی رضایی','کارشناس شهرداری، مهدی فرهادی','بازدید از کوچه‌های ضلع شرقی بوستان و بررسی نقاط تاریک.','نصب ۱۴ پایه چراغ تصویب شد؛ اجرا ظرف سه هفته.'),Rv(45,'جلسه با متولیان','علی رضایی','چهار نفر از متولیان','جلسه ماهانه؛ مرور مشکلات باز و طرح باغچه‌های مشترک.','طرح باغچه‌ها برای تصویب به شورایاری ارسال شد.'),Rv(110,'جلسه با متولیان','مریم احمدی','','بررسی پرونده برای تمدید عضویت پرچم‌سرا.','عضویت تمدید شد.')]},
     {name:'تهرانپارس',district:4,lat:35.7480,lng:51.5450,flag:'candidate',pop:61000,address:'تهران، تهرانپارس، فلکه دوم، خیابان ۱۹۶ شرقی',postal:'1653915511',
      desc:'محله‌ای پرجمعیت با بافت مسکونی و تجاری. پرونده برای پیوستن به پرچم‌سرا در حال بررسی است.',
      trustees:[T('عباس قربانی',['معتمد محله','کسبه'],'09127778899','رئیس اتحادیه کسبه خیابان جشنواره'),T('لیلا مرادی',['مدیر مدرسه'],'09198887766','دبستان دخترانه فرشتگان')],
@@ -1234,7 +1234,7 @@ function seed(){
   /* supervisors and admin also record directly */
   users.filter(u=>u.role==='supervisor').forEach(s=>{
     const mine=nbs.filter(n=>n.city===s.city);
-    for(let i=0;i<4+r(6);i++){const n=pick(mine),t=tAgo(r(20));const o={id:uid(),date:isoDay(new Date(t)),type:'بررسی دفتری',by:s.name,uid:s.id,participants:'',summary:'بازبینی پرونده توسط رابط استانی.',result:pick(REV_RES)};n.reviews.push(o);hist(s,'review','create',n,o.id,t,'ثبت بررسی «بررسی دفتری»');}
+    for(let i=0;i<4+r(6);i++){const n=pick(mine),t=tAgo(r(20));const o={id:uid(),date:isoDay(new Date(t)),type:'بازبینی پرونده',by:s.name,uid:s.id,participants:'',summary:'بازبینی پرونده توسط رابط استانی.',result:pick(REV_RES)};n.reviews.push(o);hist(s,'review','create',n,o.id,t,'ثبت بررسی «بازبینی پرونده»');}
   });
   /* codes & last-edit stamps */
   const seqs={};
@@ -1949,10 +1949,11 @@ function summaryTab(n,ed){
   </div>`;
 }
 /* one chronological record for the file: visits, follow-up steps, ideas and edits */
+const rvAttendees=r=>[...(r.pids||[]).map(id=>getP(id)?.name).filter(Boolean),...(r.participants?[r.participants]:[])].join('، ');
 const REC={review:{t:'بررسی',c:'--ok'},step:{t:'پیگیری',c:'--accent'},idea:{t:'ایده',c:'--flag'},change:{t:'تغییر',c:'--mute'}};
 function records(n){
   const out=[];
-  vlist(n.reviews).forEach(r=>out.push({k:'review',date:r.date,who:r.by,x:esc(r.type),y:esc(r.summary)+(r.result?'، نتیجه: '+esc(r.result):''),o:r,act:'edit-review'}));
+  vlist(n.reviews).forEach(r=>{const at=rvAttendees(r);out.push({k:'review',date:r.date,who:r.by,x:esc(r.type),y:esc(r.summary)+(r.result?'، نتیجه: '+esc(r.result):'')+(at?'<br><span class="muted small">حاضران: '+esc(at)+'</span>':''),o:r,act:'edit-review'});});
   n.problems.filter(p=>!p._st).forEach(p=>vlist(p.steps).forEach(st=>out.push({k:'step',date:st.date,who:st.by,x:esc(st.action),y:`برای مشکل «${esc(p.title)}»، <span class="pill ${PSTAT[st.status].c}">${PSTAT[st.status].t}</span>`,o:st})));
   vlist(n.ideas).forEach(i=>{const c=db.changes.find(x=>x.tid===i.id&&x.op==='create');out.push({k:'idea',date:c?isoDay(new Date(c.t)):'',who:c?uName(c.uid):'—',x:esc(i.type+'، '+i.title),y:(i.proposer?'پیشنهاد: '+esc(i.proposer)+'، ':'')+`<span class="pill ${ISTAT[i.status].c}">${ISTAT[i.status].t}</span>`,o:i,act:'edit-idea'});});
   if(!isViewer())db.changes.filter(c=>c.nb===n.id&&c.ent==='nb').forEach(c=>out.push({k:'change',date:isoDay(new Date(c.t)),who:uName(c.uid),x:esc(c.txt),y:`<span class="pill ${CST[c.st]?.c||'mute'}">${CST[c.st]?.t||c.st}</span>`}));
@@ -2021,7 +2022,7 @@ function reviewsTab(n,ed){
   return `<div class="tab-head"><span class="muted small">هر بازدید، جلسه یا تماس با محله اینجا ثبت می‌شود.</span>${ed?`<button class="btn primary sm" data-act="add-review">+ ثبت بررسی</button>`:''}</div>
   ${list.length?`<div class="card" style="padding:0 16px">${list.map(r=>`<div class="review">
     <div><div class="d">${fmtDate(r.date)}</div><div class="muted small">${fa(daysSince(r.date))} روز پیش</div></div>
-    <div class="body"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="tag">${esc(r.type)}</span><span class="muted small">ثبت: ${esc(r.by)}</span>${r.participants?`<span class="muted small">، حاضران: ${esc(r.participants)}</span>`:''}${stBadge(r)}<span class="spacer"></span>${ed?`<button class="btn sm ghost" data-act="edit-review" data-id="${r.id}">ویرایش</button>`:''}</div>
+    <div class="body"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="tag">${esc(r.type)}</span><span class="muted small">ثبت: ${esc(r.by)}</span>${rvAttendees(r)?`<span class="muted small">، حاضران: ${esc(rvAttendees(r))}</span>`:''}${stBadge(r)}<span class="spacer"></span>${ed?`<button class="btn sm ghost" data-act="edit-review" data-id="${r.id}">ویرایش</button>`:''}</div>
     <p>${esc(r.summary)}</p>${r.result?`<div class="res"><b>نتیجه:</b> ${esc(r.result)}</div>`:''}${rvInline(r)}</div>
   </div>`).join('')}</div>`:`<div class="card empty"><b>هنوز بررسی‌ای ثبت نشده است.</b></div>`}`;
 }
@@ -2369,6 +2370,7 @@ function diffHtml(c){
 function fmtVal(k,v){
   if(v==null||v===''||(Array.isArray(v)&&!v.length))return '—';
   if(k==='steps')return fa(v.length)+' مرحله';
+  if(k==='pids')return v.map(id=>getP(id)?.name||'—').join('، ');
   if(Array.isArray(v))return v.join('، ');
   if(k==='prio')return PRIO[v]?.t||v;
   if(k==='status')return (PSTAT[v]||ISTAT[v])?.t||v;
@@ -2729,7 +2731,7 @@ function statusForm(n){
       if(before===after&&!v.note){toast('تغییری ثبت نشد');return false;}
       const grp=uid();let c=null;
       if(before!==after)c=commit({ent:'nb',op:'update',nb:n.id,tid:n.id,data,txt:'تغییر وضعیت: '+after,tn:n.name,grp});
-      const c2=commit({ent:'review',op:'create',nb:n.id,data:{date:today(),type:'بررسی دفتری',by:u.name,uid:u.id,participants:'',summary:before!==after?`تغییر وضعیت از «${before}» به «${after}».`:'یادداشت وضعیت',result:v.note},txt:'ثبت بررسی «بررسی دفتری»',tn:n.name,grp});
+      const c2=commit({ent:'review',op:'create',nb:n.id,data:{date:today(),type:'تغییر وضعیت',by:u.name,uid:u.id,participants:'',summary:before!==after?`تغییر وضعیت از «${before}» به «${after}».`:'یادداشت وضعیت',result:v.note},txt:'ثبت بررسی «تغییر وضعیت»',tn:n.name,grp});
       return c||c2;
     }});
 }
@@ -2844,16 +2846,25 @@ function ideaForm(n,i,preset){
 }
 function reviewForm(n,r,preset){
   const val=k=>preset?.[k]??r?.[k];
+  const tr=n.links.filter(l=>vis(l)&&!(l._st==='pending'&&l._del)).map(l=>({l,p:getP(l.pid)})).filter(x=>x.p);
   openForm({title:r?'ویرایش بررسی':'ثبت بررسی',fields:[
     {name:'date',label:'تاریخ',type:'date',max:'today',value:val('date')||today(),required:true},
-    {name:'type',label:'نوع بررسی',type:'select',options:RTYPES,value:val('type')},
-    {name:'participants',label:'حاضران',value:val('participants')},
+    {name:'type',label:'نوع بررسی',type:'select',options:val('type')&&!RTYPES.includes(val('type'))?[...RTYPES,val('type')]:RTYPES,value:val('type')},
+    ...(tr.length?[{name:'pids',label:'متولیان حاضر',type:'multi',options:tr.map(x=>[x.p.id,x.p.name+'، '+x.l.roles[0]]),value:val('pids')||[],hint:'برای هر فردی که تیک بزنید، این مورد در «سابقه ارتباط» پرونده‌ی او هم ثبت می‌شود.'}]:[]),
+    {name:'participants',label:tr.length?'سایر حاضران':'حاضران',value:val('participants'),hint:tr.length?'افرادی که در فهرست متولیان نیستند.':''},
     {name:'summary',label:'شرح بررسی',type:'textarea',required:true,value:val('summary')},
     {name:'result',label:'نتیجه',type:'textarea',value:val('result')},
   ],
   onDelete:r?()=>{remove('review',r,{nb:n.id,txt:'حذف بررسی',tn:n.name});return isOp()?'درخواست حذف برای تأیید ارسال شد':'حذف شد';}:null,
-  onSubmit:v=>{const u=me();return save('review',r,r?v:{...v,by:u.name,uid:u.id},{nb:n.id,txt:(r?'ویرایش':'ثبت')+' بررسی «'+v.type+'»',tn:n.name});}});
+  onSubmit:v=>{const u=me();v.pids=v.pids||[];
+    const fresh=v.pids.filter(id=>!(r?.pids||[]).includes(id));const grp=fresh.length?uid():undefined;
+    const c=save('review',r,r?v:{...v,by:u.name,uid:u.id},{nb:n.id,txt:(r?'ویرایش':'ثبت')+' بررسی «'+v.type+'»',tn:n.name,grp});
+    if(c)fresh.forEach(id=>{const p=getP(id);if(!p)return;
+      commit({ent:'contact',op:'create',pid:p.id,grp,data:{date:v.date,type:RV2CT[v.type]||'جلسه حضوری',summary:v.type+' محله '+n.name+': '+v.summary,result:v.result||'',rv:c.tid,by:u.name,uid:u.id},txt:'ثبت ارتباط با «'+p.name+'»',tn:p.name});});
+    return c;}});
 }
+/* نوع بررسی محله ← نوع ارتباط در پرونده‌ی فرد (برای متولیان حاضر) */
+const RV2CT={'بازدید میدانی':'بازدید','جلسه با متولیان':'جلسه حضوری','تماس تلفنی':'تماس تلفنی'};
 function userForm(u){
   openForm({title:u?'ویرایش کاربر':'افزودن کاربر',noApprovalNote:true,fields:[
     {name:'name',label:'نام و نام خانوادگی',required:true,value:u?.name},

@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-8V4yqP4m4awEaXMUicwFIWYQEILlPfibKde22Qvh3UE='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-fHoyKHRpi7dFZWnkFIQAF0TYNwiI6sefNrXippq9yDw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -854,10 +854,14 @@ a.btn{text-decoration:none}
   .nav a[aria-current="page"] svg{color:#f0d48c;opacity:1}
   .nav a[aria-current="page"]::before{display:none}
   .nav a .badge{box-shadow:0 0 0 2px var(--surface)}
+  .nav a:not([aria-current="page"]):hover{background:transparent;color:var(--muted)}
   body{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .fab{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .toast{inset-block-end:calc(92px + env(safe-area-inset-bottom,0px))}
 }
+/* v19: فیلدهای تازه‌ی پرونده‌ی فرد */
+.kv dd.pre{white-space:pre-line}
+.tag.tag-c{background:var(--flag-soft);color:var(--flag-ink)}
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1005,12 +1009,16 @@ const CST={pending:{t:'در انتظار تأیید',c:'warn i-clock'},approved:
 const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',review:'بررسی',contact:'ارتباط با فرد'};
 const OPW={create:'ثبت',update:'ویرایش',delete:'حذف'};
 const GENDER={m:'مرد',f:'زن'};
+const MARITAL={single:'مجرد',married:'متأهل'};
+/* نمونه‌ی اولیه؛ مدیر از «شهرها و دسته‌بندی‌ها» عوضش می‌کند */
+const COURSES0=['دوره مقدماتی پرچمدار','مهارت‌های ارتباطی','کار با کودک و نوجوان','مدیریت جلسه و برنامه','رسانه و فضای مجازی','کار تیمی و مسئولیت‌پذیری'];
+const SKILLS_NEW=['سخنرانی چندرسانه‌ای','مداحی','اجرا','کار با کودک','پژوهش','هوش مصنوعی','رسانه'];
 const EDU=['زیر دیپلم','دیپلم','کاردانی','کارشناسی','کارشناسی ارشد','دکتری','حوزوی'];
 const COOP={active:{t:'همکاری فعال',c:'ok'},low:{t:'همکاری کم',c:'mute'},inactive:{t:'بدون همکاری',c:'mute'}};
 const CTYPES=['تماس تلفنی','جلسه حضوری','پیامک','بازدید','دعوت به برنامه'];
 const PERIODS=[['7','۷ روز'],['30','۳۰ روز'],['90','۹۰ روز'],['all','همه']];
 const opts=o=>Object.entries(o).map(([k,v])=>[k,v.t]);
-const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'شغل',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
+const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'وضعیت شغلی کنونی',marital:'وضعیت تأهل',jobHist:'سوابق شغلی',strengths:'قوت‌ها',weaknesses:'ضعف‌ها',courses:'دوره‌های توانمندسازی',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
 const DIFF_SKIP=new Set(['id','rv','links','problems','ideas','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
 
 /* ================= seeded random ================= */
@@ -1049,7 +1057,8 @@ function seed(){
     problemCats:['زیرساخت و معابر','بهداشت و سلامت','پسماند و محیط زیست','امنیت و روشنایی','فضای سبز','آموزشی و فرهنگی','اجتماعی','ترافیک و حمل‌ونقل'],
     trusteeRoles:['معتمد محله','امام جماعت','مدیر مدرسه','نماینده شورایاری','نماینده بانوان','فعال فرهنگی','فعال جوانان','کسبه','پزشک/سلامت','خیر'],
     orgs:['شهرداری منطقه','شورایاری','آب و فاضلاب','شرکت برق','پلیس راهور','کلانتری','آموزش و پرورش','بهزیستی','شبکه بهداشت'],
-    skills:['سخنرانی','هماهنگی برنامه','کار با نوجوانان','امور خیریه','ارتباط با ادارات','پزشکی و درمان','آموزش','رسانه و فضای مجازی','حقوقی','فنی و ساختمانی'],
+    skills:['سخنرانی','سخنرانی چندرسانه‌ای','مداحی','اجرا','کار با کودک','پژوهش','هوش مصنوعی','رسانه','هماهنگی برنامه','کار با نوجوانان','امور خیریه','ارتباط با ادارات','آموزش','حقوقی','فنی و ساختمانی'],
+    courses:COURSES0,
   };
   const used=new Set(['مریم احمدی','حمید شریفی','نرگس صادقی','محمد نوری']);
   const presetOps={'تهران':['علی رضایی','زهرا کریمی','حسین موسوی','فاطمه حسینی','رضا جعفری'],'مشهد':['سعید نظری'],'اصفهان':['الهه طاهری'],'شیراز':['جواد شکوری'],'تبریز':['آرش پورمند']};
@@ -1326,12 +1335,12 @@ function flush(){clearTimeout(saveT);saveT=null;if(db)idb.set(KEY,db).catch(()=>
 function persist(){ver++;if(seeding)return;clearTimeout(saveT);saveT=setTimeout(flush,150);}
 addEventListener('pagehide',()=>{if(saveT)flush();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&saveT)flush();});
-function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureGeo();ensureAuth();ensurePFlag();persist();}
+function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureGeo();ensureAuth();ensurePFlag();ensureFields();persist();}
 
 let session=null;
 try{session=sessionStorage.getItem(KEY+'-u');if(!session){const r=JSON.parse(localStorage.getItem(KEY+'-remember')||'null');if(r&&r.exp>Date.now()){session=r.u;sessionStorage.setItem(KEY+'-u',session);}}}catch(e){}
 const F0={q:'',city:'',district:'',flag:'',active:'',cat:'',prio:'',role:'',op:'',pend:'',need:'',sort:'name'};
-const PF0={q:'',city:'',district:'',role:'',skill:'',gender:'',coop:'',pflag:'',contact:'',nid:'',mine:''};
+const PF0={q:'',city:'',district:'',role:'',skill:'',course:'',gender:'',coop:'',pflag:'',contact:'',nid:'',mine:''};
 const PRF0={stage:'open',chip:'',org:'',q:'',page:1};
 const ui={tab:'summary',pFilter:'open',roleFilter:'',openProb:{},picking:false,adminTab:'users',page:1,pPage:1,uPage:1,logPage:1,usersPage:1,
   f:{...F0},pf:{...PF0},sel:new Set(),period:'30',qTab:'pending',qf:{op:'',ent:''},qsel:new Set(),perfSort:'sub',perfCity:'',showMap:!matchMedia('(max-width:720px)').matches,
@@ -1660,6 +1669,12 @@ const pfPill=p=>p.pflag==='member'?`<span class="pill flag i-flag">پرچمدا�
 /* وضعیت پرچمدار افراد: داده‌ی قدیمی این فیلد را ندارد؛ نمونه‌ی آزمایشی برای متولیان محله‌های پرچم‌سرا */
 function ensurePFlag(){let ch=false;const r=rng(91);
   db.people.forEach(p=>{if(p.pflag)return;const mem=linksOf(p.id).some(x=>x.n.flag==='member');p.pflag=mem&&r()<.7?'member':'none';ch=true;});
+  if(ch)persist();}
+function ensureFields(){const st=db.settings;let ch=false;
+  if(!st.courses){st.courses=[...COURSES0];ch=true;
+    /* داده‌ی نمونه: تأهل و دوره برای بخشی از افراد */
+    const r=rng(314);db.people.forEach(p=>{if(!p.marital&&p.birth&&p.birth<1385)p.marital=r()<.75?'married':'single';if(!p.courses&&r()<.35)p.courses=[...new Set([COURSES0[Math.floor(r()*COURSES0.length)],...(r()<.4?[COURSES0[Math.floor(r()*COURSES0.length)]]:[])])];});}
+  if(!st.skillsV2){SKILLS_NEW.forEach(k=>{if(!st.skills.includes(k)){st.skills.push(k);ch=true;}});st.skillsV2=1;ch=true;}
   if(ch)persist();}
 function ensureAuth(){let ch=false;const r=rng(77);const used=new Set(db.users.map(u=>u.nid).filter(Boolean));
   db.users.forEach(u=>{if(!u.nid){let n;do n=makeNid(r);while(used.has(n));used.add(n);u.nid=n;ch=true;}
@@ -2075,6 +2090,7 @@ function pFiltered(){
     if(f.district&&!ls.some(x=>String(x.n.district)===String(f.district)&&(!f.city||x.n.city===f.city)))return false;
     if(f.role&&!ls.some(x=>x.l.roles.includes(f.role)))return false;
     if(f.skill&&!(p.skills||[]).includes(f.skill))return false;
+    if(f.course&&!(p.courses||[]).includes(f.course))return false;
     if(f.gender&&p.gender!==f.gender)return false;
     if(f.coop&&p.coop!==f.coop)return false;
     if(f.pflag&&(p.pflag||'none')!==f.pflag)return false;
@@ -2102,6 +2118,7 @@ function peopleView(){
       <label class="fgroup"><span>منطقه</span>${sel('district',c?Array.from({length:c.d},(_,i)=>[i+1,'منطقه '+fa(i+1)]):DISTRICT_OPTS(),'همه مناطق')}</label>
       <label class="fgroup"><span>نقش در محله</span>${sel('role',db.settings.trusteeRoles.map(r=>[r,r]),'همه نقش‌ها')}</label>
       <label class="fgroup"><span>مهارت</span>${sel('skill',db.settings.skills.map(r=>[r,r]),'همه مهارت‌ها')}</label>
+      <label class="fgroup"><span>دوره‌ی توانمندسازی</span>${sel('course',(db.settings.courses||[]).map(r=>[r,r]),'همه دوره‌ها')}</label>
       <label class="fgroup"><span>پرچمدار</span>${sel('pflag',opts(PFLAG),'همه')}</label>
       <label class="fgroup"><span>میزان همکاری</span>${sel('coop',opts(COOP),'همه')}</label>
       <label class="fgroup"><span>آخرین ارتباط</span>${sel('contact',[['30','بیش از ۳۰ روز پیش یا هرگز'],['90','بیش از ۹۰ روز پیش یا هرگز'],['none','هرگز ارتباط ثبت نشده']],'همه')}</label>
@@ -2181,9 +2198,14 @@ function personView(p){
         <dt>کد ملی</dt><dd class="num">${showNid(p.nid)}</dd>
         <dt>جنسیت</dt><dd>${GENDER[p.gender]||'—'}</dd>
         <dt>سال تولد</dt><dd class="num">${p.birth?fa(p.birth)+(age?` (${fa(age)} سال)`:''):'—'}</dd>
-        <dt>شغل</dt><dd>${esc(p.job)||'—'}</dd>
+        <dt>وضعیت تأهل</dt><dd>${MARITAL[p.marital]||'—'}</dd>
         <dt>تحصیلات</dt><dd>${esc(p.edu)||'—'}</dd>
+        <dt>وضعیت شغلی</dt><dd>${esc(p.job)||'—'}</dd>
+        ${p.jobHist?`<dt>سوابق شغلی</dt><dd class="pre">${esc(p.jobHist)}</dd>`:''}
         <dt>مهارت‌ها</dt><dd>${(p.skills||[]).length?`<span class="tags">${p.skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</span>`:'—'}</dd>
+        <dt>دوره‌ها</dt><dd>${(p.courses||[]).length?`<span class="tags">${p.courses.map(s=>`<span class="tag tag-c">${esc(s)}</span>`).join('')}</span>`:'—'}</dd>
+        ${p.strengths?`<dt>قوت‌ها</dt><dd class="pre">${esc(p.strengths)}</dd>`:''}
+        ${p.weaknesses&&!isViewer()?`<dt>ضعف‌ها</dt><dd class="pre">${esc(p.weaknesses)}</dd>`:''}
         <dt>آخرین ارتباط</dt><dd>${lastContact(p)?fmtDate(lastContact(p)):'ثبت نشده'}</dd>
         <dt>ثبت توسط</dt><dd>${esc(uName(p.by))}</dd>
       </dl>
@@ -2408,6 +2430,7 @@ function fmtVal(k,v){
   if(k==='status')return (PSTAT[v]||ISTAT[v])?.t||v;
   if(k==='active')return v?'فعال':'غیرفعال';
   if(k==='gender')return GENDER[v]||v;
+  if(k==='marital')return MARITAL[v]||v;
   if(k==='coop')return COOP[v]?.t||v;
   if(k==='flag')return FLAG[v]?.t||v;
   if(k==='pflag')return PFLAG[v]?.t||v;
@@ -2570,7 +2593,8 @@ function adminCats(){
       <div class="inline-add" style="max-width:420px;margin-top:8px"><input type="text" id="new-prov" placeholder="نام استان تازه" aria-label="نام استان"><button class="btn sm" data-act="add-prov">افزودن استان</button></div>
     </div>
     ${block('trusteeRoles','برچسب‌های نقش متولیان','برای هر متولی می‌توان یک یا چند برچسب انتخاب کرد. در فهرست محله‌ها و افراد بر اساس همین نقش‌ها دسته‌بندی می‌شود.')}
-    ${block('skills','مهارت‌های افراد','در پرونده هر فرد ثبت می‌شود و در صفحه افراد قابل فیلتر است.')}
+    ${block('skills','مهارت‌های افراد','در پرونده هر فرد به‌صورت برچسب ثبت می‌شود و در صفحه افراد قابل فیلتر است.')}
+    ${block('courses','دوره‌های توانمندسازی','دوره‌هایی که افراد گذرانده‌اند؛ در پرونده هر فرد تیک زده می‌شود و در صفحه افراد قابل فیلتر است.')}
     ${block('problemCats','دسته‌بندی مشکلات','برای فیلتر محله‌ها بر اساس نوع مشکل باز استفاده می‌شود.')}
     ${block('orgs','نهادهای ارجاع','در مراحل پیگیری، مشکل به یکی از این نهادها ارجاع می‌شود.')}
   </div>`;
@@ -2806,9 +2830,14 @@ function personForm(p,linkTo,q){
       validate:v=>{if(!v)return '';if(!nidOk(v))return esc('کد ملی معتبر نیست.');const x=db.people.find(o=>o!==p&&o.nid===v);return x?dupBtn(x):'';}},
     {more:1,name:'gender',label:'جنسیت',type:'select',options:[['','—'],['m','مرد'],['f','زن']],value:p?.gender},
     {more:1,name:'birth',label:'سال تولد (شمسی)',type:'number',num:true,inputmode:'numeric',value:p?.birth,validate:v=>v!==''&&(v<1300||v>1400)?esc('سال تولد را چهار رقمی شمسی وارد کنید.'):''},
-    {more:1,name:'job',label:'شغل',value:p?.job},
+    {more:1,name:'marital',label:'وضعیت تأهل',type:'select',options:[['','—'],...Object.entries(MARITAL)],value:p?.marital},
     {more:1,name:'edu',label:'تحصیلات',type:'select',options:[['','—'],...EDU.map(e=>[e,e])],value:p?.edu},
-    {more:1,name:'skills',label:'مهارت‌ها',type:'multi',options:s.skills,value:p?.skills||[]},
+    {more:1,name:'job',label:'وضعیت شغلی کنونی',value:p?.job,ph:'مثلاً کارمند بانک، بازنشسته، دانشجو'},
+    {more:1,name:'jobHist',label:'سوابق شغلی',type:'textarea',value:p?.jobHist},
+    {more:1,name:'skills',label:'مهارت‌ها',type:'multi',options:s.skills,value:p?.skills||[],hint:'فهرست مهارت‌ها را مدیر سامانه از «مدیریت ← شهرها و دسته‌بندی‌ها» تعیین می‌کند.'},
+    {more:1,name:'courses',label:'دوره‌های توانمندسازی گذرانده',type:'multi',options:s.courses||[],value:p?.courses||[]},
+    {more:1,name:'strengths',label:'قوت‌های شخصیتی و عملکردی',type:'textarea',value:p?.strengths},
+    {more:1,name:'weaknesses',label:'ضعف‌های شخصیتی و عملکردی',type:'textarea',value:p?.weaknesses,hint:'این بخش برای کاربر «نمایشی» نشان داده نمی‌شود.'},
     {name:'pflag',label:'وضعیت پرچمدار',type:'select',options:opts(PFLAG),value:p?.pflag||'none'},
     {more:1,name:'coop',label:'میزان همکاری',type:'select',options:opts(COOP),value:p?.coop||'active'},
     {more:1,name:'note',label:'یادداشت',type:'textarea',value:p?.note},
@@ -3042,7 +3071,7 @@ app.addEventListener('click',e=>{
     case 'bulk-clear':ui.sel.clear();updateList();break;
     case 'bulk-assign':{const op=$('#bulk-op').value;let k=0;const grp=uid();ui.sel.forEach(nid=>{const x=findN(nid);if(x&&x.op!==op&&canEdit(x)){commit({ent:'nb',op:'update',nb:x.id,tid:x.id,data:{op},txt:'تخصیص به '+(op?uName(op):'هیچ کارشناسی'),tn:x.name,grp});k++;}});ui.sel.clear();updateList();toast(fa(k)+' محله تخصیص داده شد');break;}
     case 'export-nb':{const list=filtered();downloadCSV('parchamdar-mahalleha.csv',[['کد','محله','شهر','منطقه','کارشناس','پرچم‌سرا','وضعیت','متولیان','مشکلات باز','آخرین بررسی','نشانی','کد پستی'],...list.map(x=>[x.code,x.name,x.city,x.district,uName(x.op),FLAG[x.flag].t,x.active?'فعال':'غیرفعال',x.links.filter(l=>!l._st).length,openProblems(x).length,lastReview(x),x.address,x.postal])]);break;}
-    case 'export-people':{const list=pFiltered();downloadCSV('parchamdar-afrad.csv',[['نام','موبایل','کد ملی','جنسیت','سال تولد','شغل','تحصیلات','مهارت‌ها','پرچمدار','همکاری','محله‌ها و نقش‌ها','آخرین ارتباط'],...list.map(x=>[x.name,seePhone()?x.mobile:'',seeNid()?x.nid:'',GENDER[x.gender]||'',x.birth||'',x.job||'',x.edu||'',(x.skills||[]).join('، '),(PFLAG[x.pflag]||PFLAG.none).t,COOP[x.coop]?.t||'',myLinks(x.id).filter(y=>!y.l._st).map(y=>y.n.name+' ('+y.l.roles.join('، ')+')').join(' | '),lastContact(x)])]);break;}
+    case 'export-people':{const list=pFiltered();downloadCSV('parchamdar-afrad.csv',[['نام','موبایل','کد ملی','جنسیت','سال تولد','وضعیت شغلی','تحصیلات','وضعیت تأهل','سوابق شغلی','مهارت‌ها','دوره‌های توانمندسازی','قوت‌ها','ضعف‌ها','پرچمدار','همکاری','محله‌ها و نقش‌ها','آخرین ارتباط'],...list.map(x=>[x.name,seePhone()?x.mobile:'',seeNid()?x.nid:'',GENDER[x.gender]||'',x.birth||'',x.job||'',x.edu||'',MARITAL[x.marital]||'',x.jobHist||'',(x.skills||[]).join('، '),(x.courses||[]).join('، '),x.strengths||'',x.weaknesses||'',(PFLAG[x.pflag]||PFLAG.none).t,COOP[x.coop]?.t||'',myLinks(x.id).filter(y=>!y.l._st).map(y=>y.n.name+' ('+y.l.roles.join('، ')+')').join(' | '),lastContact(x)])]);break;}
     case 'export-perf':{const s=periodStart();const ops=db.users.filter(x=>x.role==='operator'&&(isAdmin()||inProv(x.city)));downloadCSV('parchamdar-amalkard.csv',[['کارشناس','شهر','محله‌ها','ثبت در بازه','تأیید','برگشت','در انتظار','آخرین فعالیت'],...ops.map(o=>{const m=db.changes.filter(c=>c.uid===o.id);const ip=m.filter(c=>c.t>=s);return [o.name,o.city,db.nb.filter(x=>x.op===o.id).length,ip.length,ip.filter(c=>c.st==='approved').length,ip.filter(c=>c.st==='rejected').length,m.filter(c=>c.st==='pending').length,o.last?new Date(o.last).toLocaleString('fa-IR'):''];})]);break;}
     case 'new-nb':nbForm(null);break;
     case 'edit-nb':nbForm(n);break;
@@ -3177,7 +3206,7 @@ render();
   let saved=null;
   try{saved=await idb.get(KEY);}catch(e){}
   if(saved&&saved.v===DBV){db=saved;ver++;}else freshDb();
-  ensureGeo();ensureAuth();ensurePFlag();
+  ensureGeo();ensureAuth();ensurePFlag();ensureFields();
   render();
 })();
 /* PWA: register the service worker only where the page is served as the installable app */

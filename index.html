@@ -2585,7 +2585,10 @@ function linkDialog(n){
       const inp=$('#psearch',f),res=$('#psres',f);
       inp.addEventListener('input',()=>{const q=qnorm(inp.value);if(q.length<2){res.innerHTML='<p class="small muted">حداقل دو حرف وارد کنید.</p>';return;}
         const hits=db.people.filter(p=>visP(p)&&pHay(p).includes(q)).slice(0,8);
-        res.innerHTML=hits.length?hits.map(p=>{const ls=myLinks(p.id);const here=ls.some(x=>x.n===n);return `<div class="psrow"><div><b>${esc(p.name)}</b> <span class="small muted phone">${showPhone(p.mobile)}</span><div class="small muted">${ls.map(x=>esc(x.n.name)).join('، ')||'بدون محله'}</div></div>${here?'<span class="small muted">در همین محله است</span>':`<button type="button" class="btn sm primary" data-pick="${p.id}">انتخاب</button>`}</div>`;}).join(''):'<p class="small muted">فردی پیدا نشد.</p>';});
+        const exact=normDigits(inp.value).replace(/\D/g,'');
+        const far=(mobileOk(exact)||/^\d{10}$/.test(exact))?db.people.filter(p=>vis(p)&&!pIn(p)&&(p.mobile===exact||p.nid===exact)):[];
+        const farHtml=far.map(p=>`<div class="psrow far"><div><b>${esc(p.name)}</b><div class="small muted">ثبت‌شده در محله‌ای خارج از محدوده‌ی شما</div></div><button type="button" class="btn sm primary" data-pick="${p.id}">افزودن به این محله</button></div>`).join('');
+        res.innerHTML=hits.length?hits.map(p=>{const ls=myLinks(p.id);const here=ls.some(x=>x.n===n);return `<div class="psrow"><div><b>${esc(p.name)}</b> <span class="small muted phone">${showPhone(p.mobile)}</span><div class="small muted">${ls.map(x=>esc(x.n.name)).join('، ')||'بدون محله'}</div></div>${here?'<span class="small muted">در همین محله است</span>':`<button type="button" class="btn sm primary" data-pick="${p.id}">انتخاب</button>`}</div>`;}).join('')+farHtml:farHtml||`<p class="small muted">فردی پیدا نشد.${isOp()?' اگر این فرد در محله‌ی دیگری ثبت شده، شماره موبایل یا کد ملی او را کامل وارد کنید.':''}</p>`;});
       res.addEventListener('click',e=>{const b=e.target.closest('[data-pick]');if(b)linkForm(n,null,getP(b.dataset.pick));});
       $('[data-newp]',f).addEventListener('click',()=>personForm(null,n,inp.value));
     }});
@@ -2602,7 +2605,7 @@ function linkForm(n,l,p){
 function personForm(p,linkTo,q){
   const s=db.settings;const u=me();
   const pre=!p&&q?(/^[\d۰-۹]+$/.test(q.trim())?{mobile:normDigits(q)}:{name:q}):{};
-  const dupBtn=x=>!pIn(x)?`این ${'شماره'} قبلاً برای فردی در محله‌ای خارج از محدوده‌ی شما ثبت شده است. برای پیوند او به این محله با ${isOp()?'سرپرست':'مدیر سایت'} هماهنگ کنید.`:`این ${'فرد'} قبلاً ثبت شده: <b>${esc(x.name)}</b> ${linkTo?`<button type="button" class="btn sm" data-usep="${x.id}">استفاده از همین پرونده</button>`:`<a href="#p-${x.id}" data-close-dlg>مشاهده پرونده</a>`}`;
+  const dupBtn=x=>!pIn(x)?(linkTo?`این فرد قبلاً در محله‌ی دیگری ثبت شده: <b>${esc(x.name)}</b> <button type="button" class="btn sm" data-usep="${x.id}">افزودن همین فرد به ${esc(linkTo.name)}</button>`:`این فرد قبلاً در محله‌ی دیگری ثبت شده است. برای افزودن او به محله‌ی خودتان، در پرونده‌ی محله «افزودن متولی» را بزنید و همین شماره را وارد کنید.`):`این ${'فرد'} قبلاً ثبت شده: <b>${esc(x.name)}</b> ${linkTo?`<button type="button" class="btn sm" data-usep="${x.id}">استفاده از همین پرونده</button>`:`<a href="#p-${x.id}" data-close-dlg>مشاهده پرونده</a>`}`;
   const fields=[
     {name:'name',label:'نام و نام خانوادگی',required:true,value:p?.name??pre.name},
     {name:'mobile',label:'موبایل',type:'tel',dir:'ltr',inputmode:'tel',digits:true,value:p?.mobile??pre.mobile,ph:'09xxxxxxxxx',

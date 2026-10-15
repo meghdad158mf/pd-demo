@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-qp4/CYPLToCnRcGFRep5CrxnbL3o4arh6dEMIvwbINA='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-FjmyaH0X/3kLFidP+xeTgvU20RoAjQ3FF8ICV4494NY='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -865,6 +865,47 @@ a.btn{text-decoration:none}
 /* v20: تب «برنامه‌ها» در پرونده‌ی محله */
 @media (max-width:720px){.tabs.tabs4.tabs5{grid-template-columns:repeat(5,minmax(0,1fr))}.tabs.tabs5 button{font-size:13px}}
 @media (max-width:899px){.verbs .verb:last-child:nth-child(even){grid-column:1/-1}}
+/* v21: خانه‌ی کارشناس — شش دکمه‌ی ثبت سریع */
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
+@media (min-width:900px){.acts{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.act{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;min-height:104px;padding:12px 6px 10px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);font:inherit;text-align:center;cursor:pointer}
+.act .vi{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-fg);flex:none}
+.act b{font-size:13.5px;font-weight:800;line-height:1.45}
+.act small{font-size:12px;color:var(--muted);line-height:1.3}
+.act:active{transform:scale(.97)}
+.act:first-child{background:var(--navy);border-color:var(--navy);color:#fff}
+.act:first-child .vi{background:rgba(255,255,255,.12);color:var(--flag)}
+/* ثبت گروهی دوره: فهرست تیک‌خوردنی متولیان */
+.ck-tools{display:flex;gap:8px;flex-wrap:wrap}.ck-tools>*{flex:1 1 140px;min-width:0}
+.ck-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.ck-list{max-height:46dvh;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.ck-row{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.ck-row:last-of-type{border-bottom:0}
+.ck-row[hidden]{display:none}
+.ck-row input{width:22px;height:22px;flex:none;accent-color:var(--accent)}
+.ck-row span{display:flex;flex-direction:column;min-width:0}.ck-row b{font-size:14.5px}.ck-row small{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ck-row:has(input:checked){background:var(--accent-soft)}
+.ck-empty{padding:12px}
+.course-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.course-row .btn{margin-inline-start:auto}
+/* فیلترهای کم‌کاربردتر زیر «بیشتر» */
+.fmore>summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--accent-fg);padding:8px 0;list-style:none}
+.fmore>summary::-webkit-details-marker{display:none}
+.fmore[open]>summary{margin-bottom:6px}
+@media (min-width:721px){.fmore>summary{display:none}}
+@media (max-width:720px){
+  /* دکمه‌ی شناور «ثبت»: کوچک هنگام پایین رفتن، و جای خالی پایین صفحه */
+  .fab{transition:width .18s ease,padding .18s ease,transform .12s ease}
+  .fab.mini{width:56px;padding:0;justify-content:center}
+  .fab.mini span{display:none}
+  body:has(.fab){padding-bottom:calc(160px + env(safe-area-inset-bottom,0px))}
+  /* کارت‌های مشکل جمع‌وجورتر: دکمه کنار متن */
+  .kgrid .kcard,#g-urg .kcard{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;row-gap:4px;cursor:pointer}
+  .kgrid .kcard>.t,.kgrid .kcard>.s,.kgrid .kcard>.m,#g-urg .kcard>.t,#g-urg .kcard>.s,#g-urg .kcard>.m{grid-column:1}
+  .kgrid .kcard>.a,#g-urg .kcard>.a{grid-column:2;grid-row:1/span 3;align-self:center;margin:0}
+  .kgrid .kcard>.a .btn,#g-urg .kcard>.a .btn{flex:0 0 auto;min-height:44px;padding-inline:12px;font-size:13px;white-space:nowrap}
+  .kpi4 span{font-size:12.5px}
+  .tab-head .chips button{min-height:40px}
+}
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1009,7 +1050,7 @@ const ISTAT={proposed:{t:'پیشنهادی',c:'mute'},review:{t:'در حال ب�
 const RTYPES=['بازدید میدانی','جلسه با متولیان','تماس تلفنی','گزارش مردمی'];
 const LEVEL={admin:{t:'مدیر سامانه',c:'flag'},supervisor:{t:'رابط استانی',c:'acc'},operator:{t:'کارشناس محله',c:'mute'},viewer:{t:'نمایشی',c:'mute'}};
 const CST={pending:{t:'در انتظار تأیید',c:'warn i-clock'},approved:{t:'تأییدشده',c:'ok'},rejected:{t:'برگشت برای اصلاح',c:'bad i-back'},auto:{t:'ثبت رابط استانی',c:'acc'},admin:{t:'ثبت مدیر',c:'mute'},revoked:{t:'لغو با عدم تأیید مدیر',c:'bad'},withdrawn:{t:'پس‌گرفته',c:'mute'}};
-const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',program:'برنامه',review:'بررسی',contact:'ارتباط با فرد'};
+const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',program:'برنامه',course:'دوره‌ی توانمندسازی',review:'بررسی',contact:'ارتباط با فرد'};
 const OPW={create:'ثبت',update:'ویرایش',delete:'حذف'};
 const GENDER={m:'مرد',f:'زن'};
 const MARITAL={single:'مجرد',married:'متأهل'};
@@ -1023,7 +1064,7 @@ const COOP={active:{t:'همکاری فعال',c:'ok'},low:{t:'همکاری کم'
 const CTYPES=['تماس تلفنی','جلسه حضوری','پیامک','بازدید','دعوت به برنامه'];
 const PERIODS=[['7','۷ روز'],['30','۳۰ روز'],['90','۹۰ روز'],['all','همه']];
 const opts=o=>Object.entries(o).map(([k,v])=>[k,v.t]);
-const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',place:'محل برگزاری',audience:'تعداد شرکت‌کنندگان',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'وضعیت شغلی کنونی',marital:'وضعیت تأهل',jobHist:'سوابق شغلی',strengths:'قوت‌ها',weaknesses:'ضعف‌ها',courses:'دوره‌های توانمندسازی',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
+const FL={name:'نام',city:'شهر',district:'منطقه',address:'نشانی',postal:'کد پستی',pop:'جمعیت تقریبی',desc:'شرح',active:'وضعیت پرونده',lat:'عرض جغرافیایی',lng:'طول جغرافیایی',title:'عنوان',cat:'دسته',prio:'اولویت',org:'نهاد ارجاع',date:'تاریخ',action:'اقدام',status:'وضعیت',note:'یادداشت',type:'نوع',proposer:'پیشنهاددهنده',related:'مرتبط با مشکل',participants:'سایر حاضران',place:'محل برگزاری',audience:'تعداد شرکت‌کنندگان',pids:'متولیان حاضر',summary:'شرح',result:'نتیجه',roles:'نقش‌ها',pid:'فرد',mobile:'موبایل',nid:'کد ملی',gender:'جنسیت',birth:'سال تولد',job:'وضعیت شغلی کنونی',marital:'وضعیت تأهل',jobHist:'سوابق شغلی',strengths:'قوت‌ها',weaknesses:'ضعف‌ها',courses:'دوره‌های توانمندسازی',course:'دوره',edu:'تحصیلات',skills:'مهارت‌ها',coop:'میزان همکاری',flag:'وضعیت پرچم‌سرا',flagSince:'پرچم‌سرا از',pflag:'وضعیت پرچمدار',op:'کارشناس مسئول',steps:'مراحل'};
 const DIFF_SKIP=new Set(['id','rv','links','problems','ideas','programs','reviews','contacts','code','seq','updatedAt','updatedBy','by','uid','created','_st','_cid','_del']);
 
 /* ================= seeded random ================= */
@@ -1432,6 +1473,7 @@ function host(ch){
   if(ch.ent==='nb')return db.nb;
   if(ch.ent==='person')return db.people;
   if(ch.ent==='contact'){const p=getP(ch.pid);return p?p.contacts:null;}
+  if(ch.ent==='course'){const p=getP(ch.pid);return p?(p.courseLog||(p.courseLog=[])):null;}
   const n=findN(ch.nb);if(!n)return null;
   if(ch.ent==='step'){const p=n.problems.find(x=>x.id===ch.par);return p?p.steps:null;}
   return n[{link:'links',problem:'problems',idea:'ideas',review:'reviews',program:'programs'}[ch.ent]]||null;
@@ -1656,10 +1698,11 @@ function pager(total,page,key){
 const pageSlice=(a,page)=>a.slice((page-1)*PAGE,page*PAGE);
 const FCH='<span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>';
 /* a card that is open on desktop and folded on the phone */
-const fold=(title,meta,body,cls='')=>`<details class="card sec fold ${cls}" data-fk="${esc(title)}" ${(ui.folds?.[title]??!isMob())?'open':''}><summary><h3>${title}</h3>${meta?`<span class="muted small">${meta}</span>`:''}${FCH}</summary>${body}</details>`;
+const FOLD_OPEN=new Set(['فعالیت ۳۰ روز اخیر']);
+const fold=(title,meta,body,cls='')=>`<details class="card sec fold ${cls}" data-fk="${esc(title)}" ${(ui.folds?.[title]??(FOLD_OPEN.has(title)||!isMob()))?'open':''}><summary><h3>${title}</h3>${meta?`<span class="muted small">${meta}</span>`:''}${FCH}</summary>${body}</details>`;
 const segP=()=>`<div class="seg" role="group" aria-label="بازه زمانی">${PERIODS.map(([v,t])=>`<button type="button" data-act="period" data-v="${v}" aria-pressed="${ui.period===v}">${t}</button>`).join('')}</div>`;
 function chRow(c,showUser=true){
-  const link=c.ent==='person'||c.ent==='contact'?(getP(c.pid)?`#p-${c.pid}`:''):(c.nb&&findN(c.nb)?`#n-${c.nb}`:'');
+  const link=c.ent==='person'||c.ent==='contact'||c.ent==='course'?(getP(c.pid)?`#p-${c.pid}`:''):(c.nb&&findN(c.nb)?`#n-${c.nb}`:'');
   return `<tr style="cursor:default"><td class="small muted" data-l="زمان">${relTime(c.t)}</td>${showUser?`<td data-l="کاربر"><a href="#u-${c.uid}">${esc(uName(c.uid))}</a></td>`:''}
     <td data-l="اقدام" class="m-main">${esc(c.txt||OPW[c.op]+' '+ENT[c.ent])}</td><td data-l="پرونده">${link?`<a href="${link}">${esc(c.tn||'—')}</a>`:esc(c.tn||'—')}</td>
     <td data-l="وضعیت"><span class="pill ${CST[c.st]?.c||'mute'}">${CST[c.st]?.t||c.st}</span>${c.rv?.note?`<div class="small muted">${esc(c.rv.note)}</div>`:''}</td></tr>`;
@@ -1671,12 +1714,16 @@ const OTP_TTL=120e3,OTP_GAP=OTP_TTL,OTP_TRIES=5,LOCK_MS=15*60e3,REMEMBER_MS=30*D
 const ADMIN_DEMO_PW='parchamdar1405';
 const pwHash=p=>{let h=0x811c9dc5;for(const c of 'pd:'+p){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}return h.toString(16);};
 function makeNid(r){for(;;){const d=Array.from({length:9},()=>Math.floor(r()*10));if(d.every(x=>x===d[0]))continue;const m=d.reduce((a,x,i)=>a+x*(10-i),0)%11;return d.join('')+(m<2?m:11-m);}}
+/* دوره‌های یک فرد: سابقه‌ی تاریخ‌دار + نام‌های قدیمی بدون تاریخ */
+const personCourses=p=>[...new Set([...vlist(p.courseLog||[]).map(c=>c.course),...(p.courses||[])])];
 const pfPill=p=>p.pflag==='member'?`<span class="pill flag i-flag">پرچمدار</span> `:'';
 /* وضعیت پرچمدار افراد: داده‌ی قدیمی این فیلد را ندارد؛ نمونه‌ی آزمایشی برای متولیان محله‌های پرچم‌سرا */
 function ensurePFlag(){let ch=false;const r=rng(91);
   db.people.forEach(p=>{if(p.pflag)return;const mem=linksOf(p.id).some(x=>x.n.flag==='member');p.pflag=mem&&r()<.7?'member':'none';ch=true;});
   if(ch)persist();}
 function ensureFields(){const st=db.settings;let ch=false;
+  if(!st.courseLogV1){st.courseLogV1=1;ch=true;const r=rng(161);
+    db.people.forEach(p=>{if(!(p.courses||[]).length)return;p.courseLog=p.courseLog||[];p.courses.forEach(k=>{if(!p.courseLog.some(c=>c.course===k))p.courseLog.push({id:uid(),course:k,date:isoDaysAgo(20+Math.floor(r()*300)),place:'',by:getU(p.by)?.name||'—',uid:p.by||''});});delete p.courses;});}
   if(!st.progTypes){st.progTypes=[...PROG0];ch=true;
     /* داده‌ی نمونه: چند برنامه برای بخشی از محله‌ها */
     const r=rng(2718),TT={'سخنرانی':['سخنرانی با موضوع خانواده','سخنرانی هفتگی مسجد'],'مداحی':['مراسم مداحی شب جمعه'],'سرود':['اجرای گروه سرود نوجوانان'],'تئاتر':['نمایش خیابانی کودکان'],'کنش‌های اجتماعی':['جمع‌آوری کمک برای خانواده‌های نیازمند','پاک‌سازی بوستان محله'],'نماز استغاثه':['نماز استغاثه در مسجد محله'],'توسل':['دعای توسل هفتگی']},PL=['مسجد محله','حسینیه','پارک محله','فرهنگسرا','مدرسه'];
@@ -1685,7 +1732,7 @@ function ensureFields(){const st=db.settings;let ch=false;
   db.nb.forEach(n=>{if(!n.programs){n.programs=[];ch=true;}});
   if(!st.courses){st.courses=[...COURSES0];ch=true;
     /* داده‌ی نمونه: تأهل و دوره برای بخشی از افراد */
-    const r=rng(314);db.people.forEach(p=>{if(!p.marital&&p.birth&&p.birth<1385)p.marital=r()<.75?'married':'single';if(!p.courses&&r()<.35)p.courses=[...new Set([COURSES0[Math.floor(r()*COURSES0.length)],...(r()<.4?[COURSES0[Math.floor(r()*COURSES0.length)]]:[])])];});}
+    const r=rng(314);db.people.forEach(p=>{if(!p.marital&&p.birth&&p.birth<1385)p.marital=r()<.75?'married':'single';if(!(p.courseLog||[]).length&&r()<.35){const ks=[...new Set([COURSES0[Math.floor(r()*COURSES0.length)],...(r()<.4?[COURSES0[Math.floor(r()*COURSES0.length)]]:[])])];p.courseLog=ks.map(k=>({id:uid(),course:k,date:isoDaysAgo(20+Math.floor(r()*300)),place:'',by:getU(p.by)?.name||'—',uid:p.by||''}));}});}
   if(!st.skillsV2){SKILLS_NEW.forEach(k=>{if(!st.skills.includes(k)){st.skills.push(k);ch=true;}});st.skillsV2=1;ch=true;}
   if(ch)persist();}
 function ensureAuth(){let ch=false;const r=rng(77);const used=new Set(db.users.map(u=>u.nid).filter(Boolean));
@@ -1801,14 +1848,16 @@ function listView(){
       <div class="fbody">
       <div class="fgroup m-only"><span>گروه‌بندی فهرست</span><div class="toggle" role="group">${[['need','وضعیت'],['district','منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div></div>
       ${showCity?`<label class="fgroup m-only"><span>شهر</span><select data-filter="city"><option value="">همه شهرها</option>${myCities.map(c=>`<option ${ui.f.city===c?'selected':''}>${esc(c)}</option>`).join('')}</select></label>`:''}
-      <label class="fgroup m-only"><span>مرتب‌سازی</span><select data-filter="sort" aria-label="مرتب‌سازی"><option value="name">مرتب‌سازی: نام</option><option value="code">مرتب‌سازی: کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select></label>
+      <label class="fgroup m-only"><span>مرتب‌سازی</span><select data-filter="sort" aria-label="مرتب‌سازی"><option value="name">نام</option><option value="code">کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select></label>
       <div class="fgroup"><span>پرچم‌سرا</span>${seg('flag',[['','همه'],['member','پرچم‌سرا'],['candidate','نامزد'],['none','غیر عضو']])}</div>
       <div class="fgroup"><span>وضعیت پرونده</span>${seg('active',[['','همه'],['yes','فعال'],['no','غیرفعال']])}</div>
       <label class="fgroup"><span>منطقه شهرداری</span><select id="f-district" data-filter="district"></select></label>
       ${u.role!=='viewer'&&u.role!=='operator'?`<label class="fgroup"><span>کارشناس مسئول</span><select id="f-op" data-filter="op"><option value="">همه</option>${u.role==='operator'?'<option value="me">فقط محله‌های من</option>':''}<option value="none">بدون کارشناس</option>${opsAll.map(o=>`<option value="${o.id}">${esc(o.name)}${u.role==='admin'?'، '+esc(o.city):''}</option>`).join('')}</select></label>`:''}
+      ${(()=>{const k=(ui.f.cat?1:0)+(ui.f.prio?1:0)+(ui.f.role?1:0);return `<details class="fmore" ${isMob()&&!k?'':'open'}><summary>فیلترهای بیشتر${k?` <span class="fcount">${fa(k)}</span>`:''}</summary>`;})()}
       <label class="fgroup"><span>دسته مشکل باز</span>${sel('cat',db.settings.problemCats.map(c=>[c,c]),'همه دسته‌ها')}</label>
       <label class="fgroup"><span>اولویت مشکل باز</span>${sel('prio',opts(PRIO),'همه اولویت‌ها')}</label>
       <label class="fgroup"><span>نقش متولی</span>${sel('role',db.settings.trusteeRoles.map(c=>[c,c]),'همه نقش‌ها')}</label>
+      </details>
       <div class="fgroup m-only fs-extra">${isReviewer()?`<button class="btn" data-act="export-nb">خروجی Excel</button>`:''}</div>
       </div>
       ${fsFoot(0,'محله')}
@@ -1817,7 +1866,7 @@ function listView(){
       <div class="toggle d-only" role="group" aria-label="گروه‌بندی فهرست">${[['need','بر اساس وضعیت'],['district','بر اساس منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div>
       ${showCity?`<div class="city-strip d-only" role="group" aria-label="شهر">${[['','همه شهرها',all.length],...myCities.map(c=>[c,c,all.filter(n=>n.city===c).length])].map(([v,t,c])=>`<button type="button" data-act="setf" data-k="city" data-v="${esc(v)}">${esc(t)}<span>${num(c)}</span></button>`).join('')}</div>`:''}
       <div class="toolbar">
-        <input type="search" id="q" data-filter="q" placeholder="${isMob()?'نام محله، کد یا متولی…':'جستجو در نام محله، کد، نشانی، کد پستی یا نام متولی…'}" value="${esc(ui.f.q)}" aria-label="جستجو">
+        <input type="search" id="q" data-filter="q" placeholder="${isMob()?'جستجوی محله یا متولی…':'جستجو در نام محله، کد، نشانی، کد پستی یا نام متولی…'}" value="${esc(ui.f.q)}" aria-label="جستجو">
         <select id="f-sort" class="d-only" data-filter="sort" aria-label="مرتب‌سازی"><option value="name">مرتب‌سازی: نام</option><option value="code">مرتب‌سازی: کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select>
         <button class="btn d-only" data-act="togglemap" aria-pressed="${ui.showMap}">${ui.showMap?'پنهان کردن نقشه':'نمایش نقشه'}</button><button type="button" class="btn mapbtn" data-act="togglemap" aria-pressed="${ui.showMap}" aria-label="${ui.showMap?'بستن نقشه':'نمایش روی نقشه'}">${icon('map')}<span>نقشه</span></button>${fbtn(0)}
       </div>
@@ -1874,7 +1923,7 @@ function updateList(){
     <td data-l="آخرین بررسی" class="small">${lr?`<span class="m-hide">${fmtDate(lr)}</span><div class="small ${ds>60?'crit':'muted'}">${fa(ds)} روز پیش</div>`:'<span class="crit">بدون بررسی</span>'}</td></tr>`;}).join('')}
   </tbody></table></div>${mob?more('page'):pager(list.length,ui.page,'page')}`:(u.role==='operator'&&qnorm(f.q)?`<div class="card empty"><b>در محله‌های شما پیدا نشد.</b><span class="small">این فهرست فقط محله‌های تخصیص‌یافته به شما را نشان می‌دهد.</span></div>`:`<div class="card empty"><b>محله‌ای با این فیلترها پیدا نشد.</b><span class="small">یکی از فیلترها را بردارید یا جستجو را تغییر دهید.</span><button class="btn" data-act="clearf">پاک کردن همه فیلترها</button></div>`));
   updateBulk();
-  if(okHidden)$('#results').insertAdjacentHTML('beforeend',`<button type="button" class="collapsed" data-act="ok-open"><span><span class="st" style="background:var(--ok)"></span>روبه‌راه</span><small>${fa(okHidden)} محله، نمایش</small></button>`);
+  if(okHidden)$('#results').insertAdjacentHTML('beforeend',`<button type="button" class="collapsed" data-act="ok-open"><span><span class="st" style="background:var(--ok)"></span>روبه‌راه</span><small>نمایش ${fa(okHidden)} محله</small></button>`);
   if(listMap){const pts=all0.filter(n=>n.lat!=null).map(n=>[n.lat,n.lng]);const cities=new Set(all0.map(n=>n.city));
     if(!pts.length)listMap.setView([32.6,53.5],5,{animate:false});else if(cities.size>1)listMap.setView([32.4,53.6],5,{animate:false});else listMap.fitBounds(L.latLngBounds(pts),{padding:[28,28],maxZoom:14,animate:false});
     drawMarkers(all0);}
@@ -1920,7 +1969,7 @@ function dossierView(n){
       <h1>محله ${esc(n.name)}</h1>
       <div class="row"><span class="pill ${FLAG[n.flag].c}">${FLAG[n.flag].t}</span>${n.active?'':'<span class="pill mute">پرونده غیرفعال</span>'}${hasCritical(n)?'<span class="pill bad">مشکل بحرانی باز</span>':''}</div>
       <span class="d-loc m-only small"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>${esc(n.address)||'نشانی ثبت نشده'}</span><a href="#nbmap" data-act="to-map">${n.lat!=null?'نقشه':'تعیین موقعیت'}</a></span>
-      <span class="muted small">کارشناس مسئول: ${n.op?`<a href="#u-${n.op}">${esc(uName(n.op))}</a>`:'تعیین نشده'}<span class="m-hide">، آخرین ویرایش: ${esc(n.updatedBy)}، ${relTime(n.updatedAt)}</span></span>
+      <span class="muted small">کارشناس مسئول: ${n.op?(n.op===me().id?'شما':`<a href="#u-${n.op}">${esc(uName(n.op))}</a>`):'تعیین نشده'}<span class="m-hide">، آخرین ویرایش: ${esc(n.updatedBy)}، ${relTime(n.updatedAt)}</span></span>
     </div>
     ${ed?`<button class="btn d-only" data-act="edit-nb">ویرایش مشخصات</button><button type="button" class="icon-btn d-menu m-only" data-act="nb-menu" aria-label="گزینه‌های پرونده" aria-haspopup="dialog">${icon('dots')}</button>`:''}
   </section>
@@ -1969,8 +2018,8 @@ function nbMenu(n){
 /* quick-add sheet: the operator's main actions on a file, one tap from anywhere in the dossier */
 function quickSheet(n){
   const d=$('#dlg');d.classList.remove('as-full');d.onchange=null;const op=openProblems(n);
-  const items=[['review','ثبت بررسی','بازدید، جلسه یا تماس با محله'],['problem','ثبت مشکل','مشکلی که دیده یا گزارش شده'],['program','ثبت برنامه','سخنرانی، مداحی، سرود و…'],...(op.length?[['step','افزودن مرحله پیگیری','برای یکی از '+fa(op.length)+' مشکل باز']]:[]),['trustee','افزودن متولی','فرد معتمد یا مؤثر محله'],['idea','ثبت ایده یا طرح','پیشنهاد اهالی یا متولیان']];
-  const IC={program:'M4 4h16v16H4zM4 9h16M9 4v5M15 4v5',review:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z'};
+  const items=[['review','ثبت بررسی','بازدید، جلسه یا تماس با محله'],['problem','ثبت مشکل','مشکلی که دیده یا گزارش شده'],['program','ثبت برنامه','سخنرانی، مداحی، سرود و…'],['course','ثبت دوره‌ی توانمندسازی','برای متولیان این محله'],...(op.length?[['step','افزودن مرحله پیگیری','برای یکی از '+fa(op.length)+' مشکل باز']]:[]),['trustee','افزودن متولی','فرد معتمد یا مؤثر محله'],['idea','ثبت ایده یا طرح','پیشنهاد اهالی یا متولیان']];
+  const IC={course:'M3 9l9-5 9 5-9 5zM7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5M21 9v5',program:'M4 4h16v16H4zM4 9h16M9 4v5M15 4v5',review:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z'};
   const list=html=>{d.innerHTML=`<div class="sheet"><header><h2>${html.t}</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header><div class="sheet-list">${html.b}</div></div>`;};
   list({t:'ثبت در محله '+esc(n.name),b:items.map(([k,t,h])=>`<button type="button" class="sheet-item" data-q="${k}"><span class="sheet-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg></span><span><b>${t}</b><small>${h}</small></span></button>`).join('')});
   d.classList.add('as-sheet');
@@ -1981,7 +2030,7 @@ function quickSheet(n){
     const k=b.dataset.q;
     if(k==='step'&&op.length>1){list({t:'پیگیری کدام مشکل؟',b:op.sort((a,b)=>PRIO[b.prio].w-PRIO[a.prio].w).map(p=>`<button type="button" class="sheet-item" data-p="${p.id}"><span class="pill ${PRIO[p.prio].c}">${PRIO[p.prio].t}</span><span><b>${esc(p.title)}</b><small>${PSTAT[p.status].t}، ${fa(p.steps.length)} مرحله</small></span></button>`).join('')});return;}
     d.onclick=null;
-    ({program:()=>programForm(n),review:()=>reviewForm(n),problem:()=>problemForm(n),step:()=>stepForm(n,op[0]),trustee:()=>linkDialog(n),idea:()=>ideaForm(n)})[k]();
+    ({course:()=>courseBatchForm(n),program:()=>programForm(n),review:()=>reviewForm(n),problem:()=>problemForm(n),step:()=>stepForm(n,op[0]),trustee:()=>linkDialog(n),idea:()=>ideaForm(n)})[k]();
   };
   if(!d.open)d.showModal();
 }
@@ -2119,7 +2168,7 @@ function pFiltered(){
     if(f.district&&!ls.some(x=>String(x.n.district)===String(f.district)&&(!f.city||x.n.city===f.city)))return false;
     if(f.role&&!ls.some(x=>x.l.roles.includes(f.role)))return false;
     if(f.skill&&!(p.skills||[]).includes(f.skill))return false;
-    if(f.course&&!(p.courses||[]).includes(f.course))return false;
+    if(f.course&&!personCourses(p).includes(f.course))return false;
     if(f.gender&&p.gender!==f.gender)return false;
     if(f.coop&&p.coop!==f.coop)return false;
     if(f.pflag&&(p.pflag||'none')!==f.pflag)return false;
@@ -2215,6 +2264,9 @@ function personView(p){
       <div class="card sec"><div class="sec-h"><h3>نقش در محله‌ها</h3></div>
         ${ls.length?`<div class="stack">${ls.map(x=>`<div class="link-row"><a href="#n-${x.n.id}"><b>${esc(x.n.name)}</b></a><span class="muted small">${esc(x.n.city)}، منطقه ${fa(x.n.district)}</span><span class="tags">${x.l.roles.map(r=>`<span class="tag">${esc(r)}</span>`).join('')}</span>${stBadge(x.l)}${x.l.note?`<span class="small muted">${esc(x.l.note)}</span>`:''}</div>`).join('')}</div>`:'<p class="muted small">این فرد هنوز به محله‌ای پیوند نخورده است. از تب «متولیان» هر محله می‌توانید او را اضافه کنید.</p>'}
       </div>
+      ${(()=>{const cl=vlist(p.courseLog||[]).sort((a,b)=>b.date.localeCompare(a.date));const old=(p.courses||[]).filter(k=>!cl.some(c=>c.course===k));const n=cl.length+old.length;
+        return `<div class="card sec"><div class="sec-h"><h3>دوره‌های توانمندسازی</h3><span class="muted small">${fa(n)} دوره</span>${ed?`<span class="spacer"></span><button class="btn sm" data-act="add-course">+ ثبت دوره</button>`:''}</div>
+        ${n?`<div class="stack">${cl.map(c=>`<div class="course-row"><span class="tag tag-c">${esc(c.course)}</span><span class="small muted">${fmtDate(c.date)}${c.place?'، '+esc(c.place):''}</span>${stBadge(c)}${ed?`<button class="btn sm ghost" data-act="edit-course" data-id="${c.id}">ویرایش</button>`:''}${rvInline(c)}</div>`).join('')}${old.map(k=>`<div class="course-row"><span class="tag tag-c">${esc(k)}</span><span class="small muted">بدون تاریخ</span></div>`).join('')}</div>`:'<p class="muted small">دوره‌ای ثبت نشده است.</p>'}</div>`;})()}
       <div class="card sec"><div class="sec-h"><h3>سابقه ارتباط</h3><span class="muted small">${fa(contacts.length)} مورد</span></div>
         ${contacts.length?`<ul class="timeline">${contacts.map(c=>`<li><div class="when">${fmtDate(c.date)}، ${esc(c.type)}، ${esc(c.by)}</div><div class="what">${esc(c.summary)} ${stBadge(c)}</div>${c.result?`<div class="note">نتیجه: ${esc(c.result)}</div>`:''}${rvInline(c)}</li>`).join('')}</ul>`:'<p class="muted small">ارتباطی ثبت نشده است.</p>'}
       </div>
@@ -2232,7 +2284,6 @@ function personView(p){
         <dt>وضعیت شغلی</dt><dd>${esc(p.job)||'—'}</dd>
         ${p.jobHist?`<dt>سوابق شغلی</dt><dd class="pre">${esc(p.jobHist)}</dd>`:''}
         <dt>مهارت‌ها</dt><dd>${(p.skills||[]).length?`<span class="tags">${p.skills.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</span>`:'—'}</dd>
-        <dt>دوره‌ها</dt><dd>${(p.courses||[]).length?`<span class="tags">${p.courses.map(s=>`<span class="tag tag-c">${esc(s)}</span>`).join('')}</span>`:'—'}</dd>
         ${p.strengths?`<dt>قوت‌ها</dt><dd class="pre">${esc(p.strengths)}</dd>`:''}
         ${p.weaknesses&&!isViewer()?`<dt>ضعف‌ها</dt><dd class="pre">${esc(p.weaknesses)}</dd>`:''}
         <dt>آخرین ارتباط</dt><dd>${lastContact(p)?fmtDate(lastContact(p)):'ثبت نشده'}</dd>
@@ -2262,7 +2313,7 @@ function userView(u){
   const sortedNb=[...nbs].sort((a,b)=>lastReview(a).localeCompare(lastReview(b)));
   return `${!self?`<div class="crumb"><a href="#perf">عملکرد</a> ‹ ${esc(u.name)}</div>`:''}
   <section class="page-head">
-    <div class="d-title" style="flex-direction:row;align-items:center;gap:14px"><span class="avatar lg">${esc(initials(u.name))}</span><div><h1>${self?'عملکرد من':esc(u.name)}</h1><p class="sub">${self?esc(u.name)+'، ':''}<span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(areaOf(u))}، آخرین فعالیت ${relTime(u.last)}</p></div></div>
+    <div class="d-title" style="flex-direction:row;align-items:center;gap:14px"><span class="avatar lg">${esc(initials(u.name))}</span><div><h1>${self?'عملکرد من':esc(u.name)}</h1><p class="sub">${self?esc(u.name)+'، ':''}<span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(areaOf(u))}<span class="m-hide">، آخرین فعالیت ${relTime(u.last)}</span></p></div></div>
     ${segP()}
   </section>
   ${returned.length&&!self&&isReviewer()?`<section class="card sec returned"><div class="sec-h"><h3>برگشت‌خورده برای اصلاح (${fa(returned.length)})</h3></div>
@@ -2311,7 +2362,7 @@ function urgentTasks(u,nbs){
   return tasks.sort((a,b)=>b.w-a.w);
 }
 const kcard=x=>`<div class="kcard ${x.cls}"><div class="t">${x.t}</div>${x.s?`<div class="s">${x.s}</div>`:''}${x.m?`<div class="m">${x.m}</div>`:''}${x.a?`<div class="a">${x.a}</div>`:''}</div>`;
-const VERB_IC={program:'M4 4h16v16H4zM4 9h16M9 4v5M15 4v5',visit:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',contact:'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0'};
+const VERB_IC={nb:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',prob:'M12 4l9 16H3zM12 10v4M12 17h.01',course:'M3 9l9-5 9 5-9 5zM7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5M21 9v5',more:'M5 12h.01M12 12h.01M19 12h.01',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z',program:'M4 4h16v16H4zM4 9h16M9 4v5M15 4v5',visit:'M4 5h16v14H4zM8 10h8M8 14h5',problem:'M12 4l9 16H3zM12 10v4M12 17h.01',step:'M5 12h10M11 6l6 6-6 6',contact:'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',trustee:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0'};
 const vIcon=k=>`<span class="vi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${VERB_IC[k]}"/></svg></span>`;
 function homeView(u){
   const nbs=db.nb.filter(n=>n.op===u.id&&!n._st);
@@ -2324,13 +2375,15 @@ function homeView(u){
   /* the three work lists share one shape: folded until chosen */
   const ho=ui.homeOpen||(ui.homeOpen={});
   const sec=(id,dot,title,n,body)=>`<details class="grp hsec ${n&&id==='g-ret'?'hot':''}" id="${id}" ${ho[id]?'open':''}><summary class="grp-h" data-act="hsec" data-k="${id}"><span class="dot" style="background:var(${dot})"></span>${title} <span class="n">${fa(n)}</span><span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></summary><div class="hbody">${body}</div></details>`;
+  const nOpen=nbs.reduce((s,n)=>s+openProblems(n).length,0);
+  const act=(k,t,s)=>`<button type="button" class="act" data-act="verb" data-v="${k}">${vIcon(k)}<b>${t}</b>${s?`<small>${s}</small>`:''}</button>`;
   return `<section class="hello"><h1>خانه</h1><p><bdi>${days}</bdi>، <bdi>${fa(nbs.length)} محله در ${esc(u.city)}</bdi></p></section>
-  <h2 class="sect">امروز چه کردید؟</h2>
-  <div class="verbs">${verb('visit','ثبت بازدید یا جلسه','از محله‌ای برگشته‌اید؟ از اینجا ثبت کنید',true)}${verb('problem','گزارش مشکل','مشکل تازه در محله')}${verb('step','پیگیری مشکل','اقدام روی مشکل باز')}${verb('contact','ثبت تماس با فرد','گفتگو با متولی')}${verb('trustee','معرفی متولی','فرد تازه در محله')}${verb('program','ثبت برنامه','سخنرانی، مداحی، سرود و…')}</div>
-  ${recent.length?`<h2 class="sect">آخرین پرونده‌هایی که دیدید</h2><div class="recent">${recent.join('')}</div>`:''}
+  <h2 class="sect">ثبت سریع</h2>
+  <div class="acts">${act('nb','ثبت محله')}${act('prob','مشکل',nOpen?fa(nOpen)+' باز':'')}${act('trustee','ثبت متولی')}${act('contact','ارتباط با متولی')}${act('course','دوره‌ی توانمندسازی')}${act('more','ثبت‌های دیگر','بازدید، برنامه، ایده')}</div>
   ${ret.length?sec('g-ret','--bad','برگشتی برای اصلاح',ret.length,ret.map(c=>kcard({cls:'red',t:`${esc(c.txt)}، ${esc(c.tn)}`,s:`<div class="reason"><b>${esc(uName(c.rv.uid))}:</b> ${esc(c.rv.note||'بدون توضیح')}</div>`,a:`${target(c)||c.op!=='delete'?`<button class="btn primary" data-act="fix" data-cid="${c.id}">اصلاح و ارسال دوباره</button>`:''}<button class="btn ghost" data-act="dismiss" data-cid="${c.id}">بستن</button>`})).join('')):''}
   ${sec('g-urg','--warn','فوری',urg.length,urg.length?(()=>{const lim=isMob()?3:4;return (showAll?urg:urg.slice(0,lim)).map(kcard).join('')+(urg.length>lim&&!showAll?`<button class="btn block ghost link-btn" data-act="home-all">نمایش ${fa(urg.length-lim)} مورد دیگر</button>`:'');})():'<p class="done">کار عقب‌افتاده‌ای ندارید. مشکل‌های بحرانی پیگیری شده‌اند و همه‌ی محله‌ها در ۶۰ روز اخیر بررسی شده‌اند.</p>')}
-  ${sec('g-pend','--mute','منتظر تأیید رابط استانی',pend.length,pend.length?`<div class="pend-list">${pend.map(c=>`<a class="pend-row" href="${c.pid?'#p-'+c.pid:'#n-'+c.nb}"><b>${esc(c.txt)}</b><small>${esc(c.tn)}، ${relTime(c.t)}</small></a>`).join('')}</div>`:'<p class="small muted">ثبتی در انتظار تأیید ندارید.</p>')}`;
+  ${sec('g-pend','--mute','منتظر تأیید رابط استانی',pend.length,pend.length?`<div class="pend-list">${pend.map(c=>`<a class="pend-row" href="${c.pid?'#p-'+c.pid:'#n-'+c.nb}"><b>${esc(c.txt)}</b><small>${esc(c.tn)}، ${relTime(c.t)}</small></a>`).join('')}</div>`:'<p class="small muted">ثبتی در انتظار تأیید ندارید.</p>')}
+  ${recent.length?`<h2 class="sect">آخرین پرونده‌هایی که دیدید</h2><div class="recent">${recent.join('')}</div>`:''}`;
 }
 /* verb-first pickers: choose what you did, then where */
 function pickSheet(title,items,onPick,ph){
@@ -2351,6 +2404,15 @@ function myNbItems(u){
 }
 function doVerb(v){
   const u=me();
+  if(v==='nb')return nbForm(null);
+  if(v==='course')return courseBatchForm();
+  if(v==='prob'||v==='more'){
+    const items=v==='prob'?[['problem','گزارش مشکل تازه','مشکلی که در محله دیده یا گزارش شده'],['step','ثبت پیگیری','اقدام روی یکی از مشکل‌های باز']]:[['visit','ثبت بازدید یا جلسه','از محله‌ای برگشته‌اید؟'],['program','ثبت برنامه','سخنرانی، مداحی، سرود و…'],['idea','ثبت ایده یا طرح','پیشنهاد اهالی یا متولیان']];
+    const d=$('#dlg');d.classList.remove('as-full');d.classList.add('as-sheet');d.onchange=null;
+    d.innerHTML=`<div class="sheet"><header><h2>${v==='prob'?'مشکل':'ثبت‌های دیگر'}</h2><button type="button" class="icon-btn" data-close aria-label="بستن">×</button></header><div class="sheet-list">${items.map(([k,t,h])=>`<button type="button" class="sheet-item" data-q="${k}"><span class="sheet-ic">${vIcon(k)}</span><span><b>${t}</b><small>${h}</small></span></button>`).join('')}</div></div>`;
+    d.onclick=e=>{if(e.target.closest('[data-close]')){d.close();return;}const b=e.target.closest('[data-q]');if(b){d.onclick=null;doVerb(b.dataset.q);}};
+    if(!d.open)d.showModal();return;
+  }
   if(v==='step'){
     const items=[];db.nb.forEach(n=>{if(!canEdit(n)||n._st||(u.role==='operator'&&n.op!==u.id))return;openProblems(n).forEach(p=>items.push({id:n.id+'|'+p.id,t:p.title,h:`${esc(n.name)}، اولویت ${PRIO[p.prio].t}، آخرین پیگیری ${fa(lastStepDays(p))} روز پیش`,dot:p.prio==='critical'?'--bad':p.prio==='high'?'--warn':'--mute',w:PRIO[p.prio].w*1000+lastStepDays(p)}));});
     items.sort((a,b)=>b.w-a.w);
@@ -2360,10 +2422,10 @@ function doVerb(v){
     const seen=new Set(),items=[];db.nb.forEach(n=>{if(u.role==='operator'&&n.op!==u.id)return;n.links.forEach(l=>{if(l._st||seen.has(l.pid))return;seen.add(l.pid);const p=getP(l.pid);if(!p||!vis(p))return;const lc=lastContact(p);const d=lc?daysSince(lc):null;
       items.push({id:p.id,t:p.name,h:`${esc(l.roles.join('، '))}، ${esc(n.name)}، ${d===null?'تماسی ثبت نشده':'آخرین تماس '+fa(d)+' روز پیش'}`,dot:d===null||d>90?'--warn':'--ok',w:d===null?9999:d});});});
     items.sort((a,b)=>b.w-a.w);
-    return pickSheet('تماس با چه کسی؟',items,id=>contactForm(getP(id)),'جستجوی نام یا محله…');
+    return pickSheet('ارتباط با کدام متولی؟',items,id=>contactForm(getP(id)),'جستجوی نام یا محله…');
   }
-  const next={visit:n=>reviewForm(n),problem:n=>problemForm(n),trustee:n=>linkDialog(n),program:n=>programForm(n)}[v];
-  pickSheet({visit:'بازدید از کدام محله؟',problem:'مشکل در کدام محله؟',trustee:'متولی کدام محله؟',program:'برنامه در کدام محله؟'}[v],myNbItems(u),id=>{recentPush('n:'+id);next(findN(id));},'جستجوی نام محله…');
+  const next={visit:n=>reviewForm(n),problem:n=>problemForm(n),trustee:n=>linkDialog(n),program:n=>programForm(n),idea:n=>ideaForm(n)}[v];
+  pickSheet({visit:'بازدید از کدام محله؟',problem:'مشکل در کدام محله؟',trustee:'متولی کدام محله؟',program:'برنامه در کدام محله؟',idea:'ایده برای کدام محله؟'}[v],myNbItems(u),id=>{recentPush('n:'+id);next(findN(id));},'جستجوی نام محله…');
 }
 /* one search for neighborhoods, people and problems */
 function openSearch(){
@@ -2414,7 +2476,7 @@ function problemsView(){
   if(f.org)list=list.filter(x=>(x.p.org||'')===f.org);
   const q=qnorm(f.q);if(q)list=list.filter(x=>qnorm(x.p.title+' '+x.n.name+' '+(x.p.org||'')).includes(q));
   list.sort((a,b)=>isOpen(a.p)&&isOpen(b.p)?(PRIO[b.p.prio].w-PRIO[a.p.prio].w)||(b.d-a.d):(a.d-b.d));
-  const shown=list.slice(0,f.page*PAGE);
+  const PP=isMob()?10:PAGE;const shown=list.slice(0,f.page*PP);
   const orgs=[...new Set(open.map(x=>x.p.org).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fa'));
   const title=u.role==='operator'?'مشکلات محله‌های من':u.role==='supervisor'?'مشکلات محله‌های استان '+esc(u.province):'مشکلات همه‌ی محله‌ها';
   const st=(k,t,n)=>`<button type="button" data-act="stage" data-v="${k}" aria-pressed="${f.stage===k}"><b>${num(n)}</b>${t}</button>`;
@@ -2434,7 +2496,7 @@ function problemsView(){
     s:`<span class="pill ${PRIO[p.prio].c}">${PRIO[p.prio].t}</span> ${esc(n.name)}${p.org?'، ارجاع: '+esc(p.org):''}`,
     m:`${PSTAT[p.status].t}، ${isOpen(p)?'آخرین پیگیری '+fa(d)+' روز پیش':'آخرین اقدام '+fa(d)+' روز پیش'}، ${fa(p.steps.filter(x=>!x._st).length)} مرحله`,
     a:isOpen(p)&&canEdit(n)?`<button class="btn primary" data-act="quick" data-k="step" data-id="${n.id}" data-pid="${p.id}">ثبت پیگیری</button>`:''})).join('')}</div>
-    ${list.length>shown.length?`<button class="btn block more-btn" data-act="pr-more">نمایش ${fa(Math.min(PAGE,list.length-shown.length))} مشکل بیشتر، ${fa(list.length-shown.length)} باقی مانده</button>`:''}`
+    ${list.length>shown.length?`<button class="btn block more-btn" data-act="pr-more">نمایش ${fa(Math.min(PP,list.length-shown.length))} مشکل بیشتر، ${fa(list.length-shown.length)} باقی مانده</button>`:''}`
     :'<div class="card empty"><b>مشکلی با این فیلترها نیست.</b></div>'}`;
 }
 /* ================= approvals queue ================= */
@@ -2503,7 +2565,7 @@ function queueView(){
 }
 function qCard(g){
   const c=g[0],a=getU(c.uid),k=c.grp||c.id;
-  const link=c.ent==='person'||c.ent==='contact'?(getP(c.pid)?`#p-${c.pid}`:''):(c.nb&&findN(c.nb)?`#n-${c.nb}`:'');
+  const link=c.ent==='person'||c.ent==='contact'||c.ent==='course'?(getP(c.pid)?`#p-${c.pid}`:''):(c.nb&&findN(c.nb)?`#n-${c.nb}`:'');
   const tn=g.find(x=>x.ent!=='person')?.tn||c.tn;
   return `<article class="card qcard">
     <header><label class="qchk"><input type="checkbox" data-act="qsel" data-g="${k}" ${ui.qsel.has(k)?'checked':''} aria-label="انتخاب"></label>
@@ -2651,6 +2713,7 @@ function fieldHtml(fl){
   if(fl.type==='select')return `<label class="field" data-f="${fl.name}">${lab}<select id="${id}" name="${fl.name}">${fl.options.map(o=>{const[val,t]=Array.isArray(o)?o:[o,o];return `<option value="${esc(val)}" ${String(val)===String(v)?'selected':''}>${esc(t)}</option>`;}).join('')}</select>${hint}</label>`;
   if(fl.type==='multi')return `<div class="field" data-f="${fl.name}">${lab}<div class="chip-list" data-multi="${fl.name}" id="${id}">${fl.options.map(o=>{const[val,t]=Array.isArray(o)?o:[o,o];return `<button type="button" class="chip-toggle" data-v="${esc(val)}" aria-pressed="${(v||[]).map(String).includes(String(val))}">${esc(t)}</button>`;}).join('')}</div>${hint}</div>`;
   if(fl.type==='html')return `<div class="field" data-f="${fl.name}">${fl.html}</div>`;
+  if(fl.type==='checklist')return `<div class="field" data-f="${fl.name}">${lab}${fl.html}${hint}</div>`;
   if(fl.type==='date')return `<div class="field dp-field" data-f="${fl.name}" data-max="${fl.max||''}">${lab}<input type="hidden" name="${fl.name}" id="${id}" value="${esc(v)}">
     <button type="button" class="date-btn" aria-haspopup="true" aria-expanded="false" aria-controls="${id}_cal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="dv">${v?jLabel(v):'انتخاب تاریخ'}</span><span class="dr">${v?relDay(v):''}</span></button>
     <div class="dp" id="${id}_cal" hidden></div>${hint}</div>`;
@@ -2743,12 +2806,13 @@ function openForm(cfg){
       if(fl.type==='html')return;
       let v;
       if(fl.type==='map'){const a=f.elements.lat.value,b=f.elements.lng.value;v=a===''?null:{lat:Number(a),lng:Number(b)};}
+      else if(fl.type==='checklist')v=[...new Set($$(`[data-ck="${fl.name}"] input:checked`,f).map(x=>x.value))];
       else if(fl.type==='multi')v=$$(`[data-multi="${fl.name}"] .chip-toggle[aria-pressed="true"]`,f).map(b=>fl.num?Number(b.dataset.v):b.dataset.v);
       else{v=f.elements[fl.name].value.trim();if(fl.digits)v=normDigits(v);if(fl.num&&v!=='')v=Number(normDigits(v));}
       vals[fl.name]=v;
       const wrap=$(`[data-f="${fl.name}"]`,f);wrap.classList.remove('err');$('.errmsg',wrap)?.remove();
       let msg='';
-      if(fl.required&&(v===''||v===null||(Array.isArray(v)&&!v.length)))msg=esc(fl.type==='map'?'مرکز محله را روی نقشه مشخص کنید.':fl.type==='date'?'تاریخ را انتخاب کنید.':'این مورد را وارد کنید.');
+      if(fl.required&&(v===''||v===null||(Array.isArray(v)&&!v.length)))msg=esc(fl.reqMsg?fl.reqMsg:fl.type==='map'?'مرکز محله را روی نقشه مشخص کنید.':fl.type==='date'?'تاریخ را انتخاب کنید.':'این مورد را وارد کنید.');
       else if(fl.validate)msg=fl.validate(v,vals)||'';
       if(msg){bad=true;wrap.classList.add('err');wrap.insertAdjacentHTML('beforeend',`<span class="errmsg">${msg}</span>`);}
     });
@@ -2865,7 +2929,6 @@ function personForm(p,linkTo,q){
     {more:1,name:'job',label:'وضعیت شغلی کنونی',value:p?.job,ph:'مثلاً کارمند بانک، بازنشسته، دانشجو'},
     {more:1,name:'jobHist',label:'سوابق شغلی',type:'textarea',value:p?.jobHist},
     {more:1,name:'skills',label:'مهارت‌ها',type:'multi',options:s.skills,value:p?.skills||[],hint:'فهرست مهارت‌ها را مدیر سامانه از «مدیریت ← شهرها و دسته‌بندی‌ها» تعیین می‌کند.'},
-    {more:1,name:'courses',label:'دوره‌های توانمندسازی گذرانده',type:'multi',options:s.courses||[],value:p?.courses||[]},
     {more:1,name:'strengths',label:'قوت‌های شخصیتی و عملکردی',type:'textarea',value:p?.strengths},
     {more:1,name:'weaknesses',label:'ضعف‌های شخصیتی و عملکردی',type:'textarea',value:p?.weaknesses,hint:'این بخش برای کاربر «نمایشی» نشان داده نمی‌شود.'},
     {name:'pflag',label:'وضعیت پرچمدار',type:'select',options:opts(PFLAG),value:p?.pflag||'none'},
@@ -2888,6 +2951,53 @@ function personForm(p,linkTo,q){
       else location.hash='p-'+c.tid;
       return c;
     }});
+}
+/* ثبت دوره برای یک نفر (از پرونده‌ی فرد) */
+function courseForm(p,c,preset){
+  const val=k=>preset?.[k]??c?.[k];const list=db.settings.courses||[];
+  openForm({title:c?'ویرایش دوره':'ثبت دوره برای '+p.name,fields:[
+    {name:'course',label:'دوره‌ی توانمندسازی',type:'select',options:val('course')&&!list.includes(val('course'))?[...list,val('course')]:list,value:val('course'),hint:'فهرست دوره‌ها را مدیر سامانه تعیین می‌کند.'},
+    {name:'date',label:'تاریخ برگزاری',type:'date',max:'today',value:val('date')||today(),required:true},
+    {name:'place',label:'محل برگزاری (اختیاری)',value:val('place')},
+  ],
+  onDelete:c?()=>{remove('course',c,{pid:p.id,txt:'حذف دوره «'+c.course+'» از «'+p.name+'»',tn:p.name});return isOp()?'درخواست حذف برای تأیید ارسال شد':'حذف شد';}:null,
+  onSubmit:v=>{const u=me();return save('course',c,c?v:{...v,by:u.name,uid:u.id},{pid:p.id,txt:'ثبت دوره «'+v.course+'» برای «'+p.name+'»',tn:p.name});}});
+}
+/* ثبت گروهی: یک دوره، چند متولی */
+function courseBatchForm(n0){
+  const u=me();const list=db.settings.courses||[];
+  if(!list.length){toast('هنوز دوره‌ای تعریف نشده است؛ مدیر سامانه باید فهرست دوره‌ها را بسازد');return;}
+  const nbs=db.nb.filter(n=>!n._st&&canEdit(n)&&(u.role!=='operator'||n.op===u.id)).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+  const ppl=new Map();nbs.forEach(n=>vlist(n.links).forEach(l=>{const p=getP(l.pid);if(!p)return;const x=ppl.get(p.id)||{p,nbs:[],roles:new Set()};if(!x.nbs.includes(n))x.nbs.push(n);l.roles.forEach(r=>x.roles.add(r));ppl.set(p.id,x);}));
+  const rows=[...ppl.values()].sort((a,b)=>a.p.name.localeCompare(b.p.name,'fa'));
+  if(!rows.length){toast('هنوز متولی‌ای در محله‌های شما ثبت نشده است');return;}
+  const nbSel=n0&&nbs.includes(n0)?n0.id:'';
+  const html=`<div class="ck-tools">${nbs.length>1?`<select data-ck-nb aria-label="محله"><option value="">همه‌ی محله‌ها</option>${nbs.map(n=>`<option value="${n.id}" ${n.id===nbSel?'selected':''}>${esc(n.name)}</option>`).join('')}</select>`:''}<input type="search" data-ck-q placeholder="جستجوی نام…" aria-label="جستجوی نام متولی"></div>
+    <div class="ck-head"><span data-ck-count class="small muted">هیچ‌کس انتخاب نشده</span><button type="button" class="linkish" data-ck-all>انتخاب همه‌ی این فهرست</button></div>
+    <div class="ck-list" data-ck="pids">${rows.map(x=>`<label class="ck-row" data-nb="${x.nbs.map(n=>n.id).join(' ')}" data-q="${esc(qnorm(x.p.name+' '+x.nbs.map(n=>n.name).join(' ')))}"><input type="checkbox" value="${x.p.id}"><span><b>${esc(x.p.name)}</b><small>${esc([...x.roles].slice(0,2).join('، '))}، ${esc(x.nbs.map(n=>n.name).join('، '))}</small></span></label>`).join('')}<p class="small muted ck-empty" hidden>نامی با این جستجو پیدا نشد.</p></div>`;
+  openForm({title:'ثبت دوره‌ی توانمندسازی',fields:[
+    {name:'course',label:'کدام دوره؟',type:'select',options:list,hint:'فهرست دوره‌ها را مدیر سامانه تعیین می‌کند.'},
+    {name:'date',label:'تاریخ برگزاری',type:'date',max:'today',value:today(),required:true},
+    {name:'place',label:'محل برگزاری (اختیاری)',ph:'مثلاً سالن اجتماعات مسجد'},
+    {name:'pids',label:'چه کسانی شرکت کردند؟',type:'checklist',html,required:true,reqMsg:'دست‌کم یک نفر را انتخاب کنید.'},
+  ],submit:u.role==='operator'?'ارسال برای تأیید':'ثبت دوره',
+  onOpen:f=>{
+    const box=$('[data-ck="pids"]',f),q=$('[data-ck-q]',f),nb=$('[data-ck-nb]',f),cnt=$('[data-ck-count]',f);
+    const shown=()=>$$('.ck-row',box).filter(r=>!r.hidden);
+    const filt=()=>{const qq=qnorm(q.value),nv=nb?.value||'';let k=0;$$('.ck-row',box).forEach(r=>{const ok=(!nv||r.dataset.nb.split(' ').includes(nv))&&(!qq||r.dataset.q.includes(qq));r.hidden=!ok;if(ok)k++;});$('.ck-empty',box).hidden=!!k;};
+    const upd=()=>{const k=$$('input:checked',box).length;cnt.textContent=k?fa(k)+' نفر انتخاب شده':'هیچ‌کس انتخاب نشده';};
+    q.addEventListener('input',filt);nb?.addEventListener('change',filt);box.addEventListener('change',upd);
+    $('[data-ck-all]',f).addEventListener('click',()=>{const r=shown();const all=r.length&&r.every(x=>$('input',x).checked);r.forEach(x=>$('input',x).checked=!all);upd();});
+    filt();
+  },
+  onSubmit:v=>{
+    let k=0,skip=0;const grp=uid();
+    v.pids.forEach(pid=>{const p=getP(pid);if(!p)return;
+      if(vlist(p.courseLog||[]).some(c=>c.course===v.course&&c.date===v.date)){skip++;return;}
+      commit({ent:'course',op:'create',pid,grp,data:{course:v.course,date:v.date,place:v.place,by:u.name,uid:u.id},txt:'ثبت دوره «'+v.course+'» برای «'+p.name+'»',tn:p.name});k++;});
+    persist();
+    return (k?`دوره برای ${fa(k)} نفر ثبت شد`+(u.role==='operator'?' و برای تأیید رفت':''):'چیزی ثبت نشد')+(skip?`؛ ${fa(skip)} نفر این دوره را در همین تاریخ داشتند`:'');
+  }});
 }
 function contactForm(p,c){
   openForm({title:c?'ویرایش ارتباط':'ثبت ارتباط با '+p.name,fields:[
@@ -3016,6 +3126,7 @@ function openFix(c){
   else if(c.ent==='link'&&n&&o)linkForm(n,o);
   else if(c.ent==='person'&&o)personForm(o);
   else if(c.ent==='contact'){const p=getP(c.pid);if(p)contactForm(p,o);}
+  else if(c.ent==='course'){const p=getP(c.pid);if(p)courseForm(p,o,preset);}
   else if(c.ent==='nb'&&o){location.hash='n-'+o.id;setTimeout(()=>nbForm(o),50);}
   else{ui.fixing=null;toast('این مورد دیگر قابل اصلاح نیست');}
 }
@@ -3082,8 +3193,28 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-close-dlg]
 /* remember which folded cards the user opened, across re-renders */
 app.addEventListener('toggle',e=>{const d=e.target;if(d.dataset?.fk)(ui.folds||(ui.folds={}))[d.dataset.fk]=d.open;},true);
 /* the filter sheet's header must not fold the sheet closed */
-app.addEventListener('click',e=>{if(document.body.classList.contains('fs-open')&&e.target.closest('.filters summary')&&!e.target.closest('button'))e.preventDefault();},true);
+app.addEventListener('click',e=>{if(document.body.classList.contains('fs-open')&&e.target.closest('.filters>summary')&&!e.target.closest('button'))e.preventDefault();},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fs-open')){ui.fsOpen=null;document.body.classList.remove('fs-open');}});
+/* لمس هر جای کارت مشکل، همان مشکل را باز می‌کند (نه فقط عنوانش) */
+app.addEventListener('click',e=>{const kc=e.target.closest('.kcard');if(!kc||e.target.closest('a,button,input,select,textarea,summary,label'))return;const a=$('.t a',kc);if(a)a.click();});
+/* دکمه‌ی «برگشت» گوشی: اول پنجره یا برگه‌ی فیلتر باز را می‌بندد؛ فرم نیمه‌پر بی‌پرسش بسته نمی‌شود */
+{const dlg=$('#dlg');let skip=0,ovHash=null;
+  const ovOpen=()=>dlg.open||document.body.classList.contains('fs-open');
+  const opened=()=>{if(!history.state?.ov){ovHash=location.hash;history.pushState({ov:1},'');}};
+  const closed=()=>setTimeout(()=>{if(ovOpen())return;if(history.state?.ov&&location.hash===ovHash){skip++;history.back();}},0);
+  if(history.state?.ov)history.replaceState(null,'');
+  new MutationObserver(()=>{if(dlg.open){dlg.dataset.dirty='';opened();}else closed();}).observe(dlg,{attributes:true,attributeFilter:['open']});
+  let wasFs=false;new MutationObserver(()=>{const fs=document.body.classList.contains('fs-open');if(fs===wasFs)return;wasFs=fs;if(fs)opened();else closed();}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  dlg.addEventListener('input',e=>{if(e.target.closest('#dlgform')&&!e.target.matches('[data-ck-q]'))dlg.dataset.dirty='1';});
+  dlg.addEventListener('change',e=>{if(e.target.closest('#dlgform'))dlg.dataset.dirty='1';});
+  dlg.addEventListener('click',e=>{if(e.target.closest('#dlgform .chip-toggle'))dlg.dataset.dirty='1';});
+  window.addEventListener('popstate',()=>{
+    if(skip){skip--;return;}
+    if(dlg.open){if(dlg.dataset.dirty==='1'&&!confirm('اطلاعاتی که وارد کرده‌اید ثبت نشده است. فرم بسته شود؟')){history.pushState({ov:1},'');return;}ui.fixing=null;dlg.close();return;}
+    if(document.body.classList.contains('fs-open')){ui.fsOpen=null;document.body.classList.remove('fs-open');}
+  });}
+/* دکمه‌ی شناور «ثبت»: با پایین رفتن صفحه کوچک می‌شود تا محتوا را نپوشاند */
+{let lastY=0;window.addEventListener('scroll',()=>{const f=$('.fab');if(!f)return;const y=window.scrollY;if(Math.abs(y-lastY)<8)return;f.classList.toggle('mini',y>lastY&&y>80);lastY=y;},{passive:true});}
 app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   if(b.tagName==='INPUT'&&b.type==='checkbox')e.stopPropagation();
@@ -3115,7 +3246,7 @@ app.addEventListener('click',e=>{
     case 'bulk-clear':ui.sel.clear();updateList();break;
     case 'bulk-assign':{const op=$('#bulk-op').value;let k=0;const grp=uid();ui.sel.forEach(nid=>{const x=findN(nid);if(x&&x.op!==op&&canEdit(x)){commit({ent:'nb',op:'update',nb:x.id,tid:x.id,data:{op},txt:'تخصیص به '+(op?uName(op):'هیچ کارشناسی'),tn:x.name,grp});k++;}});ui.sel.clear();updateList();toast(fa(k)+' محله تخصیص داده شد');break;}
     case 'export-nb':{const list=filtered();downloadCSV('parchamdar-mahalleha.csv',[['کد','محله','شهر','منطقه','کارشناس','پرچم‌سرا','وضعیت','متولیان','مشکلات باز','آخرین بررسی','نشانی','کد پستی'],...list.map(x=>[x.code,x.name,x.city,x.district,uName(x.op),FLAG[x.flag].t,x.active?'فعال':'غیرفعال',x.links.filter(l=>!l._st).length,openProblems(x).length,lastReview(x),x.address,x.postal])]);break;}
-    case 'export-people':{const list=pFiltered();downloadCSV('parchamdar-afrad.csv',[['نام','موبایل','کد ملی','جنسیت','سال تولد','وضعیت شغلی','تحصیلات','وضعیت تأهل','سوابق شغلی','مهارت‌ها','دوره‌های توانمندسازی','قوت‌ها','ضعف‌ها','پرچمدار','همکاری','محله‌ها و نقش‌ها','آخرین ارتباط'],...list.map(x=>[x.name,seePhone()?x.mobile:'',seeNid()?x.nid:'',GENDER[x.gender]||'',x.birth||'',x.job||'',x.edu||'',MARITAL[x.marital]||'',x.jobHist||'',(x.skills||[]).join('، '),(x.courses||[]).join('، '),x.strengths||'',x.weaknesses||'',(PFLAG[x.pflag]||PFLAG.none).t,COOP[x.coop]?.t||'',myLinks(x.id).filter(y=>!y.l._st).map(y=>y.n.name+' ('+y.l.roles.join('، ')+')').join(' | '),lastContact(x)])]);break;}
+    case 'export-people':{const list=pFiltered();downloadCSV('parchamdar-afrad.csv',[['نام','موبایل','کد ملی','جنسیت','سال تولد','وضعیت شغلی','تحصیلات','وضعیت تأهل','سوابق شغلی','مهارت‌ها','دوره‌های توانمندسازی','قوت‌ها','ضعف‌ها','پرچمدار','همکاری','محله‌ها و نقش‌ها','آخرین ارتباط'],...list.map(x=>[x.name,seePhone()?x.mobile:'',seeNid()?x.nid:'',GENDER[x.gender]||'',x.birth||'',x.job||'',x.edu||'',MARITAL[x.marital]||'',x.jobHist||'',(x.skills||[]).join('، '),vlist(x.courseLog||[]).map(c=>c.course+' ('+fmtDate(c.date)+')').concat((x.courses||[]).filter(k=>!vlist(x.courseLog||[]).some(c=>c.course===k))).join('، '),x.strengths||'',x.weaknesses||'',(PFLAG[x.pflag]||PFLAG.none).t,COOP[x.coop]?.t||'',myLinks(x.id).filter(y=>!y.l._st).map(y=>y.n.name+' ('+y.l.roles.join('، ')+')').join(' | '),lastContact(x)])]);break;}
     case 'export-perf':{const s=periodStart();const ops=db.users.filter(x=>x.role==='operator'&&(isAdmin()||inProv(x.city)));downloadCSV('parchamdar-amalkard.csv',[['کارشناس','شهر','محله‌ها','ثبت در بازه','تأیید','برگشت','در انتظار','آخرین فعالیت'],...ops.map(o=>{const m=db.changes.filter(c=>c.uid===o.id);const ip=m.filter(c=>c.t>=s);return [o.name,o.city,db.nb.filter(x=>x.op===o.id).length,ip.length,ip.filter(c=>c.st==='approved').length,ip.filter(c=>c.st==='rejected').length,m.filter(c=>c.st==='pending').length,o.last?new Date(o.last).toLocaleString('fa-IR'):''];})]);break;}
     case 'new-nb':nbForm(null);break;
     case 'edit-nb':nbForm(n);break;
@@ -3133,6 +3264,8 @@ app.addEventListener('click',e=>{
     case 'edit-step':{const pr=n.problems.find(x=>x.id===b.dataset.pid);stepForm(n,pr,pr.steps.find(x=>x.id===id));break;}
     case 'add-idea':ideaForm(n);break;
     case 'add-program':programForm(n);break;
+    case 'add-course':if(p)courseForm(p);break;
+    case 'edit-course':if(p){const c=(p.courseLog||[]).find(x=>x.id===id);if(c)courseForm(p,c);}break;
     case 'edit-program':programForm(n,(n.programs||[]).find(x=>x.id===id));break;
     case 'progf':ui.progF=b.dataset.v;refreshTab(n);break;
     case 'edit-idea':ideaForm(n,n.ideas.find(x=>x.id===id));break;

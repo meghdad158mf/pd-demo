@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-InDG+WiWX4Yeuf5D2HcVrqVFngUbnl5WlYYJ181LwOY='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-x/Xxxyd6jxCiwFzNPTGpSqxvP9gW/HQnLgpfvbjjyw8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1070,6 +1070,17 @@ body.viewing-as .top{box-shadow:inset 0 -3px 0 #6b3fa0}
 .tu-search{padding:10px;margin-bottom:12px}.tu-search input{width:100%}
 .tu-res:empty{display:none}.tu-res{display:flex;flex-direction:column;margin-top:6px}
 .tu-row{display:flex;flex-direction:column;padding:9px 10px;border-radius:10px;color:var(--fg);text-decoration:none}.tu-row:hover{background:var(--surface-2)}.tu-row small{color:var(--muted);font-size:12.5px}
+/* v26: پشتیبان‌گیری رمزگذاری‌شده */
+.bk-st{border-top:3px solid var(--ok)}.bk-st.warn{border-top-color:var(--warn)}.bk-st.bad{border-top-color:var(--bad)}
+.bk-sum{display:flex;gap:12px;align-items:flex-start}.bk-sum>div{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}.bk-sum b{font-size:15px}.bk-sum small{color:var(--muted);font-size:12.5px;line-height:1.8}
+.bk-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--accent-soft);color:var(--accent-fg)}
+.bk-st.bad .bk-ic{background:var(--bad-soft);color:var(--bad-ink)}.bk-st.warn .bk-ic{background:var(--warn-soft);color:var(--warn-ink)}
+.bk-list{display:flex;flex-direction:column}
+.bk-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.bk-row:first-child{border-top:0}
+.bk-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.bk-b small{color:var(--muted);font-size:12.5px}
+.bk-a{display:flex;gap:6px;flex:none}
+.bk-pickrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.bk-pick{position:relative;overflow:hidden;cursor:pointer}.sr-file{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+@media (max-width:720px){.bk-row{flex-wrap:wrap}.bk-a{width:100%}.bk-a .btn{flex:1;justify-content:center}}
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1803,6 +1814,7 @@ const ICON={
   dots:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
   home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   notice:'<path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1zM16.5 8.5a5 5 0 0 1 0 7M19.5 5.5a9 9 0 0 1 0 13"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   layers:'<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>',
   help:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M5.6 5.6l3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>',
   health:'<path d="M3 12h4l3-7 4 14 3-7h4"/>',
@@ -3112,6 +3124,7 @@ function healthChecks(){
   C.push({k:'stale',sev:'mute',t:'ثبت‌های منتظر بیش از ۱۴ روز',d:'در کارتابل مانده‌اند.',items:stale.slice(0,50).map(c=>({t:c.txt,s:c.tn+'، '+uName(c.uid),h:'#queue'})),n:stale.length,fix:null});
   const orph=db.people.filter(p=>!p._st&&!linksOf(p.id).some(x=>!x.l._st));
   C.push({k:'orph',sev:'mute',t:'افراد بدون محله',d:'پرونده‌ی فردی که به هیچ محله‌ای وصل نیست.',items:orph.map(p=>({t:p.name,s:'',h:'#p-'+p.id})),fix:null});
+  {const b=bkStatus();C.unshift({k:'backup',sev:b.cls==='ok'?'mute':b.cls,t:'پشتیبان‌گیری',d:'پشتیبان خودکار شبانه، رمزگذاری‌شده، نگهداری ۷ روز.',items:b.cls==='ok'?[]:[{t:b.t,s:'',h:'#tech'}],fix:null});}
   C.forEach(c=>{c.n=c.n??c.items.length;});
   return C;
 }
@@ -3147,7 +3160,7 @@ function techHome(u){
   return `<section class="hello"><h1>میز کار ادمین فنی</h1><p><bdi>${day}</bdi></p></section>
   <div class="tu-search card"><input type="search" id="tu-q" placeholder="جستجوی کاربر با نام، کد ملی یا موبایل…" aria-label="جستجوی کاربر" autocomplete="off"><div id="tu-res" class="tu-res"></div></div>
   <div class="ptiles t3">${tile(fa(open.length),'درخواست پشتیبانی باز','data-act="goto" data-h="support"',fresh.length?'t-warn':'',fresh.length?fa(fresh.length)+' تازه':'')}${tile(fa(issues.length),'اشکال در داده‌ها','data-act="goto" data-h="health"',issues.some(c=>c.sev==='bad')?'t-bad':'',issues.slice(0,2).map(c=>c.t).join('، '))}${tile(fa(locked),'کاربر قفل‌شده','data-act="goto" data-h="health"',locked?'t-bad':'')}${tile(fa(f24),'ورود ناموفق در ۲۴ ساعت','data-act="goto" data-h="tech"',f24>=10?'t-warn':'')}
-  ${tile(fa(act7),'کاربر فعال در ۷ روز','data-act="goto" data-h="users"','',fa(db.users.filter(x=>x.active).length)+' حساب فعال')}${tile(fa(mgr),'مدیر سامانه','data-act="goto" data-h="users"',mgr?'':'t-warn',mgr?'':'مدیری تعیین نشده')}</div>
+  ${tile(fa(act7),'کاربر فعال در ۷ روز','data-act="goto" data-h="users"',mgr?'':'t-warn',fa(db.users.filter(x=>x.active).length)+' حساب فعال، '+(mgr?fa(mgr)+' مدیر':'مدیری تعیین نشده'))}${(()=>{const b=bkStatus(),l=db.settings.bk?.last;return tile(l?relTime(l):'—','آخرین پشتیبان','data-act="bk-go"',b.cls==='bad'?'t-bad':b.cls==='warn'?'t-warn':'',b.cls==='ok'?fa((bkList||[]).length)+' نسخه، رمزگذاری‌شده':b.t);})()}</div>
   <div class="sec-h nat-h"><h2 class="sect">درخواست‌های تازه</h2><span class="spacer"></span><a class="btn sm" href="#support">همه</a></div>
   ${fresh.length?`<div class="dir-list">${fresh.slice(0,4).map(t=>tkCard(t,true)).join('')}</div>`:'<div class="card empty"><b>درخواست تازه‌ای نیست.</b></div>'}
   ${issues.length?`<section class="card sec tasks att"><div class="sec-h"><h3>نیازمند رسیدگی فنی</h3><a class="btn sm ghost" href="#health">سلامت داده</a></div><div class="task-list">${issues.slice(0,5).map(c=>`<div class="task"><span class="task-dot ${c.sev}"></span><div class="task-b"><b>${c.t}</b><span class="small muted">${fa(c.n)} مورد، ${c.d}</span></div>${c.fix?`<button class="btn sm primary" data-act="${c.fix[0]}">${c.fix[1]}</button>`:'<a class="btn sm" href="#health">مشاهده</a>'}</div>`).join('')}</div></section>`:''}
@@ -3180,8 +3193,7 @@ function techView(){
     <label class="field"><span>نمایش تا</span><select id="ntc-days"><option value="0">تا وقتی برداشته شود</option><option value="1">۱ روز</option><option value="3">۳ روز</option><option value="7">۷ روز</option></select></label></div>
     <div class="dir-acts"><button class="btn primary" data-act="ntc-save">انتشار اعلان</button>${n.on?'<button class="btn danger" data-act="ntc-off">برداشتن اعلان</button>':''}</div>
     ${n.on&&n.text?`<p class="small">اکنون منتشر شده${n.until?'، تا '+fmtDT(n.until):''}:</p><div class="sys-notice lv-${n.level||'info'}">${icon('notice')}<span>${esc(n.text)}</span></div>`:'<p class="small muted">اکنون اعلانی منتشر نشده است.</p>'}</div>`;
-  else if(t==='backup'){const lb=db.settings.lastBackup;body=`<div class="stack" style="max-width:720px"><div class="card sec"><h3>دریافت نسخه‌ی پشتیبان</h3><p class="small muted">همه‌ی داده‌ها (${fa(db.nb.length)} محله، ${fa(db.people.length)} فرد، ${fa(db.users.length)} کاربر، ${fa(db.changes.length)} ثبت) در یک فایل. ${lb?'آخرین پشتیبان: '+relTime(lb):'تاکنون پشتیبانی گرفته نشده است.'}</p><div><button class="btn primary" data-act="bk-down">دریافت فایل پشتیبان</button></div></div>
-    <div class="card sec"><h3>بازگردانی از پشتیبان</h3><p class="small muted">همه‌ی داده‌های فعلی با محتوای فایل جایگزین می‌شود. پیش از آن یک پشتیبان تازه بگیرید.</p><input type="file" id="bk-file" accept=".json,application/json" aria-label="فایل پشتیبان"><div style="margin-top:8px"><button class="btn danger" data-act="bk-restore">بازگردانی</button></div></div></div>`;}
+  else if(t==='backup')body=backupTab();
   else if(t==='code')body=adminCode();
   else body=adminLog();
   return `<section class="page-head"><div><h1>تنظیمات فنی</h1><p class="sub">فقط ادمین فنی به این بخش دسترسی دارد.</p></div></section>
@@ -3209,6 +3221,124 @@ function ensureTech(){
       T({t:now-6*DAY,uid:om?.id||'o2',cat:'پیشنهاد برای بهتر شدن سامانه',subject:'امکان افزودن عکس به برنامه‌ها',text:'خوب است بتوانیم برای برنامه‌های محله عکس هم ثبت کنیم.',st:'done',upd:now-5*DAY,msgs:[{uid:'v1',t:now-5*DAY,text:'پیشنهاد شما ثبت شد و در نسخه‌ی بعدی بررسی می‌شود. سپاس.'}]}));
   }
   if(ch){ver++;persist();}
+}
+/* ================= پشتیبان‌گیری رمزگذاری‌شده: خودکار شبانه + دستی، نگهداری ۷ روز =================
+   با تعیین «رمز پشتیبان» یک جفت کلید ساخته می‌شود: کلید عمومی (فقط رمزگذاری) آزاد می‌ماند تا پشتیبان شبانه
+   بی‌نیاز از رمز گرفته شود؛ کلید خصوصی (برای باز کردن) با رمز پشتیبان قفل می‌شود. هر پشتیبان با یک کلید AES-256-GCM
+   تازه رمزگذاری و آن کلید با کلید عمومی (RSA-OAEP) بسته می‌شود. بدون رمز پشتیبان هیچ نسخه‌ای باز نمی‌شود.
+   در نسخه‌ی اصلی همین کار روی سرور انجام می‌شود و نسخه‌ها روی فضای جداگانه نگه داشته می‌شوند. */
+const BK_KEY=KEY+'-backups',BK_DAYS=7,BK_HOUR=2,BK_DEMO_PW='pd-backup-1405';
+const b64e=buf=>{const b=new Uint8Array(buf);let s='';for(let i=0;i<b.length;i+=0x8000)s+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(s);};
+const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const te=new TextEncoder(),td=new TextDecoder();
+async function gz(bytes,dir){const S=dir?window.CompressionStream:window.DecompressionStream;if(!S)return null;return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new S('gzip'))).arrayBuffer());}
+async function pwKey(pw,salt){const base=await crypto.subtle.importKey('raw',te.encode(pw),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+/* ساخت جفت کلید و قفل کردن کلید خصوصی با رمز */
+async function bkSetPassword(pw,oldPw){
+  const st=db.settings;let priv;
+  if(st.bk&&st.bk.priv&&oldPw!=null){priv=await bkOpenPriv(oldPw,true);}
+  let pub;
+  if(!priv){const kp=await crypto.subtle.generateKey({name:'RSA-OAEP',modulusLength:2048,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['encrypt','decrypt']);
+    pub=b64e(await crypto.subtle.exportKey('spki',kp.publicKey));priv=await crypto.subtle.exportKey('pkcs8',kp.privateKey);}
+  else pub=st.bk.pub;
+  const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},await pwKey(pw,salt),priv);
+  st.bk={...(st.bk||{}),pub,priv:{salt:b64e(salt),iv:b64e(iv),ct:b64e(ct)},pwSet:Date.now()};persist();
+}
+/* باز کردن کلید خصوصی با رمز؛ رمز نادرست = خطا */
+async function bkOpenPriv(pw,raw){const p=db.settings.bk?.priv;if(!p)throw new Error('nokey');
+  let pk;try{pk=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(p.iv)},await pwKey(pw,b64d(p.salt)),b64d(p.ct));}catch(e){throw new Error('badpw');}
+  return raw?pk:crypto.subtle.importKey('pkcs8',pk,{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt']);}
+async function bkOpenPrivFrom(pkg,pw){const p=pkg.priv;let pk;try{pk=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(p.iv)},await pwKey(pw,b64d(p.salt)),b64d(p.ct));}catch(e){throw new Error('badpw');}
+  return crypto.subtle.importKey('pkcs8',pk,{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt']);}
+async function bkMake(kind){
+  const st=db.settings;if(!st.bk?.pub)throw new Error('nokey');
+  const json=te.encode(JSON.stringify(db));const z=await gz(json,true);const body=z||json;
+  const k=await crypto.subtle.generateKey({name:'AES-GCM',length:256},true,['encrypt']);const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,body);
+  const pub=await crypto.subtle.importKey('spki',b64d(st.bk.pub),{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
+  const ek=await crypto.subtle.encrypt({name:'RSA-OAEP'},pub,await crypto.subtle.exportKey('raw',k));
+  const r=realMe&&session?realMe():null;
+  /* کلید خصوصیِ قفل‌شده هم داخل بسته می‌آید تا فایل روی سامانه‌ی تازه هم با همان رمز باز شود */
+  return {f:'parchamdar-backup',v:1,id:uid(),t:Date.now(),kind,by:r?.name||'سامانه',gz:!!z,ek:b64e(ek),iv:b64e(iv),ct:b64e(ct),priv:st.bk.priv,
+    n:{nb:db.nb.length,people:db.people.length,users:db.users.length,changes:db.changes.length},size:ct.byteLength};
+}
+async function bkOpen(pkg,pw){
+  if(!pkg||pkg.f!=='parchamdar-backup'||!pkg.ct)throw new Error('notbk');
+  /* اول با کلید فعلی سامانه (پس از تغییر رمز، نسخه‌های قبلی هم با رمز تازه باز شوند)، سپس با کلید داخل خود فایل */
+  let raw=null,bad=false;
+  if(db.settings.bk?.priv){try{raw=await crypto.subtle.decrypt({name:'RSA-OAEP'},await bkOpenPriv(pw),b64d(pkg.ek));}catch(e){if(e.message==='badpw')bad=true;}}
+  if(!raw&&pkg.priv){try{raw=await crypto.subtle.decrypt({name:'RSA-OAEP'},await bkOpenPrivFrom(pkg,pw),b64d(pkg.ek));}catch(e){if(e.message==='badpw')bad=true;}}
+  if(!raw)throw new Error(bad?'badpw':'notbk');
+  const k=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);
+  let body=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(pkg.iv)},k,b64d(pkg.ct)));
+  if(pkg.gz){const u=await gz(body,false);if(!u)throw new Error('nogz');body=u;}
+  const d=JSON.parse(td.decode(body));
+  if(!d||d.v!==DBV||!Array.isArray(d.nb)||!Array.isArray(d.users)||!Array.isArray(d.people)||!d.settings)throw new Error('notbk');
+  return d;
+}
+/* نگهداری: نسخه‌های ۷ روز اخیر (تازه‌ترین نسخه همیشه می‌ماند) */
+let bkList=null;
+async function bkLoad(){try{bkList=(await idb.get(BK_KEY))||[];}catch(e){bkList=[];}return bkList;}
+async function bkSave(list){const lim=Date.now()-BK_DAYS*DAY;list.sort((a,b)=>b.t-a.t);bkList=list.filter((x,i)=>i===0||x.t>=lim);await idb.set(BK_KEY,bkList);}
+async function bkAdd(kind){const p=await bkMake(kind);await bkLoad();await bkSave([p,...bkList]);
+  const st=db.settings.bk;st.last=p.t;if(kind==='auto')st.lastAuto=p.t;st.err='';persist();return p;}
+/* زمان‌بندی شبانه: هر شب ساعت ۲ بامداد؛ اگر سامانه آن ساعت بسته بود، در اولین باز شدن بعدی گرفته می‌شود */
+const bkBoundary=()=>{const d=new Date();d.setHours(BK_HOUR,0,0,0);if(Date.now()<d.getTime())d.setDate(d.getDate()-1);return d.getTime();};
+const bkNext=()=>bkBoundary()+DAY;
+let bkBusy=false;
+async function bkAuto(){
+  if(bkBusy||!db||!db.settings.bk?.pub)return;bkBusy=true;
+  try{await bkLoad();const last=bkList.filter(x=>x.kind==='auto')[0];
+    if(!last||last.t<bkBoundary()){await bkAdd('auto');if(location.hash==='#tech'||location.hash==='#home')render();}
+    else if(bkList.some(x=>x.t<Date.now()-BK_DAYS*DAY))await bkSave(bkList);}
+  catch(e){db.settings.bk.err=String(e.message||e);persist();}
+  finally{bkBusy=false;}
+}
+/* نسخه‌ی نمایشی: رمز پشتیبان آزمایشی از پیش تعیین می‌شود */
+async function ensureBackup(){if(!db.settings.bk?.pub){try{await bkSetPassword(BK_DEMO_PW);db.settings.bk.demo=1;persist();}catch(e){}}await bkLoad();bkAuto();}
+setInterval(()=>{bkAuto();},10*60e3);
+const bkErr=e=>({badpw:'رمز پشتیبان درست نیست.',notbk:'این فایل پشتیبان پرچمدار نیست یا خراب است.',nokey:'هنوز رمز پشتیبان تعیین نشده است.',nogz:'این مرورگر نمی‌تواند فایل فشرده را باز کند.'}[e.message]||'باز کردن پشتیبان ممکن نشد.');
+const fmtSize=b=>b>1048576?fa((b/1048576).toFixed(1))+' مگابایت':fa(Math.max(1,Math.round(b/1024)))+' کیلوبایت';
+const bkWhen=t=>new Date(t).toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long'})+'، ساعت '+new Date(t).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+function bkStatus(){const st=db.settings.bk||{};const last=st.last||0;
+  if(!st.pub)return {cls:'bad',t:'رمز پشتیبان تعیین نشده؛ پشتیبان خودکار گرفته نمی‌شود'};
+  if(st.err)return {cls:'bad',t:'آخرین پشتیبان خودکار ناموفق بود'};
+  if(!last||Date.now()-last>36*H)return {cls:'warn',t:last?'آخرین پشتیبان '+relTime(last):'هنوز پشتیبانی گرفته نشده'};
+  return {cls:'ok',t:'آخرین پشتیبان '+relTime(last)};}
+function backupTab(){
+  const st=db.settings.bk||{};const L=bkList||[];const s=bkStatus();
+  return `<div class="stack" style="max-width:820px">
+  <div class="card sec bk-st ${s.cls}"><div class="bk-sum"><span class="bk-ic">${icon('lock')}</span><div><b>${s.t}</b><small>پشتیبان خودکار هر شب ساعت ${fa(BK_HOUR)} بامداد؛ نگهداری نسخه‌های ${fa(BK_DAYS)} روز اخیر؛ رمزگذاری <bdi dir="ltr">AES-256</bdi>${st.pub?'؛ پشتیبان بعدی '+bkWhen(bkNext()):''}</small>${st.err?`<small class="crit">خطا: ${esc(st.err)}</small>`:''}</div></div>
+    <div class="dir-acts"><button class="btn primary" data-act="bk-now" ${st.pub?'':'disabled'}>پشتیبان‌گیری همین الان</button><button class="btn" data-act="bk-pw">${st.pub?'تغییر رمز پشتیبان':'تعیین رمز پشتیبان'}</button></div>
+    ${st.demo?`<p class="small muted">رمز پشتیبان آزمایشی این نسخه: <b dir="ltr">${BK_DEMO_PW}</b></p>`:''}
+    <p class="small muted">بدون رمز پشتیبان هیچ نسخه‌ای باز نمی‌شود؛ آن را جایی امن نگه دارید. در این نسخه‌ی نمایشی نسخه‌ها در همین مرورگر نگه داشته می‌شوند؛ در نسخه‌ی اصلی روی سرور و یک فضای جداگانه.</p></div>
+  <div class="card sec"><div class="sec-h"><h3>نسخه‌های پشتیبان</h3><span class="small muted">${fa(L.length)} نسخه</span></div>
+    ${L.length?`<div class="bk-list">${L.map(x=>`<div class="bk-row"><div class="bk-b"><b>${bkWhen(x.t)}</b><small><span class="pill ${x.kind==='auto'?'acc':'mute'}">${x.kind==='auto'?'خودکار':'دستی'}</span> ${x.kind==='auto'?'':esc(x.by)+'، '}${fa(x.n.nb)} محله، ${fa(x.n.people)} فرد، ${fa(x.n.users)} کاربر، ${fmtSize(x.size)}</small></div>
+      <div class="bk-a"><button class="btn sm" data-act="bk-dl" data-id="${x.id}">دریافت فایل</button><button class="btn sm ghost danger" data-act="bk-restore" data-id="${x.id}">بازگردانی</button></div></div>`).join('')}</div>`:'<p class="small muted">هنوز نسخه‌ای نیست.</p>'}</div>
+  <div class="card sec"><h3>بازگردانی از فایل</h3><p class="small muted">فایل پشتیبانی که پیش‌تر دریافت کرده‌اید را انتخاب کنید؛ رمز پشتیبان همان زمان لازم است. همه‌ی داده‌های فعلی جایگزین می‌شود و پیش از آن از وضع فعلی هم پشتیبان گرفته می‌شود.</p>
+    <div class="bk-pickrow"><label class="btn bk-pick"><input type="file" id="bk-file" class="sr-file" accept=".pdbk,.json,application/json" aria-label="فایل پشتیبان">انتخاب فایل پشتیبان</label><span class="small muted" id="bk-fname">فایلی انتخاب نشده</span></div><div style="margin-top:8px"><button class="btn danger" data-act="bk-file-restore">بازگردانی از فایل</button></div></div></div>`;
+}
+function bkPwForm(){
+  const has=!!db.settings.bk?.pub;
+  const fields=[];if(has)fields.push({name:'cur',label:'رمز پشتیبان فعلی',type:'password',dir:'ltr',required:true});
+  fields.push({name:'pw',label:'رمز پشتیبان تازه',type:'password',dir:'ltr',required:true,hint:'حداقل ۱۰ نویسه. اگر فراموش شود، هیچ پشتیبانی باز نمی‌شود.',validate:v=>v.length<10?esc('رمز پشتیبان باید حداقل ۱۰ نویسه باشد.'):''},
+    {name:'pw2',label:'تکرار رمز',type:'password',dir:'ltr',required:true,validate:(v,vals)=>v!==vals.pw?esc('تکرار رمز با رمز تازه یکی نیست.'):''});
+  openForm({title:has?'تغییر رمز پشتیبان':'تعیین رمز پشتیبان',noApprovalNote:true,submit:'ذخیره',intro:has?'نسخه‌های قبلی هم با رمز تازه باز می‌شوند.':'پس از تعیین رمز، پشتیبان خودکار شبانه شروع می‌شود.',fields,
+    onSubmit:v=>{const btn=$('#dlgform button[type=submit]');btn.disabled=true;btn.textContent='در حال رمزگذاری…';
+      bkSetPassword(v.pw,has?v.cur:null).then(()=>{db.settings.bk.demo=0;logTech(has?'تغییر رمز پشتیبان':'تعیین رمز پشتیبان');persist();$('#dlg').close();render();toast('رمز پشتیبان ذخیره شد');bkAuto();})
+        .catch(e=>{btn.disabled=false;btn.textContent='ذخیره';toast(bkErr(e));});return false;}});
+}
+function bkRestoreForm(pkg){
+  openForm({title:'بازگردانی پشتیبان',noApprovalNote:true,submit:'بازگردانی',intro:'نسخه‌ی '+bkWhen(pkg.t)+'. همه‌ی داده‌های فعلی با این نسخه جایگزین می‌شود؛ پیش از آن از وضع فعلی پشتیبان گرفته می‌شود.',fields:[
+    {name:'pw',label:'رمز پشتیبان',type:'password',dir:'ltr',required:true}],
+    onSubmit:v=>{const btn=$('#dlgform button[type=submit]');btn.disabled=true;btn.textContent='در حال باز کردن…';
+      (async()=>{const d=await bkOpen(pkg,v.pw);try{if(db.settings.bk?.pub)await bkAdd('manual');}catch(e){}
+        const r=realMe();const bk=db.settings.bk;db=d;ver++;if(bk&&!db.settings.bk)db.settings.bk=bk;
+        ensureGeo();ensureAdmin();ensureAuth();ensureTech();ensurePFlag();ensureFields();if(!getU(r.id))db.users.push(r);
+        logTech('بازگردانی پشتیبان '+bkWhen(pkg.t));flush();$('#dlg').close();render();toast('داده‌ها از پشتیبان بازگردانده شد');})()
+        .catch(e=>{btn.disabled=false;btn.textContent='بازگردانی';toast(bkErr(e));});return false;}});
 }
 /* verb-first pickers: choose what you did, then where */
 function pickSheet(title,items,onPick,ph){
@@ -4206,12 +4336,13 @@ app.addEventListener('click',e=>{
     case 'ntc-save':{const txt=$('#ntc-text').value.trim();if(!txt){toast('متن اعلان را بنویسید');break;}const dd=Number($('#ntc-days').value);db.settings.notice={on:true,text:txt,level:$('#ntc-level').value,until:dd?Date.now()+dd*DAY:0,t:Date.now()};logTech('انتشار اعلان سراسری');persist();render();toast('اعلان برای همه‌ی کاربران منتشر شد');break;}
     case 'ntc-off':if(db.settings.notice)db.settings.notice.on=false;logTech('برداشتن اعلان سراسری');persist();render();toast('اعلان برداشته شد');break;
     case 'ntc-x':try{sessionStorage.setItem(KEY+'-ntc',String(db.settings.notice?.t));}catch(x){}b.closest('.sys-notice')?.remove();break;
-    case 'bk-down':{db.settings.lastBackup=Date.now();persist();downloadFile('parchamdar-backup-'+today()+'.json',JSON.stringify(db),'application/json');break;}
-    case 'bk-restore':{const f=$('#bk-file')?.files?.[0];if(!f){toast('اول فایل پشتیبان را انتخاب کنید');break;}
-      if(!b.dataset.armed){b.dataset.armed='1';b.textContent='همه‌ی داده‌های فعلی جایگزین می‌شود؛ دوباره بزنید';break;}
-      f.text().then(txt=>{let d;try{d=JSON.parse(txt);}catch(x){toast('این فایل پشتیبان معتبر نیست');return;}
-        if(!d||d.v!==DBV||!Array.isArray(d.nb)||!Array.isArray(d.users)||!Array.isArray(d.people)||!d.settings){toast('این فایل پشتیبان پرچمدار نیست یا نسخه‌اش جور نیست');return;}
-        const r=realMe();db=d;ver++;ensureGeo();ensureAdmin();ensureAuth();ensureTech();ensurePFlag();ensureFields();if(!getU(r.id))db.users.push(r);logTech('بازگردانی از فایل پشتیبان');flush();render();toast('داده‌ها از فایل پشتیبان بازگردانده شد');});break;}
+    case 'bk-now':{if(bkBusy)break;b.disabled=true;b.textContent='در حال پشتیبان‌گیری…';bkBusy=true;bkAdd('manual').then(()=>{logTech('پشتیبان‌گیری دستی');persist();render();toast('پشتیبان رمزگذاری‌شده گرفته شد');}).catch(e=>{toast(bkErr(e));render();}).finally(()=>{bkBusy=false;});break;}
+    case 'bk-pw':bkPwForm();break;
+    case 'bk-go':ui.techTab='backup';location.hash='tech';break;
+    case 'bk-dl':{const x=(bkList||[]).find(y=>y.id===id);if(x)downloadFile('parchamdar-backup-'+new Date(x.t).toISOString().slice(0,16).replace(/[:T]/g,'-')+'.pdbk',JSON.stringify(x),'application/octet-stream');break;}
+    case 'bk-restore':{const x=(bkList||[]).find(y=>y.id===id);if(x)bkRestoreForm(x);break;}
+    case 'bk-file-restore':{const f=$('#bk-file')?.files?.[0];if(!f){toast('اول فایل پشتیبان را انتخاب کنید');break;}
+      f.text().then(txt=>{let pkg;try{pkg=JSON.parse(txt);}catch(x){toast('این فایل پشتیبان پرچمدار نیست یا خراب است.');return;}if(!pkg||pkg.f!=='parchamdar-backup'){toast('این فایل پشتیبان پرچمدار نیست یا خراب است.');return;}bkRestoreForm(pkg);});break;}
     case 'goperf':ui.perfProv=b.dataset.p||'';ui.perfCity='';location.hash='perf';break;
     case 'dir-new':dirForm(b.dataset.pv?{provs:[b.dataset.pv]}:{});break;
     case 'dir-read':{const d=(db.directives||[]).find(x=>x.id===id);if(!d)break;d.reads[me().id]=Date.now();me().last=Date.now();persist();render();toast('مطالعه‌ی ابلاغیه ثبت شد');break;}
@@ -4296,7 +4427,8 @@ app.addEventListener('input',e=>{
   if(t.dataset.change==='pattern-preview')$('#pv').innerHTML=previewCodes(t.value);
 });
 app.addEventListener('change',e=>{
-  const t=e.target;const k=t.dataset.filter;
+  const t=e.target;
+  if(t.id==='bk-file'){const n=$('#bk-fname');if(n)n.textContent=t.files?.[0]?.name||'فایلی انتخاب نشده';}const k=t.dataset.filter;
   if(k&&k!=='q'){ui.f[k]=t.value;if(k==='prov'){ui.f.city='';ui.f.district='';}ui.page=1;saveFilters();if(k==='prov')render();else updateList();}
   if(t.dataset.pfilter&&t.dataset.pfilter!=='q'){ui.pf[t.dataset.pfilter]=t.value;if(t.dataset.pfilter==='city')ui.pf.district='';if(t.dataset.pfilter==='prov'){ui.pf.city='';ui.pf.district='';}ui.pPage=1;if(t.dataset.pfilter==='city'||t.dataset.pfilter==='prov')render();else updatePeople();}
   if(t.dataset.prorg!==undefined){ui.prf.org=t.value;ui.prf.page=1;render();}
@@ -4319,6 +4451,7 @@ render();
   if(saved&&saved.v===DBV){db=saved;ver++;}else freshDb();
   ensureGeo();ensureAdmin();ensureAuth();ensureTech();ensurePFlag();ensureFields();
   render();
+  ensureBackup();
 })();
 /* PWA: register the service worker only where the page is served as the installable app */
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&document.querySelector('link[rel="manifest"]')){

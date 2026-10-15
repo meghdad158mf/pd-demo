@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-FjmyaH0X/3kLFidP+xeTgvU20RoAjQ3FF8ICV4494NY='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-Y2MvDcZB/czgRQ0NB5NhWiQRdbX9aCeTDj7ECsuLDrI='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -684,12 +684,15 @@ dialog.as-full{height:100dvh;max-height:100dvh}
 }
 
 .hsec{margin-top:10px}
+.sect+.hsec{margin-top:0}
+.acts{margin-bottom:6px}
 .hsec>summary{list-style:none;cursor:pointer;margin:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 14px;min-height:54px}
 .hsec>summary::-webkit-details-marker{display:none}
 .hsec .hchev{margin-inline-start:auto;color:var(--muted);display:grid;transition:transform .2s}
 .hsec[open] .hchev{transform:rotate(180deg)}
 .hsec[open]>summary{margin-bottom:10px;border-color:var(--accent)}
 .hsec:first-of-type{margin-top:22px}
+.sect+.hsec:first-of-type{margin-top:0}
 .hsec.hot>summary{border-color:var(--bad);background:var(--bad-soft)}
 
 /* ---- v9: dossier on the phone ---- */
@@ -870,7 +873,8 @@ a.btn{text-decoration:none}
 @media (min-width:900px){.acts{grid-template-columns:repeat(6,minmax(0,1fr))}}
 .act{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;min-height:104px;padding:12px 6px 10px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);font:inherit;text-align:center;cursor:pointer}
 .act .vi{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-fg);flex:none}
-.act b{font-size:13.5px;font-weight:800;line-height:1.45}
+.act{position:relative;min-height:96px;justify-content:center}.act b{font-size:13.5px;font-weight:800;line-height:1.45;white-space:nowrap}
+.act-n{position:absolute;top:8px;inset-inline-start:8px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--warn-soft);color:var(--warn-ink);font-style:normal;font-size:12px;font-weight:800;line-height:22px}
 .act small{font-size:12px;color:var(--muted);line-height:1.3}
 .act:active{transform:scale(.97)}
 .act:first-child{background:var(--navy);border-color:var(--navy);color:#fff}
@@ -2376,10 +2380,11 @@ function homeView(u){
   const ho=ui.homeOpen||(ui.homeOpen={});
   const sec=(id,dot,title,n,body)=>`<details class="grp hsec ${n&&id==='g-ret'?'hot':''}" id="${id}" ${ho[id]?'open':''}><summary class="grp-h" data-act="hsec" data-k="${id}"><span class="dot" style="background:var(${dot})"></span>${title} <span class="n">${fa(n)}</span><span class="hchev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></summary><div class="hbody">${body}</div></details>`;
   const nOpen=nbs.reduce((s,n)=>s+openProblems(n).length,0);
-  const act=(k,t,s)=>`<button type="button" class="act" data-act="verb" data-v="${k}">${vIcon(k)}<b>${t}</b>${s?`<small>${s}</small>`:''}</button>`;
+  const act=(k,t,c)=>`<button type="button" class="act" data-act="verb" data-v="${k}">${vIcon(k)}<b>${t}</b>${c?`<em class="act-n" aria-label="${c}">${c}</em>`:''}</button>`;
   return `<section class="hello"><h1>خانه</h1><p><bdi>${days}</bdi>، <bdi>${fa(nbs.length)} محله در ${esc(u.city)}</bdi></p></section>
   <h2 class="sect">ثبت سریع</h2>
-  <div class="acts">${act('nb','ثبت محله')}${act('prob','مشکل',nOpen?fa(nOpen)+' باز':'')}${act('trustee','ثبت متولی')}${act('contact','ارتباط با متولی')}${act('course','دوره‌ی توانمندسازی')}${act('more','ثبت‌های دیگر','بازدید، برنامه، ایده')}</div>
+  <div class="acts">${act('nb','ثبت محله')}${act('prob','مشکل',nOpen?fa(nOpen):'')}${act('trustee','ثبت متولی')}${act('contact','ارتباط با متولی')}${act('course','توانمندسازی')}${act('more','ثبت‌های دیگر')}</div>
+  <h2 class="sect">کارهای امروز</h2>
   ${ret.length?sec('g-ret','--bad','برگشتی برای اصلاح',ret.length,ret.map(c=>kcard({cls:'red',t:`${esc(c.txt)}، ${esc(c.tn)}`,s:`<div class="reason"><b>${esc(uName(c.rv.uid))}:</b> ${esc(c.rv.note||'بدون توضیح')}</div>`,a:`${target(c)||c.op!=='delete'?`<button class="btn primary" data-act="fix" data-cid="${c.id}">اصلاح و ارسال دوباره</button>`:''}<button class="btn ghost" data-act="dismiss" data-cid="${c.id}">بستن</button>`})).join('')):''}
   ${sec('g-urg','--warn','فوری',urg.length,urg.length?(()=>{const lim=isMob()?3:4;return (showAll?urg:urg.slice(0,lim)).map(kcard).join('')+(urg.length>lim&&!showAll?`<button class="btn block ghost link-btn" data-act="home-all">نمایش ${fa(urg.length-lim)} مورد دیگر</button>`:'');})():'<p class="done">کار عقب‌افتاده‌ای ندارید. مشکل‌های بحرانی پیگیری شده‌اند و همه‌ی محله‌ها در ۶۰ روز اخیر بررسی شده‌اند.</p>')}
   ${sec('g-pend','--mute','منتظر تأیید رابط استانی',pend.length,pend.length?`<div class="pend-list">${pend.map(c=>`<a class="pend-row" href="${c.pid?'#p-'+c.pid:'#n-'+c.nb}"><b>${esc(c.txt)}</b><small>${esc(c.tn)}، ${relTime(c.t)}</small></a>`).join('')}</div>`:'<p class="small muted">ثبتی در انتظار تأیید ندارید.</p>')}

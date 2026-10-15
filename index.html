@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-B0FxZOVk6MqPU00lP2R5bstDxnQS1bqHUpGJfYJNTPI='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-InDG+WiWX4Yeuf5D2HcVrqVFngUbnl5WlYYJ181LwOY='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -1030,8 +1030,46 @@ a.btn{text-decoration:none}
 .dir-rep p{margin-top:4px;font-size:13.5px;line-height:1.9;white-space:pre-wrap}
 .dir-unread{display:flex;flex-wrap:wrap;gap:6px}.dir-unread .tag small{color:var(--muted);margin-inline-start:4px;font-size:11.5px}
 .sheet-item .badge{margin-inline-start:auto;flex:none}
+.sheet-item>span:not(.sheet-ic):not(.st){display:flex;flex-direction:column;min-width:0;flex:1}
 .att .task-b b{white-space:normal;overflow:visible}
 @media (max-width:720px){.dir-kpis{grid-template-columns:repeat(4,minmax(0,1fr))!important}.dir-kpis .km{padding:8px 6px}.dir-kpis .km span{font-size:11.5px}}
+/* v25: ادمین فنی — پشتیبانی، دیدن از چشم کاربر، سلامت داده، اعلان سراسری */
+.viewas{position:sticky;top:0;z-index:1100;display:flex;align-items:center;gap:10px;padding:10px 14px;margin:0 0 12px;border-radius:12px;background:#6b3fa0;color:#fff;font-size:13.5px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.viewas span{flex:1}.viewas .btn{background:#fff;color:#4a2a73;border-color:#fff;flex:none}
+body.viewing-as .top{box-shadow:inset 0 -3px 0 #6b3fa0}
+.sys-notice{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:0 0 12px;border-radius:12px;background:var(--accent-soft);color:var(--accent-fg);font-size:13.5px;font-weight:600}
+.sys-notice.lv-warn{background:var(--warn-soft);color:var(--warn-ink)}
+.sys-notice span{flex:1;line-height:1.8}.sys-notice .banner-x{flex:none}
+.tk-card{display:flex;flex-direction:column;gap:6px;padding:14px;color:var(--fg);text-decoration:none}
+.tk-card.st-new{box-shadow:inset 4px 0 0 var(--warn)}.tk-card:hover{border-color:var(--accent)}
+.tk-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.tk-thread{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.tk-msg{max-width:min(620px,92%);padding:10px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);align-self:flex-start}
+.tk-msg.tech{background:var(--accent-soft);border-color:transparent;align-self:flex-end}
+.tk-mh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.tk-msg p{margin-top:4px;white-space:pre-wrap;line-height:1.9;font-size:14px}
+.tk-reply textarea{min-height:84px}
+.tk-st{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px}
+.sup-head{display:flex;gap:14px;align-items:flex-start;padding:16px;margin-bottom:10px}.sup-head .avatar{width:52px;height:52px;font-size:18px;flex:none}
+.sup-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.sup-b h1{font-size:20px}.sup-b .kv{font-size:13px;margin-top:4px}
+.sup-alerts{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.sup-al{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--surface-2);font-size:13.5px;font-weight:600;line-height:1.8}
+.sup-al span{flex:1}.sup-al.bad{background:var(--bad-soft);color:var(--bad-ink)}.sup-al.warn{background:var(--warn-soft);color:var(--warn-ink)}.sup-al.ok{background:var(--ok-soft,#e3f2e5);color:var(--ok)}
+.sup-al .btn{flex:none}
+.sup-acts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+@media (max-width:720px){.sup-acts{display:grid;grid-template-columns:minmax(0,1fr)}.sup-acts .btn{justify-content:center}.sup-al{flex-wrap:wrap}.sup-al .btn{width:100%;justify-content:center}}
+.sup-grid{align-items:start}
+.sup-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13.5px}.sup-ul li{padding:6px 0;border-bottom:1px solid var(--line)}.sup-ul li:last-child{border-bottom:0}
+.hc{padding:0;overflow:hidden}.hc>summary{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;list-style:none}.hc>summary::-webkit-details-marker{display:none}
+.hc-t{flex:1;min-width:0;display:flex;flex-direction:column}.hc-t b{font-size:14.5px}.hc-t small{color:var(--muted);font-size:12.5px}
+.hc-n{font-style:normal;font-weight:800;font-size:15px;min-width:34px;text-align:center;padding:2px 8px;border-radius:999px;background:var(--surface-2)}
+.hc.sev-bad .hc-n{background:var(--bad-soft);color:var(--bad-ink)}.hc.sev-warn .hc-n{background:var(--warn-soft);color:var(--warn-ink)}
+.hc-b{padding:0 14px 14px}.hc-fix{margin-bottom:8px}
+.hc-list{list-style:none;margin:0;padding:0}.hc-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--line);font-size:13.5px}.hc-list li small{color:var(--muted);font-size:12.5px}.hc-list li .btn{margin-inline-start:auto}
+.hc-ok .tag{background:var(--surface-2)}
+@media (min-width:721px){.ptiles.t3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tu-search{padding:10px;margin-bottom:12px}.tu-search input{width:100%}
+.tu-res:empty{display:none}.tu-res{display:flex;flex-direction:column;margin-top:6px}
+.tu-row{display:flex;flex-direction:column;padding:9px 10px;border-radius:10px;color:var(--fg);text-decoration:none}.tu-row:hover{background:var(--surface-2)}.tu-row small{color:var(--muted);font-size:12.5px}
 @media (max-width:1080px){.d-aside{order:0}}
 @media (max-width:720px){
   /* touch targets: 44px minimum */
@@ -1174,8 +1212,10 @@ const isOpen=p=>p.status!=='solved'&&p.status!=='stopped';
 const PRIO={critical:{t:'بحرانی',c:'bad',w:4},high:{t:'بالا',c:'warn',w:3},mid:{t:'متوسط',c:'acc',w:2},low:{t:'کم',c:'mute',w:1}};
 const ISTAT={proposed:{t:'پیشنهادی',c:'mute'},review:{t:'در حال بررسی',c:'mute'},approved:{t:'مصوب',c:'acc'},running:{t:'در حال اجرا',c:'acc'},done:{t:'اجراشده',c:'ok'}};
 const RTYPES=['بازدید میدانی','جلسه با متولیان','تماس تلفنی','گزارش مردمی'];
-const LEVEL={admin:{t:'مدیر سامانه',c:'flag'},supervisor:{t:'رابط استانی',c:'acc'},operator:{t:'کارشناس محله',c:'mute'},viewer:{t:'نمایشی',c:'mute'}};
-const CST={pending:{t:'در انتظار تأیید',c:'warn i-clock'},approved:{t:'تأییدشده',c:'ok'},rejected:{t:'برگشت برای اصلاح',c:'bad i-back'},auto:{t:'ثبت رابط استانی',c:'acc'},admin:{t:'ثبت مدیر',c:'mute'},revoked:{t:'لغو با عدم تأیید مدیر',c:'bad'},withdrawn:{t:'پس‌گرفته',c:'mute'}};
+const LEVEL={tech:{t:'ادمین فنی',c:'flag'},admin:{t:'مدیر سامانه',c:'flag'},supervisor:{t:'رابط استانی',c:'acc'},operator:{t:'کارشناس محله',c:'mute'}};
+/* مدیر سامانه و ادمین فنی هر دو دسترسی کامل دارند */
+const ADM=r=>r==='admin'||r==='tech';
+const CST={pending:{t:'در انتظار تأیید',c:'warn i-clock'},approved:{t:'تأییدشده',c:'ok'},rejected:{t:'برگشت برای اصلاح',c:'bad i-back'},auto:{t:'ثبت رابط استانی',c:'acc'},admin:{t:'ثبت مدیر',c:'mute'},tech:{t:'ثبت ادمین فنی',c:'mute'},revoked:{t:'لغو با عدم تأیید مدیر',c:'bad'},withdrawn:{t:'پس‌گرفته',c:'mute'}};
 const ENT={nb:'پرونده محله',person:'پرونده فرد',link:'متولی',problem:'مشکل',step:'مرحله پیگیری',idea:'ایده/طرح',program:'برنامه',course:'دوره‌ی توانمندسازی',review:'بررسی',contact:'ارتباط با فرد',directive:'ابلاغیه',user:'کاربر'};
 const OPW={create:'ثبت',update:'ویرایش',delete:'حذف'};
 const GENDER={m:'مرد',f:'زن'};
@@ -1243,7 +1283,7 @@ function seed(){
   CITIES.forEach(c=>{for(let i=0;i<c.ops;i++){k++;const nm=(presetOps[c.name]||[])[i]||uname();
     const act=k===1?1.4:(k%9===0?.08:.25+R()*1.25);
     users.push({id:'o'+k,username:k===1?'operator':'op'+String(k).padStart(2,'0'),name:nm,role:'operator',city:c.name,active:true,act,last:0});}});
-  users.push({id:'v1',username:'viewer',name:'نرگس صادقی',role:'viewer',city:'',active:true,last:now-3*DAY});
+  users.push({id:'v1',username:'tech',name:'نرگس صادقی',role:'tech',city:'',active:true,last:now-3*DAY});
   users.push({id:'o99',username:'m.nouri',name:'محمد نوری',role:'operator',city:'تهران',active:false,act:0,last:now-40*DAY});
   const byName=new Map(users.map(u=>[u.name,u]));
   const sup={};users.filter(u=>u.role==='supervisor').forEach(s=>sup[s.city]=s);
@@ -1508,7 +1548,7 @@ function flush(){clearTimeout(saveT);saveT=null;if(db)idb.set(KEY,db).catch(()=>
 function persist(){ver++;if(seeding)return;clearTimeout(saveT);saveT=setTimeout(flush,150);}
 addEventListener('pagehide',()=>{if(saveT)flush();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&saveT)flush();});
-function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureGeo();ensureAdmin();ensureAuth();ensurePFlag();ensureFields();persist();}
+function freshDb(){db=seed();ver++;seeding=true;seedPending();seeding=false;ensureGeo();ensureAdmin();ensureAuth();ensureTech();ensurePFlag();ensureFields();persist();}
 
 let session=null;
 try{session=sessionStorage.getItem(KEY+'-u');if(!session){const r=JSON.parse(localStorage.getItem(KEY+'-remember')||'null');if(r&&r.exp>Date.now()){session=r.u;sessionStorage.setItem(KEY+'-u',session);}}}catch(e){}
@@ -1534,15 +1574,15 @@ const findN=id=>ix().nb.get(id),getP=id=>ix().p.get(id),getU=id=>ix().u.get(id),
 const uName=id=>getU(id)?.name||'—';
 
 /* ================= roles & permissions ================= */
-const me=()=>{const u=getU(session);return u&&u.active?u:null;};
+const me=()=>{const u=getU(session);if(!u||!u.active)return null;if(ui.viewAs&&u.role==='tech'){const x=getU(ui.viewAs);if(x)return x;}return u;};
 const role=()=>me()?.role;
-const isAdmin=()=>role()==='admin',isSup=()=>role()==='supervisor',isOp=()=>role()==='operator',isViewer=()=>role()==='viewer';
+const isAdmin=()=>ADM(role()),isSup=()=>role()==='supervisor',isOp=()=>role()==='operator',isViewer=()=>role()==='viewer';
 const isReviewer=()=>isAdmin()||isSup();
 const cityOf=name=>db.settings.cities.find(c=>c.name===name);
 const codeFor=(n,s)=>makeCode(db.settings.codePattern,cityOf(n.city)?.code,n.district,s??n.seq);
 const authorOf=o=>o&&o._cid?chById(o._cid)?.uid:null;
-function canEdit(n){const u=me();if(!u||!n)return false;if(u.role==='admin')return true;if(u.role==='supervisor')return inProv(n.city,u);if(u.role==='operator')return n.op===u.id||(!!n._st&&authorOf(n)===u.id);return false;}
-function canEditP(p){const u=me();if(!u||u.role==='viewer')return false;if(u.role==='admin')return true;const ls=linksOf(p.id);
+function canEdit(n){const u=me();if(!u||!n)return false;if(ADM(u.role))return true;if(u.role==='supervisor')return inProv(n.city,u);if(u.role==='operator')return n.op===u.id||(!!n._st&&authorOf(n)===u.id);return false;}
+function canEditP(p){const u=me();if(!u||u.role==='viewer')return false;if(ADM(u.role))return true;const ls=linksOf(p.id);
   if(u.role==='supervisor')return ls.some(x=>inProv(x.n.city,u))||inProv(getU(p.by)?.city,u)||p.by===u.id;return ls.some(x=>x.n.op===u.id)||p.by===u.id;}
 const canCreate=()=>!!me()&&!isViewer();
 const canAssign=()=>isReviewer();
@@ -1550,8 +1590,8 @@ const seePhone=()=>!isViewer();
 const seeNid=()=>isReviewer();
 const showPhone=v=>v?(seePhone()?fa(v):fa(v.slice(0,4)+'•••'+v.slice(-2))):'—';
 const showNid=v=>v?(seeNid()?fa(v):isViewer()?'••••••••••':fa(v.slice(0,3)+'•••••'+v.slice(-2))):'—';
-function inScope(c){const u=me();if(!u)return false;if(u.role==='admin')return true;if(u.role==='supervisor'){const a=getU(c.uid);return !!a&&(a.id===u.id||inProv(a.city,u));}return c.uid===u.id;}
-function canReview(c){const u=me();if(!u||c.st!=='pending')return false;if(u.role==='admin')return true;if(u.role==='supervisor'){const a=getU(c.uid);return !!a&&(a.id===u.id||inProv(a.city,u));}return false;}
+function inScope(c){const u=me();if(!u)return false;if(ADM(u.role))return true;if(u.role==='supervisor'){const a=getU(c.uid);return !!a&&(a.id===u.id||inProv(a.city,u));}return c.uid===u.id;}
+function canReview(c){const u=me();if(!u||c.st!=='pending')return false;if(ADM(u.role))return true;if(u.role==='supervisor'){const a=getU(c.uid);return !!a&&(a.id===u.id||inProv(a.city,u));}return false;}
 /* pending/rejected records: reviewers see them, the author sees them, everyone else sees only approved data */
 /* ---- provinces: each city belongs to a province; a provincial liaison (role 'supervisor') covers every city of it ---- */
 const PROV_OF={'تهران':'تهران','مشهد':'خراسان رضوی','اصفهان':'اصفهان','شیراز':'فارس','تبریز':'آذربایجان شرقی','کرج':'البرز','قم':'قم','اهواز':'خوزستان'};
@@ -1575,12 +1615,12 @@ function ensureGeo(){
 }
 /* data scope: an operator sees only the neighborhoods assigned to them and the people linked to those;
    a supervisor sees only their own city; admin and the read-only demo level see everything */
-function nbIn(n){const u=me();if(!u||!n)return false;if(u.role==='admin'||u.role==='viewer')return true;if(u.role==='supervisor')return inProv(n.city,u);return n.op===u.id||(!!n._st&&authorOf(n)===u.id);}
-function pIn(p){const u=me();if(!u||!p)return false;if(u.role==='admin'||u.role==='viewer')return true;const ls=linksOf(p.id);
+function nbIn(n){const u=me();if(!u||!n)return false;if(ADM(u.role)||u.role==='viewer')return true;if(u.role==='supervisor')return inProv(n.city,u);return n.op===u.id||(!!n._st&&authorOf(n)===u.id);}
+function pIn(p){const u=me();if(!u||!p)return false;if(ADM(u.role)||u.role==='viewer')return true;const ls=linksOf(p.id);
   if(u.role==='supervisor')return ls.some(x=>inProv(x.n.city,u))||inProv(getU(p.by)?.city,u)||p.by===u.id;return ls.some(x=>x.n.op===u.id)||p.by===u.id;}
 const visN=n=>vis(n)&&nbIn(n),visP=p=>vis(p)&&pIn(p);
 const myLinks=pid=>linksOf(pid).filter(x=>nbIn(x.n));
-function vis(o){if(!o._st)return true;const u=me();if(!u||u.role==='viewer')return false;if(u.role==='admin'||u.role==='supervisor')return true;return authorOf(o)===u.id;}
+function vis(o){if(!o._st)return true;const u=me();if(!u||u.role==='viewer')return false;if(ADM(u.role)||u.role==='supervisor')return true;return authorOf(o)===u.id;}
 function stBadge(o){
   if(o._st==='pending')return '<span class="pill warn i-clock">در انتظار تأیید</span>';
   if(o._st==='rejected')return '<span class="pill bad i-back">برگشت برای اصلاح</span>';
@@ -1638,7 +1678,7 @@ function commit(spec,actor=me(),t=Date.now()){
     if(ch.op==='update'){const o=target(ch);const prev=o&&o._cid&&chById(o._cid);
       if(prev&&prev.st==='pending'&&prev.uid===actor.id&&prev.op==='update'){Object.assign(prev.data,clone(ch.data));prev.t=t;persist();return prev;}}
     ch.st='pending';stage(ch);
-  }else{ch.prev=apply(ch,actor,t);ch.st=actor.role==='supervisor'?'auto':'admin';}
+  }else{ch.prev=apply(ch,actor,t);ch.st=actor.role==='supervisor'?'auto':actor.role==='tech'?'tech':'admin';}
   if(ui.fixing){const f=chById(ui.fixing);if(f)f.fixed=true;ui.fixing=null;}
   db.changes.unshift(ch);
   actor.last=Math.max(actor.last||0,t);
@@ -1764,6 +1804,8 @@ const ICON={
   home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   notice:'<path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1zM16.5 8.5a5 5 0 0 1 0 7M19.5 5.5a9 9 0 0 1 0 13"/>',
   layers:'<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>',
+  help:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M5.6 5.6l3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>',
+  health:'<path d="M3 12h4l3-7 4 14 3-7h4"/>',
   prob:'<path d="M12 4l9 16H3zM12 10v4M12 17h.01"/>',
   search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
   admin:'<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.4-3a7.4 7.4 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.5 7.5 0 0 0-2-1.2L14.5 3h-5l-.4 2.6a7.5 7.5 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7.5 7.5 0 0 0 2 1.2l.4 2.6h5l.4-2.6a7.5 7.5 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"/>',
@@ -1773,34 +1815,43 @@ const icon=k=>`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" strok
 function navItems(u){
   const r=u.role,it=[];
   if(r==='operator')it.push(['home','خانه','home',returnedOf(u).length]);
-  if(r==='supervisor'||r==='admin')it.push(['home','خانه','home',0]);
+  else it.push(['home','خانه','home',0]);
+  if(r==='tech')it.push(['users','کاربران','people',0],['support','پشتیبانی','help',tkCount(u)]);
   if(r==='admin')it.push(['provs','استان‌ها','layers',0],['notices','ابلاغیه‌ها','notice',0]);
   if(r==='supervisor')it.push(['queue','کارتابل','queue',pendingCount()]);
   it.push(['list','محله‌ها','list',0]);
-  if(r==='operator'||r==='viewer')it.push(['problems','مشکلات','prob',0]);
-  if(r!=='admin')it.push(['people','افراد','people',0]);
+  if(r==='operator')it.push(['problems','مشکلات','prob',0]);
+  if(r==='operator'||r==='supervisor')it.push(['people','افراد','people',0]);
   return it;
 }
 /* s: نام کوتاه برای نوار بالای رایانه؛ گزینه‌ی بدون s در رایانه زیر منوی حساب می‌آید. c: شمارنده */
 function moreItems(u){
   const r=u.role,it=[];const td=r==='operator'||r==='supervisor'?dirTodo(u).length:0;
+  if(r==='tech')it.push({h:'health',s:'سلامت داده',t:'سلامت داده',d:'یافتن و رفع خطاهای داده: تکراری‌ها، کدهای خراب، قفل‌ها',ic:'health'},
+    {h:'tech',tab:'sec',s:'تنظیمات فنی',t:'تنظیمات فنی',d:'امنیت ورود، اعلان سراسری، پشتیبان‌گیری',ic:'admin'},
+    {h:'nat',t:'وضعیت کشور',d:'نقشه و مقایسه‌ی استان‌ها',ic:'layers'},
+    {h:'provs',t:'استان‌ها و رابطان',d:'تعیین رابط و عملکرد رابطان',ic:'layers'},
+    {h:'notices',t:'ابلاغیه‌ها',d:'ابلاغیه‌های مدیر و رابطان',ic:'notice'},
+    {h:'queue',t:'کارتابل',d:'ثبت‌های منتظر بررسی در همه‌ی استان‌ها',ic:'queue',c:0},
+    {h:'people',t:'افراد',d:'متولیان همه‌ی محله‌ها',ic:'people'});
   if(r==='operator')it.push({h:'me',s:'عملکرد من',t:'عملکرد من',d:'آمار، نمودار فعالیت و سابقه‌ی ثبت‌ها',ic:'perf'});
   if(r==='operator'||r==='supervisor')it.push({h:'notices',s:'ابلاغیه‌ها',t:'ابلاغیه‌ها',d:r==='supervisor'?'ابلاغیه‌های مدیر و ارسال ابلاغیه به کارشناسان':'دستورالعمل‌های مدیر و رابط استانی',ic:'notice',c:td});
   if(r==='admin')it.push({h:'queue',s:'کارتابل',t:'کارتابل',d:'ثبت‌های منتظر بررسی در همه‌ی استان‌ها',ic:'queue',c:pendingCount()},{h:'people',s:'افراد',t:'افراد',d:'متولیان همه‌ی محله‌ها',ic:'people'});
-  if(r==='supervisor'||r==='admin')it.push({h:'problems',t:'مشکلات محله‌ها',d:'باز، بحرانی و بدون پیگیری',ic:'prob'});
+  if(r!=='operator')it.push({h:'problems',t:'مشکلات محله‌ها',d:'باز، بحرانی و بدون پیگیری',ic:'prob'});
   if(r==='supervisor')it.push({h:'perf',s:'عملکرد',t:'عملکرد کارشناسان',d:'ثبت‌ها، تأیید و برگشت، محله‌های عقب‌افتاده',ic:'perf'});
-  if(r==='admin')it.push({h:'perf',t:'عملکرد کارشناسان و رابطان',d:'ثبت‌ها، تأیید و برگشت، زمان بررسی رابطان',ic:'perf'});
+  if(ADM(r))it.push({h:'perf',t:'عملکرد کارشناسان و رابطان',d:'ثبت‌ها، تأیید و برگشت، زمان بررسی رابطان',ic:'perf'});
   if(r==='supervisor')it.push({h:'staff',s:'کارشناسان',t:'کارشناسان استان',d:'افزودن کارشناس و تعیین محله‌های هر نفر',ic:'people'},{h:'courses',t:'دوره‌های توانمندسازی',d:'دوره‌های استان و آمار شرکت متولیان',ic:'course'});
-  if(r==='admin')it.push({h:'admin',tab:'users',s:'مدیریت',t:'کاربران و سطح دسترسی',d:'افزودن کاربر، شهر و نقش هر نفر',ic:'admin'},
-    {h:'admin',tab:'cats',t:'شهرها و دسته‌بندی‌ها',d:'نقش متولیان، مهارت‌ها، دسته‌ی مشکلات، نهادها',ic:'list'},
-    {h:'admin',tab:'code',t:'فرمول کد محله',d:'الگوی ساخت کد پرونده‌ها',ic:'admin'},
-    {h:'admin',tab:'log',t:'گزارش فعالیت',d:'همه‌ی ثبت‌ها و تغییرات سامانه',ic:'queue'});
+  if(r==='admin')it.push({h:'admin',tab:'users',s:'مدیریت',t:'کاربران و سطح دسترسی',d:'افزودن رابط و کارشناس، شهر و نقش هر نفر',ic:'admin'});
+  if(ADM(r))it.push({h:'admin',tab:'cats',t:'شهرها و دسته‌بندی‌ها',d:'نقش متولیان، مهارت‌ها، دسته‌ی مشکلات، نهادها',ic:'list'});
+  if(r==='admin')it.push({h:'admin',tab:'log',t:'گزارش فعالیت',d:'همه‌ی ثبت‌ها و تغییرات سامانه',ic:'queue'});
+  if(r==='tech')it.push({h:'tech',tab:'log',t:'گزارش فعالیت و ورودها',d:'همه‌ی ثبت‌ها، ورودها و تغییرات سامانه',ic:'queue'});
+  if(r!=='tech')it.push({h:'support',t:'درخواست پشتیبانی فنی',d:'اشکال در ورود، حساب کاربری یا کار با سامانه را به ادمین فنی بگویید',ic:'help',c:tkCount(u)});
   return it;
 }
 let installEvt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;$$('[data-act="install"]').forEach(b=>b.hidden=false);});
 function topbar(u,route){
-  const cur=h=>route===h||(h==='list'&&route.startsWith('n-'))||(h==='notices'&&route.startsWith('d-'))||(h==='provs'&&route.startsWith('pv-'))||(h==='people'&&route.startsWith('p-'))||(h==='perf'&&route.startsWith('u-')&&u.role!=='operator')||(h==='me'&&route==='u-'+u.id);
+  const cur=h=>route===h||(h==='list'&&route.startsWith('n-'))||(h==='notices'&&route.startsWith('d-'))||(h==='provs'&&route.startsWith('pv-'))||(h==='support'&&route.startsWith('t-'))||(h==='users'&&route.startsWith('sup-'))||(h==='people'&&route.startsWith('p-'))||(h==='perf'&&route.startsWith('u-')&&u.role!=='operator')||(h==='me'&&route==='u-'+u.id);
   const groups=Object.keys(LEVEL).map(r=>[r,db.users.filter(x=>x.active&&x.role===r)]).filter(g=>g[1].length);
   return `<header class="top"><div class="top-in">
     <a class="brand" href="#${defaultRoute(u)}">${brandSvg(42)}<span><b>پرچمدار</b><small>سامانه مدیریت</small></span></a>
@@ -1812,7 +1863,7 @@ function topbar(u,route){
   </div></header>`;
 }
 function roleNote(u){
-  if(u.role==='viewer')return `<b>سطح نمایشی:</b> فقط مشاهده. شماره تماس و کد ملی افراد برای این سطح پنهان است.`;
+  if(u.role==='tech')return `<b>ادمین فنی:</b> همه‌ی امکانات سامانه، به‌اضافه‌ی تعیین مدیر، رفع اشکال حساب کاربران، سلامت داده و تنظیمات فنی.`;
   if(u.role==='operator')return `<b>کارشناس محله ${esc(u.city)}:</b> محله‌هایی که به شما تخصیص داده شده را ثبت و ویرایش می‌کنید. هر ثبت شما پس از تأیید رابط استانی نهایی می‌شود.`;
   if(u.role==='supervisor')return `<b>رابط استانی ${esc(u.province||'')}:</b> ثبت‌های شما بدون نیاز به تأیید اعمال می‌شود؛ مدیر سامانه می‌تواند آن‌ها را لغو کند.`;
   return '';
@@ -1856,7 +1907,7 @@ function makeNid(r){for(;;){const d=Array.from({length:9},()=>Math.floor(r()*10)
 /* دوره‌های یک فرد: سابقه‌ی تاریخ‌دار + نام‌های قدیمی بدون تاریخ */
 /* فهرست دوره‌ها برای هر کاربر: دوره‌های سراسری مدیر + دوره‌های استان خودش */
 const courseListFor=(u=me())=>{const st=db.settings,g=st.courses||[],pc=st.provCourses||{};const pv=!u?'':u.role==='supervisor'?u.province:u.role==='operator'?provOf(u.city):'';
-  return [...new Set([...g,...(u&&(u.role==='admin'||u.role==='viewer')?Object.values(pc).flat():(pc[pv]||[]))])];};
+  return [...new Set([...g,...(u&&(ADM(u.role)||u.role==='viewer')?Object.values(pc).flat():(pc[pv]||[]))])];};
 const personCourses=p=>[...new Set([...vlist(p.courseLog||[]).map(c=>c.course),...(p.courses||[])])];
 const pfPill=p=>p.pflag==='member'?`<span class="pill flag i-flag">پرچمدار</span> `:'';
 /* وضعیت پرچمدار افراد: داده‌ی قدیمی این فیلد را ندارد؛ نمونه‌ی آزمایشی برای متولیان محله‌های پرچم‌سرا */
@@ -1883,24 +1934,27 @@ function ensureFields(){const st=db.settings;let ch=false;
 function ensureAuth(){let ch=false;const r=rng(77);const used=new Set(db.users.map(u=>u.nid).filter(Boolean));
   db.users.forEach(u=>{if(!u.nid){let n;do n=makeNid(r);while(used.has(n));used.add(n);u.nid=n;ch=true;}
     if(!u.mobile){u.mobile='091'+String(Math.floor(r()*1e8)).padStart(8,'0');ch=true;}
-    if(u.role==='admin'&&!u.pwh){u.pwh=pwHash(ADMIN_DEMO_PW);ch=true;}});
+    if(ADM(u.role)&&!u.pwh){u.pwh=pwHash(ADMIN_DEMO_PW);ch=true;}});
   if(!db.logins){db.logins=[];ch=true;}
   if(ch)persist();}
 const maskMobile=m=>m?`<bdi dir="ltr">${fa(m.slice(0,4))}•••${fa(m.slice(-4))}</bdi>`:'';
 const lockKey=nid=>KEY+'-lock-'+nid;
-function lockedUntil(nid){try{return Number(localStorage.getItem(lockKey(nid)))||0;}catch(x){return 0;}}
+function lockedUntil(nid){let a=0;try{a=Number(localStorage.getItem(lockKey(nid)))||0;}catch(x){}const u=db&&db.users.find(x=>x.nid===nid);return Math.max(a,u?.lockUntil||0);}
 const devLabel=()=>{const a=navigator.userAgent;return (/Android/.test(a)?'اندروید':/iPhone|iPad/.test(a)?'آیفون':/Windows/.test(a)?'ویندوز':/Mac OS/.test(a)?'مک':/Linux/.test(a)?'لینوکس':'دستگاه دیگر')+(/Edg\//.test(a)?'، Edge':/Firefox\//.test(a)?'، Firefox':/Chrome\//.test(a)?'، Chrome':/Safari\//.test(a)?'، Safari':'');};
 const HOW={sms:'پیامک','sms+pw':'پیامک و رمز',demo:'ورود آزمایشی'};
 function finishLogin(u,how,remember){
-  session=u.id;ui.opInit=false;ui.auth=null;
+  session=u.id;ui.opInit=false;ui.auth=null;ui.viewAs=null;u.lockUntil=0;
   try{sessionStorage.setItem(KEY+'-u',session);if(remember)localStorage.setItem(KEY+'-remember',JSON.stringify({u:u.id,exp:Date.now()+REMEMBER_MS}));}catch(x){}
   u.last=Date.now();(db.logins||(db.logins=[])).unshift({uid:u.id,t:Date.now(),how,dev:devLabel()});if(db.logins.length>500)db.logins.length=500;persist();
-  location.hash=defaultRoute(u);render();
+  location.hash=defaultRoute(u);render();if(u.mustPw)setTimeout(()=>pwForm(),60);
 }
-function sendOtp(a){const u=db.users.find(x=>x.active&&x.nid===a.nid);a.uid=u?.id||null;a.code=String(10000+crypto.getRandomValues(new Uint32Array(1))[0]%90000);a.exp=Date.now()+OTP_TTL;a.sent=Date.now();a.tries=a.tries||0;}
-function badTry(a,fail,msg){a.tries=(a.tries||0)+1;
-  if(a.tries>=OTP_TRIES){try{localStorage.setItem(lockKey(a.nid),String(Date.now()+LOCK_MS));}catch(x){}ui.auth={step:'nid',nid:a.nid,err:'تلاش‌های ناموفق زیاد شد؛ ورود با این کد ملی ۱۵ دقیقه بسته شد.'};render();return;}
-  fail((msg||'کد واردشده درست نیست.')+` ${fa(OTP_TRIES-a.tries)} تلاش دیگر باقی است.`);}
+function sendOtp(a){const u=db.users.find(x=>x.active&&x.nid===a.nid);a.uid=u?.id||null;a.code=String(10000+crypto.getRandomValues(new Uint32Array(1))[0]%90000);a.exp=Date.now()+SEC().ttl*60e3;a.sent=Date.now();a.tries=a.tries||0;}
+function badTry(a,fail,msg){a.tries=(a.tries||0)+1;const sc=SEC();const F=db.authFails||(db.authFails=[]);
+  F.unshift({t:Date.now(),nid:a.nid,uid:a.uid||'',why:msg?'pw':'code'});
+  if(a.tries>=sc.tries){const until=Date.now()+sc.lock*60e3;try{localStorage.setItem(lockKey(a.nid),String(until));}catch(x){}const u=getU(a.uid);if(u)u.lockUntil=until;F.unshift({t:Date.now(),nid:a.nid,uid:a.uid||'',lock:true});if(F.length>300)F.length=300;persist();
+    ui.auth={step:'nid',nid:a.nid,err:`تلاش‌های ناموفق زیاد شد؛ ورود با این کد ملی ${fa(sc.lock)} دقیقه بسته شد.`};render();return;}
+  if(F.length>300)F.length=300;persist();
+  fail((msg||'کد واردشده درست نیست.')+` ${fa(sc.tries-a.tries)} تلاش دیگر باقی است.`);}
 const smsSim=a=>`<div class="sms-sim" role="note"><small>پیامک آزمایشی</small>${a.uid?`<b class="num"><bdi dir="ltr">${fa(a.code)}</bdi></b>`:'<span>ارسال نشد</span>'}</div>`;
 function loginView(){
   const a=ui.auth||(ui.auth={step:'nid'});
@@ -1914,7 +1968,7 @@ function loginView(){
       <label class="lg-rem"><input type="checkbox" id="lg-rem" ${a.rem?'checked':''}><span>مرا به خاطر بسپار</span></label>
       <button class="btn primary block" type="submit">تأیید و ورود</button>
       <div class="otp-foot"><span id="otp-timer" class="small muted"></span><span><button type="button" class="linkish" data-act="otp-resend" id="otp-resend" ${Date.now()<a.exp?'disabled':''}>ارسال دوباره</button><button type="button" class="linkish" data-act="otp-back">تغییر کد ملی</button></span></div>`;
-  else if(a.step==='pw')body=`<h1>رمز عبور مدیر</h1>
+  else if(a.step==='pw')body=`<h1>رمز عبور</h1>
       <label class="field"><input type="password" id="lg-pw" aria-label="رمز عبور" autocomplete="current-password" dir="ltr"></label>
       ${err}
       <p class="small muted">رمز آزمایشی: <b dir="ltr">${ADMIN_DEMO_PW}</b></p>
@@ -1928,8 +1982,8 @@ function loginView(){
   return `<div class="login" style="--logo:url('${LOGO}')"><div class="login-box">
     <div class="login-brand">${brandSvg(112)}<div><b>پرچمدار</b><small>سامانه مدیریت</small></div></div>
     <form class="card login-card" id="loginform" novalidate data-step="${a.step}">${body}</form>
-    <div class="demo-row"><span>ورود آزمایشی:</span><button type="button" data-act="demo" data-u="admin">مدیر سامانه</button><i></i><button type="button" data-act="demo" data-u="supervisor">رابط استانی</button><i></i><button type="button" data-act="demo" data-u="operator">کارشناس محله</button><i></i><button type="button" data-act="demo" data-u="viewer">نمایشی</button></div>
-    ${a.step==='nid'?`<div class="demo-row demo-nid"><span>کد ملی آزمایشی:</span>${demoNid('operator')}${demoNid('supervisor')}${demoNid('admin')}</div>`:''}
+    <div class="demo-row"><span>ورود آزمایشی:</span><button type="button" data-act="demo" data-u="admin">مدیر سامانه</button><i></i><button type="button" data-act="demo" data-u="supervisor">رابط استانی</button><i></i><button type="button" data-act="demo" data-u="operator">کارشناس محله</button><i></i><button type="button" data-act="demo" data-u="tech">ادمین فنی</button></div>
+    ${a.step==='nid'?`<div class="demo-row demo-nid"><span>کد ملی آزمایشی:</span>${demoNid('operator')}${demoNid('supervisor')}${demoNid('admin')}${demoNid('tech')}</div>`:''}
   </div><p class="login-foot">نسخه نمایشی، داده‌ها ساختگی‌اند و فقط در همین مرورگر ذخیره می‌شوند</p></div>`;
 }
 /* countdown on the code step */
@@ -1981,7 +2035,7 @@ function listView(){
   const st4=KEEP.map(k=>st.find(s=>(s.k?s.k+':'+s.v:'')===k)).filter(Boolean);st.length=0;st.push(...st4);
   const sel=(k,items,ph)=>`<select id="f-${k}" data-filter="${k}"><option value="">${ph}</option>${items.map(([v,t])=>`<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select>`;
   const seg=(k,items)=>`<div class="seg" role="group">${items.map(([v,t])=>`<button type="button" data-act="setf" data-k="${k}" data-v="${v}">${t}</button>`).join('')}</div>`;
-  const opsAll=db.users.filter(x=>x.role==='operator'&&(u.role==='admin'||inProv(x.city,u))).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+  const opsAll=db.users.filter(x=>x.role==='operator'&&(ADM(u.role)||inProv(x.city,u))).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
   return `
   <section class="page-head m-nosub">
     <div><h1>${u.role==='operator'?'محله‌های من':'پرونده محله‌ها'}</h1><p class="sub">${u.role==='operator'?num(all.length)+' محله، '+esc(u.city):num(all.length)+' پرونده، اطلاعات این نسخه نمونه و ساختگی است'}</p></div>
@@ -1993,13 +2047,13 @@ function listView(){
       <summary><h2>فیلترها <span class="fcount" id="fcount"></span></h2><button class="btn sm ghost" data-act="clearf">پاک کردن</button></summary>
       <div class="fbody">
       <div class="fgroup m-only"><span>گروه‌بندی فهرست</span><div class="toggle" role="group">${[['need','وضعیت'],['district','منطقه'],['none','بدون گروه']].map(([v,t])=>`<button type="button" data-act="group" data-v="${v}" aria-pressed="${ui.group===v}">${t}</button>`).join('')}</div></div>
-      ${u.role==='admin'||u.role==='viewer'?`<label class="fgroup"><span>استان</span><select id="f-prov" data-filter="prov"><option value="">همه استان‌ها</option>${db.settings.provinces.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('')}</select></label>`:''}
+      ${ADM(u.role)||u.role==='viewer'?`<label class="fgroup"><span>استان</span><select id="f-prov" data-filter="prov"><option value="">همه استان‌ها</option>${db.settings.provinces.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('')}</select></label>`:''}
       ${showCity?`<label class="fgroup m-only"><span>شهر</span><select data-filter="city"><option value="">همه شهرها</option>${myCities.map(c=>`<option ${ui.f.city===c?'selected':''}>${esc(c)}</option>`).join('')}</select></label>`:''}
       <label class="fgroup m-only"><span>مرتب‌سازی</span><select data-filter="sort" aria-label="مرتب‌سازی"><option value="name">نام</option><option value="code">کد</option><option value="open">بیشترین مشکل باز</option><option value="review">تازه‌ترین بررسی</option><option value="stale">قدیمی‌ترین بررسی</option></select></label>
       <div class="fgroup"><span>پرچم‌سرا</span>${seg('flag',[['','همه'],['member','پرچم‌سرا'],['candidate','نامزد'],['none','غیر عضو']])}</div>
       <div class="fgroup"><span>وضعیت پرونده</span>${seg('active',[['','همه'],['yes','فعال'],['no','غیرفعال']])}</div>
       <label class="fgroup"><span>منطقه شهرداری</span><select id="f-district" data-filter="district"></select></label>
-      ${u.role!=='viewer'&&u.role!=='operator'?`<label class="fgroup"><span>کارشناس مسئول</span><select id="f-op" data-filter="op"><option value="">همه</option>${u.role==='operator'?'<option value="me">فقط محله‌های من</option>':''}<option value="none">بدون کارشناس</option>${opsAll.map(o=>`<option value="${o.id}">${esc(o.name)}${u.role==='admin'?'، '+esc(o.city):''}</option>`).join('')}</select></label>`:''}
+      ${u.role!=='viewer'&&u.role!=='operator'?`<label class="fgroup"><span>کارشناس مسئول</span><select id="f-op" data-filter="op"><option value="">همه</option>${u.role==='operator'?'<option value="me">فقط محله‌های من</option>':''}<option value="none">بدون کارشناس</option>${opsAll.map(o=>`<option value="${o.id}">${esc(o.name)}${ADM(u.role)?'، '+esc(o.city):''}</option>`).join('')}</select></label>`:''}
       ${(()=>{const k=(ui.f.cat?1:0)+(ui.f.prio?1:0)+(ui.f.role?1:0);return `<details class="fmore" ${isMob()&&!k?'':'open'}><summary>فیلترهای بیشتر${k?` <span class="fcount">${fa(k)}</span>`:''}</summary>`;})()}
       <label class="fgroup"><span>دسته مشکل باز</span>${sel('cat',db.settings.problemCats.map(c=>[c,c]),'همه دسته‌ها')}</label>
       <label class="fgroup"><span>اولویت مشکل باز</span>${sel('prio',opts(PRIO),'همه اولویت‌ها')}</label>
@@ -2038,7 +2092,7 @@ function updateList(){
   if(okHidden)list=list.filter(n=>nd.get(n.id).k!=='ok');
   let prevG=null;
   const groupRow=k=>{const cs=canAssign()?9:8;if(G==='need')return `<tr class="grp-row"><td colspan="${cs}"><span class="st" style="background:var(${NEED[k].c})"></span><b>${NEED[k].t}</b><small>${fa(gc[k].n)} محله</small></td></tr>`;
-    const [c,d]=k.split('|');return `<tr class="grp-row"><td colspan="${cs}"><b>منطقه ${fa(d)}${u.role==='admin'||u.role==='viewer'?'، '+esc(c):''}</b><small>${fa(gc[k].n)} محله${gc[k].att?'، '+fa(gc[k].att)+' نیازمند توجه':''}</small></td></tr>`;};
+    const [c,d]=k.split('|');return `<tr class="grp-row"><td colspan="${cs}"><b>منطقه ${fa(d)}${ADM(u.role)||u.role==='viewer'?'، '+esc(c):''}</b><small>${fa(gc[k].n)} محله${gc[k].att?'، '+fa(gc[k].att)+' نیازمند توجه':''}</small></td></tr>`;};
   $$('[data-act="setf"]').forEach(b=>b.setAttribute('aria-pressed',String(f[b.dataset.k]===b.dataset.v)));
   const dEl=$('#f-district');
   if(dEl){const c=cityOf(f.city);const ds=c?Array.from({length:c.d},(_,i)=>i+1):[...new Set(db.nb.map(n=>n.district))].sort((a,b)=>a-b);
@@ -2078,7 +2132,7 @@ function updateList(){
 function updateBulk(){
   const el=$('#bulk');if(!el)return;
   if(!canAssign()||!ui.sel.size){el.innerHTML='';return;}
-  const u=me();const ops=db.users.filter(x=>x.role==='operator'&&x.active&&(u.role==='admin'||inProv(x.city,u))).sort((a,b)=>a.city.localeCompare(b.city,'fa')||a.name.localeCompare(b.name,'fa'));
+  const u=me();const ops=db.users.filter(x=>x.role==='operator'&&x.active&&(ADM(u.role)||inProv(x.city,u))).sort((a,b)=>a.city.localeCompare(b.city,'fa')||a.name.localeCompare(b.name,'fa'));
   el.innerHTML=`<div class="bulkbar"><b>${fa(ui.sel.size)} محله انتخاب شده</b><label class="small">تخصیص به کارشناس: <select id="bulk-op"><option value="">— بدون کارشناس —</option>${ops.map(o=>`<option value="${o.id}">${esc(o.name)}، ${esc(o.city)}</option>`).join('')}</select></label><button class="btn sm primary" data-act="bulk-assign">اعمال</button><button class="btn sm ghost" data-act="bulk-clear">لغو انتخاب</button></div>`;
 }
 function drawMarkers(list){
@@ -2704,12 +2758,12 @@ function dirRecips(d){const want=d.aud==='sup'?['supervisor']:d.aud==='op'?['ope
   return db.users.filter(x=>x.active&&x.id!==d.by&&want.includes(x.role)&&(!d.provs.length||d.provs.includes(uProv(x))));}
 const isRecip=(d,u=me())=>!!u&&dirRecips(d).some(x=>x.id===u.id);
 const dirIn=(u=me())=>(db.directives||[]).filter(d=>isRecip(d,u));
-const dirOut=(u=me())=>(db.directives||[]).filter(d=>u.role==='admin'||d.by===u.id);
+const dirOut=(u=me())=>(db.directives||[]).filter(d=>ADM(u.role)||d.by===u.id);
 const dirDone=(d,id)=>d.need==='report'?d.reports.some(r=>r.uid===id):!!d.reads[id];
-const dirTodo=(u=me())=>!u||u.role==='admin'||u.role==='viewer'?[]:dirIn(u).filter(d=>!d.closed&&!dirDone(d,u.id)).sort((a,b)=>DPRIO[b.prio].w-DPRIO[a.prio].w||b.t-a.t);
+const dirTodo=(u=me())=>!u||ADM(u.role)||u.role==='viewer'?[]:dirIn(u).filter(d=>!d.closed&&!dirDone(d,u.id)).sort((a,b)=>DPRIO[b.prio].w-DPRIO[a.prio].w||b.t-a.t);
 const dueDays=d=>Math.round((dts(today())-dts(d.due))/DAY);
 const dueTxt=d=>{if(!d.due)return '';const k=dueDays(d);return k>0?`مهلت گذشته (${fa(k)} روز)`:k===0?'مهلت: امروز':`مهلت: ${fa(-k)} روز دیگر`;};
-const canSeeDir=(d,u=me())=>!!u&&(u.role==='admin'||d.by===u.id||isRecip(d,u));
+const canSeeDir=(d,u=me())=>!!u&&(ADM(u.role)||d.by===u.id||isRecip(d,u));
 function dirBanner(u){
   const td=dirTodo(u);if(!td.length)return '';const d=td[0];
   return `<a class="dir-banner p-${d.prio}" href="#d-${d.id}"><span class="dir-ic">${icon('notice')}</span><span class="dir-b"><small>ابلاغیه‌ی ${DPRIO[d.prio].t} از ${esc(uName(d.by))}${d.due?'، '+dueTxt(d):''}</small><b>${esc(d.title)}</b>${td.length>1?`<small>و ${fa(td.length-1)} ابلاغیه‌ی دیگر که منتظر شماست</small>`:''}</span><span class="btn sm">${d.reads[u.id]?'ثبت گزارش':'مشاهده'}</span></a>`;
@@ -2724,20 +2778,20 @@ function dirCardOut(d){const s=dirStats(d);const pr=s.n?Math.round((d.need==='re
     <b class="dir-t">${esc(d.title)}</b><span class="small muted">${isAdmin()&&d.by!==me().id?'از '+esc(uName(d.by))+'، ':''}به ${esc(DAUD[d.aud])}، ${d.provs.length?d.provs.length>3?fa(d.provs.length)+' استان':d.provs.map(esc).join('، '):'همه‌ی استان‌ها'}${d.due?'، '+dueTxt(d):''}</span>
     <div class="dir-prog"><i style="--w:${pr}%"></i></div><span class="small"><b>${fa(s.read)}</b> از ${fa(s.n)} نفر خوانده‌اند${d.need==='report'?`، <b>${fa(s.rep)}</b> گزارش`:''}</span></a>`;}
 function noticesView(u){
-  const ins=dirIn(u),outs=dirOut(u);const canIssue=u.role==='admin'||u.role==='supervisor';
-  const tab=u.role==='supervisor'?(ui.dTab||'in'):u.role==='admin'?'out':'in';
+  const ins=dirIn(u),outs=dirOut(u);const canIssue=ADM(u.role)||u.role==='supervisor';
+  const tab=u.role==='supervisor'?(ui.dTab||'in'):ADM(u.role)?'out':'in';
   const list=(tab==='in'?ins:outs).slice().sort((a,b)=>(a.closed-b.closed)||(tab==='in'?(dirDone(a,u.id)-dirDone(b,u.id)):0)||b.t-a.t);
   const act=list.filter(d=>!d.closed),arc=list.filter(d=>d.closed);
   const card=d=>tab==='in'?dirCardIn(d,u):dirCardOut(d);
   const todo=dirTodo(u).length;
-  return `<section class="page-head m-nosub"><div><h1>ابلاغیه‌ها</h1><p class="sub">${u.role==='admin'?'دستورالعمل‌ها و موضوعات مهمی که رابطان و کارشناسان باید پیگیری کنند':u.role==='supervisor'?'ابلاغیه‌های مدیر سامانه، و ابلاغیه‌های شما به کارشناسان استان '+esc(u.province):todo?fa(todo)+' ابلاغیه منتظر شماست':'ابلاغیه‌های مدیر سامانه و رابط استانی'}</p></div>
+  return `<section class="page-head m-nosub"><div><h1>ابلاغیه‌ها</h1><p class="sub">${ADM(u.role)?'دستورالعمل‌ها و موضوعات مهمی که رابطان و کارشناسان باید پیگیری کنند':u.role==='supervisor'?'ابلاغیه‌های مدیر سامانه، و ابلاغیه‌های شما به کارشناسان استان '+esc(u.province):todo?fa(todo)+' ابلاغیه منتظر شماست':'ابلاغیه‌های مدیر سامانه و رابط استانی'}</p></div>
     ${canIssue?`<div class="head-actions"><button class="btn primary" data-act="dir-new">+ ابلاغیه‌ی تازه</button></div>`:''}</section>
   ${u.role==='supervisor'?`<div class="seg dir-seg" role="group" aria-label="ابلاغیه‌ها"><button type="button" data-act="dtab" data-v="in" aria-pressed="${tab==='in'}">دریافتی${todo?` <em class="badge">${fa(todo)}</em>`:''}</button><button type="button" data-act="dtab" data-v="out" aria-pressed="${tab==='out'}">ارسالی به کارشناسان</button></div>`:''}
   ${act.length?`<div class="dir-list">${act.map(card).join('')}</div>`:`<div class="card empty"><b>${tab==='in'?'ابلاغیه‌ای برای شما نیست.':'هنوز ابلاغیه‌ای نفرستاده‌اید.'}</b>${tab==='out'?'<span class="small">موضوعی که باید در استان‌ها پیگیری یا بررسی شود را با «ابلاغیه‌ی تازه» بفرستید؛ خواندن و گزارش هر نفر را همین‌جا می‌بینید.</span>':''}</div>`}
   ${arc.length?fold('بایگانی',fa(arc.length)+' ابلاغیه',`<div class="dir-list">${arc.map(card).join('')}</div>`):''}`;
 }
 function dirView(d){
-  const u=me();const mine=isRecip(d,u),issuer=u.role==='admin'||d.by===u.id;
+  const u=me();const mine=isRecip(d,u),issuer=ADM(u.role)||d.by===u.id;
   const s=dirStats(d);const myRep=d.reports.filter(r=>r.uid===u.id);
   const meta=`<dl class="kv dir-kv"><dt>از</dt><dd>${esc(uName(d.by))} <span class="small muted">${LEVEL[getU(d.by)?.role]?.t||''}</span></dd><dt>تاریخ</dt><dd>${fmtDT(d.t)}</dd>${d.due?`<dt>مهلت</dt><dd>${jLabel(d.due)} <span class="small ${dueDays(d)>0?'crit':'muted'}">${dueTxt(d)}</span></dd>`:''}<dt>گیرندگان</dt><dd>${esc(DAUD[d.aud])}، ${d.provs.length?d.provs.map(esc).join('، '):'همه‌ی استان‌ها'}</dd></dl>`;
   let mineBox='';
@@ -2751,7 +2805,7 @@ function dirView(d){
     const rows=Object.entries(byPv).sort((a,b)=>(a[1].read/a[1].n)-(b[1].read/b[1].n));
     const unread=s.rs.filter(x=>!d.reads[x.id]);
     issuerBox=`<div class="mini-stats kpis dir-kpis"><div class="km"><b>${fa(s.n)}</b><span>گیرنده</span></div><div class="km"><b>${fa(s.read)}</b><span>خوانده‌اند</span></div>${d.need==='report'?`<div class="km"><b>${fa(s.rep)}</b><span>گزارش داده‌اند</span></div>`:''}<div class="km ${unread.length?'warnbox':''}"><b>${fa(unread.length)}</b><span>هنوز نخوانده‌اند</span></div></div>
-    ${rows.length>1||u.role==='admin'?`<div class="card sec"><h3>به تفکیک استان</h3><div class="table-wrap" style="border:0"><table class="tbl ptbl"><thead><tr><th>استان</th><th>گیرنده</th><th>خوانده</th>${d.need==='report'?'<th>گزارش</th>':''}</tr></thead><tbody>${rows.map(([k,o])=>`<tr style="cursor:default"><td><b>${esc(k)}</b></td><td class="num">${fa(o.n)}</td><td class="num ${o.read<o.n?'crit':''}">${fa(o.read)}</td>${d.need==='report'?`<td class="num">${fa(o.rep)}</td>`:''}</tr>`).join('')}</tbody></table></div></div>`:''}
+    ${rows.length>1||ADM(u.role)?`<div class="card sec"><h3>به تفکیک استان</h3><div class="table-wrap" style="border:0"><table class="tbl ptbl"><thead><tr><th>استان</th><th>گیرنده</th><th>خوانده</th>${d.need==='report'?'<th>گزارش</th>':''}</tr></thead><tbody>${rows.map(([k,o])=>`<tr style="cursor:default"><td><b>${esc(k)}</b></td><td class="num">${fa(o.n)}</td><td class="num ${o.read<o.n?'crit':''}">${fa(o.read)}</td>${d.need==='report'?`<td class="num">${fa(o.rep)}</td>`:''}</tr>`).join('')}</tbody></table></div></div>`:''}
     ${d.need==='report'?`<div class="card sec"><div class="sec-h"><h3>گزارش‌های اقدام</h3><span class="small muted">${fa(d.reports.length)} گزارش</span></div>${d.reports.length?d.reports.slice().sort((a,b)=>b.t-a.t).map(repRow).join(''):'<p class="small muted">هنوز گزارشی نرسیده است.</p>'}</div>`:''}
     ${unread.length?fold('هنوز نخوانده‌اند',fa(unread.length)+' نفر',`<div class="dir-unread">${unread.map(x=>`<span class="tag">${esc(x.name)}<small>${esc(areaOf(x))}</small></span>`).join('')}</div>`):''}
     <div class="dir-acts"><button class="btn" data-act="dir-close" data-id="${d.id}">${d.closed?'بازگرداندن از بایگانی':'بایگانی ابلاغیه'}</button></div>`;
@@ -2762,7 +2816,7 @@ function dirView(d){
   ${mineBox}${issuerBox}`;
 }
 function dirForm(pre={}){
-  const u=me(),adm=u.role==='admin';
+  const u=me(),adm=ADM(u.role);
   const fields=[
     {name:'title',label:'عنوان',required:true,value:pre.title||'',ph:'مثلاً: پیگیری مشکلات بحرانی پیش از پایان ماه'},
     {name:'body',label:'متن ابلاغیه',type:'textarea',required:true,value:pre.body||'',hint:'چه کاری، تا کی و با چه خروجی‌ای انجام شود.'},
@@ -2925,6 +2979,237 @@ function ensureAdmin(){
   if(!db.directives){db.directives=[];ch=true;}
   if(ch){ver++;persist();}
 }
+/* ================= ادمین فنی: پشتیبانی کاربران، درخواست‌های پشتیبانی، سلامت داده، تنظیمات فنی ================= */
+const realMe=()=>{const u=getU(session);return u&&u.active?u:null;};
+const isTech=()=>me()?.role==='tech';
+const unlockUser=u=>{try{localStorage.removeItem(lockKey(u.nid));}catch(x){}u.lockUntil=0;};
+const isLocked=u=>!!u&&lockedUntil(u.nid)>Date.now();
+const logTech=(txt,tn)=>{const r=realMe();db.changes.unshift({id:uid(),t:Date.now(),uid:r.id,ent:'user',op:'update',st:'tech',txt,tn:tn||''});r.last=Date.now();};
+/* ---- درخواست پشتیبانی فنی (جدا از «مشکلات محله») ---- */
+const TCAT=['ورود و حساب کاربری','اطلاعات پروفایل من','خطا در ثبت یا نمایش اطلاعات','دسترسی به محله‌ها یا افراد','پیشنهاد برای بهتر شدن سامانه','سایر'];
+const TST={new:{t:'تازه',c:'warn'},doing:{t:'در حال بررسی',c:'acc'},done:{t:'رفع شد',c:'ok'}};
+const tkOf=u=>(db.tickets||[]).filter(t=>t.uid===u.id);
+const tkCount=(u=me())=>!u?0:u.role==='tech'?(db.tickets||[]).filter(t=>t.st==='new'||t.techUnread).length:tkOf(u).filter(t=>t.unread).length;
+function ticketForm(){
+  openForm({title:'درخواست پشتیبانی فنی',noApprovalNote:true,submit:'ارسال برای ادمین فنی',intro:'اشکال در ورود، حساب کاربری، اطلاعات پروفایل یا کار با سامانه را اینجا بنویسید. (مشکلات محله را در پرونده‌ی همان محله ثبت کنید.)',fields:[
+    {name:'cat',label:'موضوع',type:'select',options:TCAT,value:TCAT[0]},
+    {name:'subject',label:'عنوان کوتاه',required:true,ph:'مثلاً: کد ورود به شماره‌ی تازه‌ام نمی‌آید'},
+    {name:'text',label:'شرح',type:'textarea',required:true,hint:'چه کاری می‌خواستید انجام دهید و چه پیش آمد. صفحه و دستگاه شما خودکار پیوست می‌شود.'},
+  ],onSubmit:v=>{const u=me();const t={id:uid(),t:Date.now(),uid:u.id,cat:v.cat,subject:v.subject,text:v.text,page:(ui.lastPage||location.hash||'#').slice(0,60),dev:devLabel(),st:'new',msgs:[],unread:false,techUnread:false};
+    (db.tickets||(db.tickets=[])).unshift(t);u.last=Date.now();persist();location.hash='t-'+t.id;return 'درخواست شما ثبت شد؛ پاسخ ادمین فنی همین‌جا دیده می‌شود';}});
+}
+function tkCard(t,tech){const u=getU(t.uid);const n=t.msgs.length;
+  return `<a class="card tk-card st-${t.st}" href="#t-${t.id}"><div class="dir-top"><span class="pill ${TST[t.st].c}">${TST[t.st].t}</span><span class="pill mute">${esc(t.cat)}</span>${(tech?t.techUnread:t.unread)?'<span class="pill flag">پاسخ تازه</span>':''}<span class="small muted">${relTime(t.upd||t.t)}</span></div>
+    <b class="dir-t">${esc(t.subject)}</b>${tech?`<span class="small muted">${esc(u?.name||'—')}، ${LEVEL[u?.role]?.t||''}${u&&areaOf(u)?'، '+esc(areaOf(u)):''}</span>`:''}<span class="small muted">${n?fa(n)+' پیام':'هنوز پاسخی داده نشده'}</span></a>`;}
+function supportView(u){
+  const tech=u.role==='tech';
+  if(!tech){const ls=tkOf(u);
+    return `<section class="page-head m-nosub"><div><h1>درخواست‌های پشتیبانی من</h1><p class="sub">اشکال‌های ورود، حساب کاربری و کار با سامانه؛ ادمین فنی پاسخ می‌دهد</p></div><div class="head-actions"><button class="btn primary" data-act="tk-new">+ درخواست تازه</button></div></section>
+    ${ls.length?`<div class="dir-list">${ls.map(t=>tkCard(t,false)).join('')}</div>`:'<div class="card empty"><b>هنوز درخواستی نفرستاده‌اید.</b><span class="small">اگر در ورود، پروفایل یا ثبت اطلاعات به اشکال خوردید، «درخواست تازه» را بزنید.</span></div>'}`;}
+  const f=ui.tkF||'open',all=db.tickets||[];
+  const flt={open:t=>t.st!=='done',new:t=>t.st==='new',doing:t=>t.st==='doing',done:t=>t.st==='done',all:()=>true};
+  const ls=all.filter(flt[f]).sort((a,b)=>((b.st==='new'||b.techUnread)-(a.st==='new'||a.techUnread))||(b.upd||b.t)-(a.upd||a.t));
+  const seg=[['open','باز'],['new','تازه'],['doing','در حال بررسی'],['done','رفع شده'],['all','همه']];
+  return `<section class="page-head m-nosub"><div><h1>درخواست‌های پشتیبانی</h1><p class="sub">${fa(all.filter(t=>t.st!=='done').length)} درخواست باز از کاربران</p></div></section>
+  <div class="seg dir-seg" role="group" aria-label="وضعیت">${seg.map(([k,t])=>`<button type="button" data-act="tkf" data-v="${k}" aria-pressed="${f===k}">${t} <b>${fa(all.filter(flt[k]).length)}</b></button>`).join('')}</div>
+  ${ls.length?`<div class="dir-list">${ls.map(t=>tkCard(t,true)).join('')}</div>`:'<div class="card empty"><b>درخواستی در این وضعیت نیست.</b></div>'}`;
+}
+function ticketView(t){
+  const u=me(),tech=u.role==='tech',x=getU(t.uid);
+  if(tech&&t.techUnread){t.techUnread=false;persist();}if(!tech&&t.unread){t.unread=false;persist();}
+  const msg=(who,tm,text)=>{const w=getU(who);const mine=who===u.id;return `<div class="tk-msg ${mine?'mine':''} ${w?.role==='tech'?'tech':''}"><div class="tk-mh"><b>${esc(w?.name||'—')}</b><span class="small muted">${w?.role==='tech'?'ادمین فنی':LEVEL[w?.role]?.t||''}، ${relTime(tm)}</span></div><p>${esc(text)}</p></div>`;};
+  return `<nav class="crumb"><a href="#support">${tech?'درخواست‌های پشتیبانی':'درخواست‌های پشتیبانی من'}</a></nav>
+  <section class="card dir-main"><div class="dir-top"><span class="pill ${TST[t.st].c}">${TST[t.st].t}</span><span class="pill mute">${esc(t.cat)}</span></div><h1>${esc(t.subject)}</h1>
+    <dl class="kv dir-kv"><dt>از</dt><dd>${tech&&x?`<a href="#sup-${x.id}">${esc(x.name)}</a>`:esc(x?.name||'—')} <span class="small muted">${LEVEL[x?.role]?.t||''}${x&&areaOf(x)?'، '+esc(areaOf(x)):''}</span></dd><dt>زمان</dt><dd>${fmtDT(t.t)}</dd>${tech?`<dt>صفحه</dt><dd dir="ltr" class="small">${esc(t.page||'—')}</dd><dt>دستگاه</dt><dd>${esc(t.dev||'—')}</dd>`:''}</dl></section>
+  ${tech&&x?`<div class="tk-tools"><a class="btn sm" href="#sup-${x.id}">پرونده‌ی پشتیبانی کاربر</a>${x.id!==realMe().id?`<button class="btn sm" data-act="view-as" data-id="${x.id}">دیدن سامانه از چشم کاربر</button>`:''}${isLocked(x)?`<button class="btn sm primary" data-act="unlock" data-id="${x.id}">رفع قفل ورود</button>`:''}</div>`:''}
+  <div class="tk-thread">${msg(t.uid,t.t,t.text)}${t.msgs.map(m=>msg(m.uid,m.t,m.text)).join('')}</div>
+  <div class="card sec tk-reply"><label class="field"><span>${tech?'پاسخ به کاربر':'پیام تازه'}</span><textarea id="tk-text" rows="3"></textarea></label>
+    <div class="dir-acts">${tech?`<button class="btn primary" data-act="tk-reply" data-id="${t.id}" data-st="done">ارسال و «رفع شد»</button><button class="btn" data-act="tk-reply" data-id="${t.id}" data-st="doing">ارسال پاسخ</button>`:`<button class="btn primary" data-act="tk-reply" data-id="${t.id}">ارسال</button>`}</div>
+    ${tech?`<div class="tk-st"><span class="small muted">وضعیت:</span>${Object.entries(TST).map(([k,v])=>`<button class="btn sm ${t.st===k?'primary':'ghost'}" data-act="tk-st" data-id="${t.id}" data-v="${k}">${v.t}</button>`).join('')}</div>`:''}</div>`;
+}
+/* ---- پرونده‌ی پشتیبانی هر کاربر ---- */
+function supUserView(x){
+  const now=Date.now(),lk=lockedUntil(x.nid),self=x.id===realMe().id;
+  const lg=(db.logins||[]).filter(l=>l.uid===x.id).slice(0,8);const fails=(db.authFails||[]).filter(f=>f.uid===x.id||f.nid===x.nid).slice(0,8);
+  const pend=db.changes.filter(c=>c.uid===x.id&&c.st==='pending');const ret=returnedOf(x);
+  const nbs=x.role==='operator'?db.nb.filter(n=>n.op===x.id&&!n._st):[];
+  const tks=tkOf(x);const dupM=db.users.filter(y=>y!==x&&y.mobile===x.mobile);
+  const alerts=[];
+  if(!x.active)alerts.push(['bad','حساب غیرفعال است؛ این کاربر نمی‌تواند وارد شود.',`<button class="btn sm" data-act="u-active" data-id="${x.id}">فعال کردن</button>`]);
+  if(lk>now)alerts.push(['bad',`ورود این کاربر به‌دلیل تلاش‌های ناموفق تا ${fa(Math.ceil((lk-now)/60000))} دقیقه‌ی دیگر قفل است.`,`<button class="btn sm primary" data-act="unlock" data-id="${x.id}">رفع قفل ورود</button>`]);
+  if(x.mustPw)alerts.push(['warn','رمز این کاربر موقت است و در ورود بعدی باید عوض شود.','']);
+  if(dupM.length)alerts.push(['warn','شماره‌ی موبایل این کاربر برای '+dupM.map(y=>esc(y.name)).join('، ')+' هم ثبت شده؛ کد ورود ممکن است به حساب اشتباه برود.','']);
+  if(x.role==='operator'&&x.active&&!nbs.length)alerts.push(['warn','هیچ محله‌ای به این کارشناس سپرده نشده؛ فهرست محله‌هایش خالی است.','']);
+  if(x.role==='operator'&&!cityOf(x.city))alerts.push(['bad','شهر این کارشناس در سامانه تعریف نشده؛ چیزی نمی‌بیند.','']);
+  if(x.role==='supervisor'&&!db.settings.provinces.includes(x.province))alerts.push(['bad','استان این رابط تعریف نشده؛ چیزی نمی‌بیند.','']);
+  if(ret.length)alerts.push(['mute',fa(ret.length)+' ثبت برگشت‌خورده دارد که هنوز اصلاح نکرده.','']);
+  const act=(a,t,cls='')=>`<button class="btn ${cls}" data-act="${a}" data-id="${x.id}">${t}</button>`;
+  return `<nav class="crumb"><a href="#users">کاربران</a></nav>
+  <section class="card sup-head"><span class="avatar">${esc(initials(x.name))}</span><div class="sup-b"><h1>${esc(x.name)}</h1><span><span class="pill ${LEVEL[x.role]?.c||'mute'}">${LEVEL[x.role]?.t||x.role}</span> ${esc(areaOf(x)||'')} ${x.active?'':'<span class="pill bad">غیرفعال</span>'}</span>
+    <dl class="kv"><dt>کد ملی</dt><dd class="num">${fa(x.nid||'—')}</dd><dt>موبایل ورود</dt><dd><span class="phone">${fa(x.mobile||'—')}</span></dd><dt>آخرین فعالیت</dt><dd>${x.last?relTime(x.last):'هنوز وارد نشده'}</dd>${x.role==='operator'?`<dt>محله‌ها</dt><dd>${fa(nbs.length)}</dd>`:''}</dl></div></section>
+  ${alerts.length?`<div class="sup-alerts">${alerts.map(([c,t,a])=>`<div class="sup-al ${c}"><span>${t}</span>${a}</div>`).join('')}</div>`:'<div class="sup-al ok"><span>اشکالی در حساب این کاربر دیده نشد.</span></div>'}
+  <h2 class="sect">رفع اشکال حساب</h2>
+  <div class="sup-acts">${act('edit-user','ویرایش مشخصات و موبایل')}${ADM(x.role)&&!self?act('temp-pw','تعیین رمز موقت'):''}${!self?act('u-active',x.active?'غیرفعال کردن حساب':'فعال کردن حساب',x.active?'danger':''):''}${!self&&x.active?act('view-as','دیدن سامانه از چشم این کاربر'):''}${nbs.length?act('xfer','انتقال محله‌ها به کارشناس دیگر'):''}<a class="btn" href="#u-${x.id}">ثبت‌ها و عملکرد</a></div>
+  <div class="grid2 sup-grid">
+    ${fold('ورودها و تلاش‌های ناموفق',fa(lg.length)+' ورود، '+fa(fails.length)+' ناموفق',`${fails.length?`<p class="small"><b>تلاش‌های ناموفق اخیر:</b></p><ul class="sup-ul">${fails.map(f=>`<li><span class="crit">${f.lock?'قفل شد':f.why==='pw'?'رمز نادرست':'کد نادرست'}</span> <span class="small muted">${relTime(f.t)}</span></li>`).join('')}</ul>`:''}
+      ${lg.length?`<ul class="sup-ul">${lg.map(l=>`<li>${HOW[l.how]||l.how}، <span class="small">${esc(l.dev||'')}</span> <span class="small muted">${relTime(l.t)}</span></li>`).join('')}</ul>`:'<p class="small muted">ورودی ثبت نشده است.</p>'}`)}
+    ${fold('ثبت‌های گیرکرده',fa(pend.length)+' منتظر، '+fa(ret.length)+' برگشتی',`${pend.length?`<p class="small">${fa(pend.length)} ثبت منتظر تأیید؛ قدیمی‌ترین ${relTime(Math.min(...pend.map(c=>c.t)))}. <a href="#queue">کارتابل</a></p>`:'<p class="small muted">ثبت منتظری ندارد.</p>'}
+      ${ret.length?`<ul class="sup-ul">${ret.slice(0,6).map(c=>`<li>${esc(c.txt)}، ${esc(c.tn)} <span class="small muted">${relTime(c.rv?.t)}</span></li>`).join('')}</ul>`:''}`)}
+    ${fold('درخواست‌های پشتیبانی',fa(tks.length)+' درخواست',tks.length?`<div class="stack">${tks.map(t=>tkCard(t,true)).join('')}</div>`:'<p class="small muted">درخواستی نفرستاده است.</p>')}
+  </div>`;
+}
+function tempPwForm(x){
+  const gen=Array.from(crypto.getRandomValues(new Uint32Array(10)),v=>'abcdefghjkmnpqrstuvwxyz23456789'[v%31]).join('');
+  openForm({title:'رمز موقت برای '+x.name,noApprovalNote:true,submit:'تعیین رمز موقت',intro:'این رمز را از راه امن به کاربر بدهید. در ورود بعدی باید رمز تازه‌ای بگذارد.',fields:[
+    {name:'pw',label:'رمز موقت',dir:'ltr',value:gen,required:true,validate:v=>v.length<8?esc('رمز باید حداقل ۸ نویسه باشد.'):''}],
+    onSubmit:v=>{x.pwh=pwHash(v.pw);x.mustPw=true;unlockUser(x);logTech('تعیین رمز موقت برای «'+x.name+'»',x.name);persist();return 'رمز موقت تعیین شد';}});
+}
+function xferForm(o){
+  const nbs=db.nb.filter(n=>n.op===o.id&&!n._st);const pv=provOf(o.city);
+  const ops=db.users.filter(x=>x.role==='operator'&&x.active&&x.id!==o.id&&provOf(x.city)===pv).sort((a,b)=>(a.city!==o.city)-(b.city!==o.city)||a.name.localeCompare(b.name,'fa'));
+  if(!ops.length){toast('در این استان کارشناس فعال دیگری نیست');return;}
+  openForm({title:'انتقال محله‌های '+o.name,noApprovalNote:true,submit:'انتقال',intro:fa(nbs.length)+' محله‌ی این کارشناس به کارشناس دیگری از همین استان سپرده می‌شود.',fields:[
+    {name:'to',label:'کارشناس تازه',type:'select',options:ops.map(x=>[x.id,x.name+'، '+x.city])},
+    {name:'off',label:'حساب '+o.name,type:'select',options:[['keep','فعال بماند'],['off','غیرفعال شود (کنار رفته است)']],value:'keep'}],
+    onSubmit:v=>{const to=getU(v.to);const grp=uid();nbs.forEach(n=>commit({ent:'nb',op:'update',nb:n.id,tid:n.id,data:{op:to.id},txt:'تخصیص به '+to.name,tn:n.name,grp},realMe()));
+      if(v.off==='off')o.active=false;logTech('انتقال '+fa(nbs.length)+' محله از «'+o.name+'» به «'+to.name+'»',o.name);persist();return fa(nbs.length)+' محله به '+to.name+' سپرده شد';}});
+}
+/* ---- دیدن سامانه از چشم کاربر: فقط مشاهده ---- */
+const VIEW_OK=new Set(['open','open-p','open-u','open-prob','setf','unsetf','clearf','stat','page','togglemap','fs-open','fs-close','more','group','ok-open','tab','trustees','problems','programs','ideas','reviews','records','recf','rolef','pf','toggle-prob','qkind','qtab','goto','golist','gopeople','goprob','goperf','natm','nsort','dtab','hsec','home-all','att-all','stage','prchip','pchip','clearpf','clearprf','clearqf','period','psort','search','more-menu','account','pr-more','dismiss-banner','to-map','view-exit','tkf','jump','ntc-x','atab']);
+function startViewAs(x){logTech('دیدن سامانه از چشم «'+x.name+'»',x.name);persist();ui.viewAsBack=location.hash;ui.viewAs=x.id;ui.f={...F0};ui.pf={...PF0};ui.prf={...PRF0};ui.groupInit=false;location.hash=defaultRoute(x);render();toast('اکنون سامانه را مثل '+x.name+' می‌بینید');}
+function endViewAs(){const back=ui.viewAsBack||'#users';ui.viewAs=null;ui.f={...F0};ui.pf={...PF0};ui.prf={...PRF0};ui.groupInit=false;location.hash=back;render();}
+const viewAsBar=()=>{if(!ui.viewAs)return '';const x=getU(ui.viewAs);return `<div class="viewas" role="status">${icon('search')}<span>شما سامانه را از چشم <b>${esc(x?.name||'')}</b> (${LEVEL[x?.role]?.t||''}${x&&areaOf(x)?'، '+esc(areaOf(x)):''}) می‌بینید؛ فقط مشاهده.</span><button class="btn sm" data-act="view-exit">پایان</button></div>`;};
+/* ---- سلامت داده ---- */
+function healthChecks(){
+  const C=[],now=Date.now();const activeOp=new Set(db.users.filter(x=>x.role==='operator'&&x.active).map(x=>x.id));
+  const nbL=n=>({t:n.name,s:n.city+'، منطقه '+fa(n.district),h:'#n-'+n.id});
+  const uL=x=>({t:x.name,s:(LEVEL[x.role]?.t||'')+(areaOf(x)?'، '+areaOf(x):''),h:'#sup-'+x.id});
+  const nbs=db.nb.filter(n=>!n._st);
+  const lockedU=db.users.filter(x=>isLocked(x));
+  C.push({k:'locked',sev:'bad',t:'کاربران قفل‌شده',d:'پس از چند تلاش ناموفق، ورودشان موقتاً بسته است.',items:lockedU.map(uL),fix:lockedU.length?['fix-unlock-all','رفع قفل همه']:null});
+  const dead=nbs.filter(n=>n.op&&!activeOp.has(n.op));
+  C.push({k:'deadop',sev:'bad',t:'محله‌های سپرده به کارشناس غیرفعال',d:'هیچ کارشناس فعالی این محله‌ها را پیگیری نمی‌کند.',items:dead.map(n=>({...nbL(n),s:nbL(n).s+'، '+uName(n.op)})),fix:dead.length?['fix-deadop','برداشتن تخصیص (بدون کارشناس)']:null});
+  const cnt={};nbs.forEach(n=>{if(n.code)cnt[n.code]=(cnt[n.code]||0)+1;});
+  const badCode=nbs.filter(n=>n.code&&(/XXX|object|undefined|NaN/.test(n.code)||cnt[n.code]>1)).sort((a,b)=>a.code.localeCompare(b.code));
+  C.push({k:'code',sev:'bad',t:'کد محله‌ی تکراری یا خراب',d:'کد هر پرونده باید یکتا و درست باشد.',items:badCode.map(n=>({...nbL(n),s:n.code})),fix:badCode.length?['fix-code','ساخت کد تازه']:null});
+  const grp={};db.people.filter(p=>!p._st).forEach(p=>{if(p.nid)(grp['n'+p.nid]=grp['n'+p.nid]||[]).push(p);});
+  const dupG=Object.values(grp).filter(g=>g.length>1);
+  C.push({k:'dupp',sev:'warn',t:'افراد تکراری (کد ملی یکسان)',d:'یک نفر دو پرونده دارد؛ با «ادغام» سوابق در یک پرونده جمع می‌شود.',items:dupG.map(g=>({t:g.map(p=>p.name).join(' / '),s:'کد ملی '+fa(g[0].nid)+'، '+g.map(p=>fa(linksOf(p.id).length)+' محله').join(' و '),h:'#p-'+g[0].id,btn:`<button class="btn sm" data-act="merge" data-ids="${g.map(p=>p.id).join(',')}">ادغام</button>`})),fix:null});
+  const badLinks=[];db.nb.forEach(n=>n.links.forEach(l=>{if(!getP(l.pid))badLinks.push({n,l});}));
+  C.push({k:'badlink',sev:'bad',t:'متولی‌هایی که پرونده‌ی فردشان نیست',d:'پیوند محله به فردی که حذف شده است.',items:badLinks.map(({n})=>nbL(n)),fix:badLinks.length?['fix-badlink','حذف پیوندهای خراب']:null});
+  const scope=db.users.filter(x=>x.active&&((x.role==='operator'&&!cityOf(x.city))||(x.role==='supervisor'&&!db.settings.provinces.includes(x.province))));
+  C.push({k:'scope',sev:'bad',t:'کاربر بدون شهر یا استان معتبر',d:'این کاربران پس از ورود چیزی نمی‌بینند.',items:scope.map(uL),fix:null});
+  const mob={};db.users.forEach(x=>{if(x.mobile)(mob[x.mobile]=mob[x.mobile]||[]).push(x);});
+  const dupU=Object.values(mob).filter(g=>g.length>1).flat();
+  C.push({k:'dupu',sev:'warn',t:'کاربران با موبایل یکسان',d:'کد ورود ممکن است به حساب اشتباه برود.',items:dupU.map(uL),fix:null});
+  const noLoc=nbs.filter(n=>n.lat==null);
+  C.push({k:'noloc',sev:'warn',t:'محله‌های بدون موقعیت روی نقشه',d:'روی نقشه‌ها دیده نمی‌شوند.',items:noLoc.map(nbL),fix:null});
+  const noLia=db.settings.provinces.filter(pv=>!liaisonsOf(pv).some(x=>x.active));
+  C.push({k:'nolia',sev:'warn',t:'استان‌های بدون رابط فعال',d:'ثبت‌های کارشناسان این استان‌ها بررسی‌کننده‌ی استانی ندارد.',items:noLia.map(pv=>({t:'استان '+pv,s:'',h:'#provs'})),fix:null});
+  const idle=db.users.filter(x=>x.role==='operator'&&x.active&&!db.nb.some(n=>n.op===x.id&&!n._st));
+  C.push({k:'idleop',sev:'mute',t:'کارشناس فعال بدون محله',d:'فهرست محله‌های این کارشناسان خالی است.',items:idle.map(uL),fix:null});
+  const stale=db.changes.filter(c=>c.st==='pending'&&now-c.t>14*DAY);
+  C.push({k:'stale',sev:'mute',t:'ثبت‌های منتظر بیش از ۱۴ روز',d:'در کارتابل مانده‌اند.',items:stale.slice(0,50).map(c=>({t:c.txt,s:c.tn+'، '+uName(c.uid),h:'#queue'})),n:stale.length,fix:null});
+  const orph=db.people.filter(p=>!p._st&&!linksOf(p.id).some(x=>!x.l._st));
+  C.push({k:'orph',sev:'mute',t:'افراد بدون محله',d:'پرونده‌ی فردی که به هیچ محله‌ای وصل نیست.',items:orph.map(p=>({t:p.name,s:'',h:'#p-'+p.id})),fix:null});
+  C.forEach(c=>{c.n=c.n??c.items.length;});
+  return C;
+}
+function healthView(){
+  const C=healthChecks();const bad=C.filter(c=>c.n&&c.sev!=='mute');const ok=C.filter(c=>!c.n);
+  const box=c=>`<details class="card hc sev-${c.sev}" ${c.n&&c.sev==='bad'?'open':''}><summary><span class="task-dot ${c.sev}"></span><span class="hc-t"><b>${c.t}</b><small>${c.d}</small></span><em class="hc-n">${fa(c.n)}</em>${FCH}</summary>
+    <div class="hc-b">${c.fix?`<div class="hc-fix"><button class="btn sm primary" data-act="${c.fix[0]}">${c.fix[1]}</button></div>`:''}<ul class="hc-list">${c.items.slice(0,30).map(i=>`<li><a href="${i.h}">${esc(i.t)}</a>${i.s?`<small>${esc(i.s)}</small>`:''}${i.btn||''}</li>`).join('')}</ul>${c.items.length>30?`<p class="small muted">و ${fa(c.items.length-30)} مورد دیگر</p>`:''}</div></details>`;
+  return `<section class="page-head m-nosub"><div><h1>سلامت داده</h1><p class="sub">${bad.length?fa(bad.length)+' مورد نیازمند رسیدگی':'اشکال مهمی پیدا نشد'}، ${fa(ok.length)} بررسی بدون اشکال</p></div></section>
+  <div class="stack">${C.filter(c=>c.n).map(box).join('')}</div>
+  ${ok.length?`<div class="card sec hc-ok"><h3>بدون اشکال</h3><div class="chip-list">${ok.map(c=>`<span class="tag">✓ ${c.t}</span>`).join('')}</div></div>`:''}`;
+}
+function mergePeople(ids){
+  const ps=ids.map(getP).filter(Boolean);if(ps.length<2)return 0;const a=ps[0];
+  ps.slice(1).forEach(b=>{
+    db.nb.forEach(n=>{const lb=n.links.filter(l=>l.pid===b.id);lb.forEach(l=>{const la=n.links.find(x=>x.pid===a.id);if(la){la.roles=[...new Set([...(la.roles||[]),...(l.roles||[])])];n.links.splice(n.links.indexOf(l),1);}else l.pid=a.id;});});
+    a.contacts=[...(a.contacts||[]),...(b.contacts||[])];a.courseLog=[...(a.courseLog||[]),...(b.courseLog||[])];a.skills=[...new Set([...(a.skills||[]),...(b.skills||[])])];
+    Object.keys(b).forEach(k=>{if(['id','contacts','courseLog','skills','_st','_cid'].includes(k))return;if((a[k]===''||a[k]==null)&&b[k]!==''&&b[k]!=null)a[k]=b[k];});
+    db.changes.forEach(c=>{if(c.pid===b.id)c.pid=a.id;});
+    db.people.splice(db.people.indexOf(b),1);
+  });
+  logTech('ادغام '+fa(ps.length)+' پرونده‌ی «'+a.name+'»',a.name);ver++;persist();return ps.length;
+}
+/* ---- خانه‌ی ادمین فنی ---- */
+function techHome(u){
+  const C=healthChecks();const now=Date.now();
+  const open=(db.tickets||[]).filter(t=>t.st!=='done');const fresh=open.filter(t=>t.st==='new'||t.techUnread);
+  const locked=C.find(c=>c.k==='locked').n;const issues=C.filter(c=>c.n&&c.sev!=='mute');
+  const f24=(db.authFails||[]).filter(f=>f.t>now-DAY&&!f.lock).length;
+  const act7=db.users.filter(x=>x.last>now-7*DAY).length;const mgr=db.users.filter(x=>x.role==='admin'&&x.active).length;
+  const tile=(v,t,act,cls='',d='')=>`<button type="button" class="ptile ${cls}" ${act}><b>${v}</b><span>${t}</span>${d?`<small>${d}</small>`:''}</button>`;
+  const day=new Intl.DateTimeFormat('fa-IR',{weekday:'long'}).format(new Date())+'، '+new Intl.DateTimeFormat('fa-IR',{day:'numeric',month:'long',year:'numeric'}).format(new Date());
+  const fails=(db.authFails||[]).slice(0,6);
+  return `<section class="hello"><h1>میز کار ادمین فنی</h1><p><bdi>${day}</bdi></p></section>
+  <div class="tu-search card"><input type="search" id="tu-q" placeholder="جستجوی کاربر با نام، کد ملی یا موبایل…" aria-label="جستجوی کاربر" autocomplete="off"><div id="tu-res" class="tu-res"></div></div>
+  <div class="ptiles t3">${tile(fa(open.length),'درخواست پشتیبانی باز','data-act="goto" data-h="support"',fresh.length?'t-warn':'',fresh.length?fa(fresh.length)+' تازه':'')}${tile(fa(issues.length),'اشکال در داده‌ها','data-act="goto" data-h="health"',issues.some(c=>c.sev==='bad')?'t-bad':'',issues.slice(0,2).map(c=>c.t).join('، '))}${tile(fa(locked),'کاربر قفل‌شده','data-act="goto" data-h="health"',locked?'t-bad':'')}${tile(fa(f24),'ورود ناموفق در ۲۴ ساعت','data-act="goto" data-h="tech"',f24>=10?'t-warn':'')}
+  ${tile(fa(act7),'کاربر فعال در ۷ روز','data-act="goto" data-h="users"','',fa(db.users.filter(x=>x.active).length)+' حساب فعال')}${tile(fa(mgr),'مدیر سامانه','data-act="goto" data-h="users"',mgr?'':'t-warn',mgr?'':'مدیری تعیین نشده')}</div>
+  <div class="sec-h nat-h"><h2 class="sect">درخواست‌های تازه</h2><span class="spacer"></span><a class="btn sm" href="#support">همه</a></div>
+  ${fresh.length?`<div class="dir-list">${fresh.slice(0,4).map(t=>tkCard(t,true)).join('')}</div>`:'<div class="card empty"><b>درخواست تازه‌ای نیست.</b></div>'}
+  ${issues.length?`<section class="card sec tasks att"><div class="sec-h"><h3>نیازمند رسیدگی فنی</h3><a class="btn sm ghost" href="#health">سلامت داده</a></div><div class="task-list">${issues.slice(0,5).map(c=>`<div class="task"><span class="task-dot ${c.sev}"></span><div class="task-b"><b>${c.t}</b><span class="small muted">${fa(c.n)} مورد، ${c.d}</span></div>${c.fix?`<button class="btn sm primary" data-act="${c.fix[0]}">${c.fix[1]}</button>`:'<a class="btn sm" href="#health">مشاهده</a>'}</div>`).join('')}</div></section>`:''}
+  ${fails.length?fold('آخرین تلاش‌های ناموفق ورود',fa(fails.length)+' مورد',`<ul class="sup-ul">${fails.map(f=>{const x=getU(f.uid);return `<li>${x?`<a href="#sup-${x.id}">${esc(x.name)}</a>`:'کد ملی ناشناخته '+fa(f.nid||'')} <span class="crit small">${f.lock?'قفل شد':f.why==='pw'?'رمز نادرست':'کد نادرست'}</span> <span class="small muted">${relTime(f.t)}</span></li>`;}).join('')}</ul>`):''}`;
+}
+/* ---- کاربران (ادمین فنی) ---- */
+function techUsersView(){
+  const mgrs=db.users.filter(x=>ADM(x.role)).sort((a,b)=>(a.role==='tech')-(b.role==='tech')||b.active-a.active);
+  return `<section class="page-head m-nosub"><div><h1>کاربران</h1><p class="sub">تعیین مدیر سامانه، رفع اشکال حساب کاربران و سطح دسترسی‌ها</p></div><div class="head-actions"><button class="btn primary" data-act="mgr-new">+ تعیین مدیر سامانه</button></div></section>
+  <h2 class="sect">مدیران و ادمین‌ها</h2>
+  <div class="pv-grid">${mgrs.map(x=>`<article class="card pv-card"><div class="lia ${x.active?'':'off'}"><span class="avatar">${esc(initials(x.name))}</span><div class="lia-b"><b>${esc(x.name)}</b> <span><span class="pill ${LEVEL[x.role].c}">${LEVEL[x.role].t}</span>${x.active?'':' <span class="pill mute">غیرفعال</span>'}${x.mustPw?' <span class="pill warn">رمز موقت</span>':''}</span><small><span class="phone">${fa(x.mobile||'')}</span>، آخرین فعالیت ${x.last?relTime(x.last):'هنوز وارد نشده'}</small></div><div class="lia-a"><a class="btn sm" href="#sup-${x.id}">پرونده</a></div></div></article>`).join('')}</div>
+  <h2 class="sect">همه‌ی کاربران</h2>${adminUsers()}`;
+}
+/* ---- تنظیمات فنی ---- */
+const SEC=()=>({ttl:2,tries:5,lock:15,...(db?.settings?.sec||{})});
+function sysNotice(){const n=db.settings.notice;if(!n||!n.on||!n.text||(n.until&&n.until<Date.now()))return '';
+  try{if(sessionStorage.getItem(KEY+'-ntc')===String(n.t))return '';}catch(x){}
+  return `<div class="sys-notice lv-${n.level||'info'}" role="status">${icon('notice')}<span>${esc(n.text)}</span><button class="banner-x" data-act="ntc-x" aria-label="بستن">×</button></div>`;}
+function techView(){
+  const t=ui.techTab||'sec',s=SEC(),n=db.settings.notice||{};
+  const tabs=[['sec','امنیت ورود'],['notice','اعلان سراسری'],['backup','پشتیبان‌گیری'],['code','فرمول کد محله'],['log','گزارش فعالیت']];
+  const nin=(id,l,v,min,max,h)=>`<label class="field"><span>${l}</span><input type="number" id="${id}" value="${v}" min="${min}" max="${max}" inputmode="numeric" dir="ltr"><span class="hint">${h}</span></label>`;
+  let body='';
+  if(t==='sec')body=`<div class="card sec" style="max-width:640px"><h3>ورود با کد پیامکی</h3><p class="small muted">برای همه‌ی کاربران اعمال می‌شود.</p>
+    ${nin('sec-ttl','اعتبار کد ورود (دقیقه)',s.ttl,1,10,'پس از این مدت کد باطل می‌شود و دکمه‌ی «ارسال دوباره» فعال می‌شود.')}${nin('sec-tries','تعداد تلاش ناموفق مجاز',s.tries,3,10,'پس از این تعداد، ورود با آن کد ملی موقتاً بسته می‌شود.')}${nin('sec-lock','مدت قفل (دقیقه)',s.lock,5,120,'ادمین فنی می‌تواند قفل هر کاربر را زودتر بردارد.')}
+    <div><button class="btn primary" data-act="sec-save">ذخیره</button></div></div>`;
+  else if(t==='notice')body=`<div class="card sec" style="max-width:720px"><h3>اعلان سراسری</h3><p class="small muted">پیامی کوتاه که بالای صفحه‌ی همه‌ی کاربران دیده می‌شود؛ مثلاً زمان به‌روزرسانی یا قطعی سامانه.</p>
+    <label class="field"><span>متن اعلان</span><textarea id="ntc-text" rows="2" maxlength="200">${esc(n.text||'')}</textarea></label>
+    <div class="grid2"><label class="field"><span>نوع</span><select id="ntc-level"><option value="info" ${n.level!=='warn'?'selected':''}>اطلاع‌رسانی</option><option value="warn" ${n.level==='warn'?'selected':''}>هشدار</option></select></label>
+    <label class="field"><span>نمایش تا</span><select id="ntc-days"><option value="0">تا وقتی برداشته شود</option><option value="1">۱ روز</option><option value="3">۳ روز</option><option value="7">۷ روز</option></select></label></div>
+    <div class="dir-acts"><button class="btn primary" data-act="ntc-save">انتشار اعلان</button>${n.on?'<button class="btn danger" data-act="ntc-off">برداشتن اعلان</button>':''}</div>
+    ${n.on&&n.text?`<p class="small">اکنون منتشر شده${n.until?'، تا '+fmtDT(n.until):''}:</p><div class="sys-notice lv-${n.level||'info'}">${icon('notice')}<span>${esc(n.text)}</span></div>`:'<p class="small muted">اکنون اعلانی منتشر نشده است.</p>'}</div>`;
+  else if(t==='backup'){const lb=db.settings.lastBackup;body=`<div class="stack" style="max-width:720px"><div class="card sec"><h3>دریافت نسخه‌ی پشتیبان</h3><p class="small muted">همه‌ی داده‌ها (${fa(db.nb.length)} محله، ${fa(db.people.length)} فرد، ${fa(db.users.length)} کاربر، ${fa(db.changes.length)} ثبت) در یک فایل. ${lb?'آخرین پشتیبان: '+relTime(lb):'تاکنون پشتیبانی گرفته نشده است.'}</p><div><button class="btn primary" data-act="bk-down">دریافت فایل پشتیبان</button></div></div>
+    <div class="card sec"><h3>بازگردانی از پشتیبان</h3><p class="small muted">همه‌ی داده‌های فعلی با محتوای فایل جایگزین می‌شود. پیش از آن یک پشتیبان تازه بگیرید.</p><input type="file" id="bk-file" accept=".json,application/json" aria-label="فایل پشتیبان"><div style="margin-top:8px"><button class="btn danger" data-act="bk-restore">بازگردانی</button></div></div></div>`;}
+  else if(t==='code')body=adminCode();
+  else body=adminLog();
+  return `<section class="page-head"><div><h1>تنظیمات فنی</h1><p class="sub">فقط ادمین فنی به این بخش دسترسی دارد.</p></div></section>
+  <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${t===k}" data-act="ttab" data-tab="${k}">${l}</button>`).join('')}</div>${body}`;
+}
+/* داده‌ی نمونه‌ی بخش ادمین فنی */
+function ensureTech(){
+  const st=db.settings;let ch=false;
+  db.users.forEach(u=>{if(u.role==='viewer'){u.role='tech';if(u.username==='viewer')u.username='tech';ch=true;}if(u.role==='tech'&&!u.pwh){u.pwh=pwHash(ADMIN_DEMO_PW);ch=true;}});
+  if(!db.tickets){db.tickets=[];ch=true;}if(!db.authFails){db.authFails=[];ch=true;}
+  if(!st.techV1){st.techV1=1;ch=true;const now=Date.now(),R=rng(1407);
+    st.sec=st.sec||{ttl:2,tries:5,lock:15};
+    /* یک فرد تکراری (همان کد ملی) برای نمایش «ادغام» */
+    const p=db.people.find(x=>x.nid&&!x._st&&linksOf(x.id).length&&linksOf(x.id)[0].n.op==='o1');
+    if(p){const n0=linksOf(p.id)[0].n;const n2=db.nb.find(n=>n.op===n0.op&&n!==n0&&!n._st);if(n2){const q={...clone(p),id:uid(),mobile:'',contacts:[],courseLog:[],by:'o1'};db.people.push(q);n2.links.push({id:uid(),pid:q.id,roles:[(linksOf(p.id)[0].l.roles||['معتمد محله'])[0]],note:''});}}
+    const g=db.nb.find(n=>n.city==='رشت');if(g){g.lat=null;g.lng=null;}
+    const lo=db.users.find(x=>x.id==='o3');if(lo){for(let i=0;i<5;i++)db.authFails.push({t:now-(6-i)*60e3,nid:lo.nid,uid:lo.id,why:'code'});db.authFails.unshift({t:now-60e3,nid:lo.nid,uid:lo.id,lock:true});lo.lockUntil=now+14*60e3;}
+    db.authFails.push({t:now-5*H,nid:'1234567891',uid:'',why:'code'});
+    db.authFails.sort((a,b)=>b.t-a.t);
+    const T=(o)=>({id:uid(),msgs:[],unread:false,techUnread:false,dev:'اندروید، Chrome',page:'#home',...o});
+    const s1=db.users.find(x=>x.role==='supervisor'&&x.province==='تهران'),om=db.users.find(x=>x.role==='operator'&&x.city==='مشهد');
+    db.tickets.push(
+      T({t:now-3*H,uid:s1?.id||'s1',cat:'ورود و حساب کاربری',subject:'کد ورود برای یکی از کارشناسان نمی‌آید',text:'کارشناس «'+(lo?.name||'')+'» می‌گوید از صبح نمی‌تواند وارد شود و پیام «ورود بسته است» می‌گیرد.',st:'new',page:'#staff'}),
+      T({t:now-2*DAY,uid:'o1',cat:'دسترسی به محله‌ها یا افراد',subject:'محله‌ای که ثبت کردم در فهرستم نیست',text:'هفته‌ی پیش محله‌ی تازه‌ای ثبت کردم ولی در «محله‌های من» پیدا نمی‌شود.',st:'doing',page:'#list',upd:now-DAY,unread:true,msgs:[{uid:'v1',t:now-DAY,text:'سلام؛ ثبت شما هنوز منتظر تأیید رابط استانی است و پس از تأیید در فهرست می‌آید. پیگیری می‌کنم.'}]}),
+      T({t:now-6*DAY,uid:om?.id||'o2',cat:'پیشنهاد برای بهتر شدن سامانه',subject:'امکان افزودن عکس به برنامه‌ها',text:'خوب است بتوانیم برای برنامه‌های محله عکس هم ثبت کنیم.',st:'done',upd:now-5*DAY,msgs:[{uid:'v1',t:now-5*DAY,text:'پیشنهاد شما ثبت شد و در نسخه‌ی بعدی بررسی می‌شود. سپاس.'}]}));
+  }
+  if(ch){ver++;persist();}
+}
 /* verb-first pickers: choose what you did, then where */
 function pickSheet(title,items,onPick,ph){
   const d=$('#dlg');d.classList.remove('as-full');d.classList.add('as-sheet');d.onchange=null;
@@ -2995,10 +3280,10 @@ function moreSheet(){
       ${roleNote(u)?`<p class="acct-note">${roleNote(u)}</p>`:''}<div class="acct-who"><span class="avatar">${esc(initials(u.name))}</span><span><b>${esc(u.name)}</b><small><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span> ${esc(areaOf(u))}</small></span></div>
       ${installEvt?`<button type="button" class="btn block" data-act="install">نصب برنامه روی گوشی</button>`:''}
       <label class="field"><span>ورود آزمایشی با نقش دیگر</span><select data-change="persona" id="persona-m">${groups.map(([r,us])=>`<optgroup label="${LEVEL[r].t}">${us.map(x=>`<option value="${x.id}" ${x.id===u.id?'selected':''}>${esc(x.name)}${areaOf(x)?'، '+esc(areaOf(x)):''}</option>`).join('')}</optgroup>`).join('')}</select></label>
-      ${u.role==='admin'?`<button type="button" class="btn block" data-act="chg-pw">تغییر رمز عبور</button>`:''}
+      ${ADM(u.role)?`<button type="button" class="btn block" data-act="chg-pw">تغییر رمز عبور</button>`:''}
       <button type="button" class="btn block danger" data-act="logout">خروج از حساب</button></div></div>`;
   d.onclick=e=>{if(e.target.closest('[data-close]')){d.close();return;}
-    const a=e.target.closest('a.sheet-item');if(a){if(a.dataset.tab){ui.adminTab=a.dataset.tab;if(location.hash==='#admin'){e.preventDefault();render();}}d.close();return;}
+    const a=e.target.closest('a.sheet-item');if(a){if(a.dataset.tab){if(a.getAttribute('href')==='#tech')ui.techTab=a.dataset.tab;else ui.adminTab=a.dataset.tab;if(location.hash===a.getAttribute('href')){e.preventDefault();render();}}d.close();return;}
     const b=e.target.closest('[data-act]');if(!b)return;
     if(b.dataset.act==='logout'){d.close();doLogout();}else if(b.dataset.act==='install'&&installEvt)installEvt.prompt();};
   d.onchange=e=>{if(e.target.id==='persona-m'){d.close();switchPersona(e.target.value);}};
@@ -3076,9 +3361,9 @@ function fmtVal(k,v){
   return fa(v);
 }
 function queueView(){
-  const u=me();const tabs=[['pending','در انتظار تأیید'],['done','بررسی‌شده']];if(u.role==='admin')tabs.splice(1,0,['sup','ثبت‌های رابطان استانی']);
+  const u=me();const tabs=[['pending','در انتظار تأیید'],['done','بررسی‌شده']];if(ADM(u.role))tabs.splice(1,0,['sup','ثبت‌های رابطان استانی']);
   if(!tabs.some(t=>t[0]===ui.qTab))ui.qTab='pending';
-  const authors=db.users.filter(x=>x.role==='operator'&&(u.role==='admin'||inProv(x.city,u)));
+  const authors=db.users.filter(x=>x.role==='operator'&&(ADM(u.role)||inProv(x.city,u)));
   let body='';
   if(ui.qTab==='pending'){
     let list=db.changes.filter(c=>c.st==='pending'&&canReview(c));
@@ -3092,7 +3377,7 @@ function queueView(){
     const shown=groups.slice(0,PAGE);
     const kchip=(k,t,n)=>`<button type="button" data-act="qkind" data-v="${k}" aria-pressed="${(ui.qk||'')===k}">${t} <b>${fa(n)}</b></button>`;
     const kinds=groups0.length?`<div class="chips qkinds" role="group" aria-label="نوع ثبت">${kchip('','همه',groups0.length)}${kchip('nb','محله‌ی جدید',kc.nb)}${kchip('trustee','متولی',kc.trustee)}${kchip('other','سایر',kc.other)}</div>`:'';
-    const qsel=`<select data-qf="op" aria-label="کارشناس"><option value="">همه کارشناسان</option>${authors.map(a=>`<option value="${a.id}" ${ui.qf.op===a.id?'selected':''}>${esc(a.name)}${u.role==='admin'?'، '+esc(a.city):''}</option>`).join('')}</select>`,qent=`<select data-qf="ent" aria-label="نوع"><option value="">همه انواع</option>${Object.entries(ENT).map(([k,t])=>`<option value="${k}" ${ui.qf.ent===k?'selected':''}>${t}</option>`).join('')}</select>`;
+    const qsel=`<select data-qf="op" aria-label="کارشناس"><option value="">همه کارشناسان</option>${authors.map(a=>`<option value="${a.id}" ${ui.qf.op===a.id?'selected':''}>${esc(a.name)}${ADM(u.role)?'، '+esc(a.city):''}</option>`).join('')}</select>`,qent=`<select data-qf="ent" aria-label="نوع"><option value="">همه انواع</option>${Object.entries(ENT).map(([k,t])=>`<option value="${k}" ${ui.qf.ent===k?'selected':''}>${t}</option>`).join('')}</select>`;
     const nq=(ui.qf.op?1:0)+(ui.qf.ent?1:0);
     body=`<div class="tab-head"><div class="toolbar d-only" style="flex:1">${qsel}${qent}</div>${fbtn(nq)}
       ${fsBack}<details class="filters card m-only" open><summary><h2>فیلترها <span class="fcount">${nq?fa(nq):''}</span></h2><button class="btn sm ghost" data-act="clearqf">پاک کردن</button></summary><div class="fbody"><label class="fgroup"><span>کارشناس</span>${qsel}</label><label class="fgroup"><span>نوع ثبت</span>${qent}</label></div>${fsFoot(groups.length,'مورد')}</details>
@@ -3103,10 +3388,10 @@ function queueView(){
     body=`<p class="small muted">ثبت‌های رابطان استانی بدون انتظار اعمال شده‌اند. اگر موردی را تأیید نمی‌کنید، «عدم تأیید» آن را لغو می‌کند.</p>
     ${list.length?`<div class="table-wrap"><table class="tbl resp" style="min-width:640px"><thead><tr><th>زمان</th><th>رابط استانی</th><th>اقدام</th><th>پرونده</th><th></th></tr></thead><tbody>${list.map(c=>`<tr style="cursor:default"><td data-l="زمان" class="small muted">${relTime(c.t)}</td><td data-l="رابط استانی"><a href="#u-${c.uid}">${esc(uName(c.uid))}</a> <span class="muted small">${esc(areaOf(getU(c.uid)))}</span></td><td data-l="اقدام" class="m-main">${esc(c.txt)}</td><td data-l="پرونده">${c.nb&&findN(c.nb)?`<a href="#n-${c.nb}">${esc(c.tn)}</a>`:c.pid&&getP(c.pid)?`<a href="#p-${c.pid}">${esc(c.tn)}</a>`:esc(c.tn)}</td><td>${c.ent==='user'?'':`<button class="btn sm danger" data-act="revoke" data-cid="${c.id}">عدم تأیید</button>`}</td></tr>`).join('')}</tbody></table></div>`:'<div class="card empty"><b>در ۳۰ روز اخیر ثبتی از رابطان استانی نیست.</b></div>'}`;
   }else{
-    const list=db.changes.filter(c=>c.rv&&(c.st==='approved'||c.st==='rejected'||c.st==='revoked')&&(u.role==='admin'||c.rv.uid===u.id)).sort((a,b)=>b.rv.t-a.rv.t).slice(0,PAGE);
+    const list=db.changes.filter(c=>c.rv&&(c.st==='approved'||c.st==='rejected'||c.st==='revoked')&&(ADM(u.role)||c.rv.uid===u.id)).sort((a,b)=>b.rv.t-a.rv.t).slice(0,PAGE);
     body=list.length?`<div class="table-wrap"><table class="tbl resp" style="min-width:640px"><thead><tr><th>زمان</th><th>کاربر</th><th>اقدام</th><th>پرونده</th><th>نتیجه</th></tr></thead><tbody>${list.map(c=>chRow(c)).join('')}</tbody></table></div>`:'<div class="card empty"><b>هنوز موردی بررسی نشده است.</b></div>';
   }
-  return `<section class="page-head m-nosub"><div><h1>${u.role==='admin'?'کارتابل':'کارتابل تأیید'}</h1><p class="sub">${u.role==='supervisor'?'ثبت‌های کارشناسان استان '+esc(u.province):'ثبت‌های همه شهرها'}</p></div></section>
+  return `<section class="page-head m-nosub"><div><h1>${ADM(u.role)?'کارتابل':'کارتابل تأیید'}</h1><p class="sub">${u.role==='supervisor'?'ثبت‌های کارشناسان استان '+esc(u.province):'ثبت‌های همه شهرها'}</p></div></section>
   <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${ui.qTab===k}" data-act="qtab" data-tab="${k}">${l}${k==='pending'?`<span class="cnt">${fa(pendingCount())}</span>`:''}</button>`).join('')}</div>${body}`;
 }
 /* نوع هر گروه از ثبت‌ها در کارتابل */
@@ -3139,8 +3424,8 @@ const groupByKey=k=>db.changes.filter(c=>c.st==='pending'&&(c.grp||c.id)===k);
 /* ================= performance ================= */
 function perfView(){
   const u=me();const s=periodStart();
-  let ops=db.users.filter(x=>x.role==='operator'&&(u.role==='admin'||inProv(x.city,u)));
-  if(u.role==='admin'&&ui.perfProv)ops=ops.filter(x=>provOf(x.city)===ui.perfProv);
+  let ops=db.users.filter(x=>x.role==='operator'&&(ADM(u.role)||inProv(x.city,u)));
+  if(ADM(u.role)&&ui.perfProv)ops=ops.filter(x=>provOf(x.city)===ui.perfProv);
   if(ui.perfCity)ops=ops.filter(x=>x.city===ui.perfCity);
   const by=new Map(ops.map(o=>[o.id,{u:o,sub:0,ap:0,rj:0,pd:0,days:new Set()}]));
   db.changes.forEach(c=>{const r=by.get(c.uid);if(!r)return;if(c.st==='pending')r.pd++;if(c.t<s)return;r.sub++;if(c.st==='approved')r.ap++;else if(c.st==='rejected')r.rj++;r.days.add(Math.floor(c.t/DAY));});
@@ -3154,9 +3439,9 @@ function perfView(){
   const idle=active.filter(r=>r.sub===0).length;
   const mx=Math.max(1,...rows.map(r=>r.sub));
   const th=(k,t)=>`<th><button class="sortbtn" data-act="psort" data-k="${k}" aria-pressed="${sk===k}">${t}${sk===k?' ▾':''}</button></th>`;
-  const sups=u.role==='admin'?db.users.filter(x=>x.role==='supervisor'&&(!ui.perfCity||x.province===provOf(ui.perfCity))&&(!ui.perfProv||x.province===ui.perfProv)).map(sv=>{const rv=db.changes.filter(c=>c.rv?.uid===sv.id&&c.rv.t>=s);const delay=rv.length?rv.reduce((a,c)=>a+(c.rv.t-c.t),0)/rv.length/H:0;const own=db.changes.filter(c=>c.uid===sv.id&&c.t>=s).length;const waiting=db.changes.filter(c=>c.st==='pending'&&getU(c.uid)?.city===sv.city).length;return {sv,rv:rv.length,rej:rv.filter(c=>c.st==='rejected').length,delay,own,waiting};}):[];
+  const sups=ADM(u.role)?db.users.filter(x=>x.role==='supervisor'&&(!ui.perfCity||x.province===provOf(ui.perfCity))&&(!ui.perfProv||x.province===ui.perfProv)).map(sv=>{const rv=db.changes.filter(c=>c.rv?.uid===sv.id&&c.rv.t>=s);const delay=rv.length?rv.reduce((a,c)=>a+(c.rv.t-c.t),0)/rv.length/H:0;const own=db.changes.filter(c=>c.uid===sv.id&&c.t>=s).length;const waiting=db.changes.filter(c=>c.st==='pending'&&getU(c.uid)?.city===sv.city).length;return {sv,rv:rv.length,rej:rv.filter(c=>c.st==='rejected').length,delay,own,waiting};}):[];
   return `<section class="page-head"><div><h1>عملکرد کارشناسان</h1><p class="sub">${u.role==='supervisor'?'استان '+esc(u.province)+'، ':''}${fa(active.length)} کارشناس فعال</p></div>
-    <div class="head-actions">${u.role==='admin'?`<select data-act-change="perfprov" aria-label="استان"><option value="">همه استان‌ها</option>${db.settings.provinces.map(p=>`<option ${ui.perfProv===p?'selected':''}>${esc(p)}</option>`).join('')}</select><select data-act-change="perfcity" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.filter(c=>!ui.perfProv||c.province===ui.perfProv).map(c=>`<option ${ui.perfCity===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select>`:''}${segP()}<button class="btn d-only" data-act="export-perf">خروجی Excel</button></div></section>
+    <div class="head-actions">${ADM(u.role)?`<select data-act-change="perfprov" aria-label="استان"><option value="">همه استان‌ها</option>${db.settings.provinces.map(p=>`<option ${ui.perfProv===p?'selected':''}>${esc(p)}</option>`).join('')}</select><select data-act-change="perfcity" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.filter(c=>!ui.perfProv||c.province===ui.perfProv).map(c=>`<option ${ui.perfCity===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select>`:''}${segP()}<button class="btn d-only" data-act="export-perf">خروجی Excel</button></div></section>
   <div class="mini-stats kpis">
     <div class="km"><b>${num(tot.sub)}</b><span>کل ثبت‌ها در بازه</span></div>
     <div class="kx"><b>${num(tot.ap)}</b><span>تأییدشده</span></div>
@@ -3169,7 +3454,7 @@ function perfView(){
   <div class="table-wrap"><table class="tbl resp perf"><thead><tr>${th('name','کارشناس')}${th('city','شهر')}${th('nbs','محله')}${th('sub','ثبت‌ها')}${th('ap','تأیید')}${th('rj','برگشت')}${th('pd','در انتظار')}${th('rate','نرخ تأیید')}${th('ad','روز فعال')}${th('stale','محله بی‌بررسی')}${th('last','آخرین فعالیت')}</tr></thead><tbody>
   ${rows.map(r=>`<tr data-act="open-u" data-id="${r.u.id}" tabindex="0" class="${r.u.active?'':'inactive'}">
     <td data-l="کارشناس" class="m-main"><b>${esc(r.u.name)}</b>${r.u.active?'':' <span class="pill mute">غیرفعال</span>'}</td>
-    <td data-l="شهر" class="${u.role==='admin'?'':'m-hide'}">${esc(r.u.city)}</td>
+    <td data-l="شهر" class="${ADM(u.role)?'':'m-hide'}">${esc(r.u.city)}</td>
     <td data-l="محله" class="num m-hide">${num(r.nbs)}</td>
     <td data-l="ثبت‌ها" class="num"><div class="meter"><i style="width:${Math.round(r.sub*100/mx)}%"></i></div>${num(r.sub)}</td>
     <td data-l="تأیید" class="num m-hide">${num(r.ap)}</td>
@@ -3187,13 +3472,13 @@ function perfView(){
 /* ================= admin ================= */
 function adminView(){
   const t=ui.adminTab;
-  const tabs=[['users','کاربران و سطح دسترسی'],['code','فرمول کد محله'],['cats','دسته‌بندی‌ها'],['log','گزارش فعالیت']];
-  return `<section class="page-head"><div><h1>مدیریت سامانه</h1><p class="sub">فقط مدیر سامانه به این بخش دسترسی دارد.</p></div></section>
-  <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${t===k}" data-act="atab" data-tab="${k}">${l}</button>`).join('')}</div>
-  ${t==='users'?adminUsers():t==='code'?adminCode():t==='cats'?adminCats():adminLog()}`;
+  const tabs=[['users','کاربران و سطح دسترسی'],['cats','دسته‌بندی‌ها'],['log','گزارش فعالیت']];
+  return `<section class="page-head"><div><h1>مدیریت سامانه</h1><p class="sub">فقط مدیر سامانه و ادمین فنی به این بخش دسترسی دارند.</p></div></section>
+  <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${t===k||(k==='users'&&!['cats','log'].includes(t))}" data-act="atab" data-tab="${k}">${l}</button>`).join('')}</div>
+  ${t==='cats'?adminCats():t==='log'?adminLog():adminUsers()}`;
 }
 function adminUsers(){
-  const rows=[['مشاهده پرونده همه محله‌ها و افراد','✓','✓','✓','✓'],['دیدن شماره تماس افراد','✓','✓','✓','—'],['دیدن کامل کد ملی','✓','✓','پوشیده','—'],['ثبت و ویرایش در پرونده محله و افراد','✓','شهر خود','محله‌های تخصیص‌یافته','—'],['نیاز ثبت‌ها به تأیید','—','خیر (مدیر می‌تواند لغو کند)','بله، تأیید رابط استانی','—'],['تأیید یا برگشت ثبت کارشناسان','✓','شهر خود','—','—'],['تخصیص محله به کارشناس','✓','شهر خود','—','—'],['تشکیل پرونده محله جدید','✓','✓','پس از تأیید رابط استانی','—'],['تغییر وضعیت پرچم‌سرای محله','✓','—','—','—'],['تغییر وضعیت پرچمدار افراد','✓','✓','با تأیید رابط استانی','—'],['حذف پرونده محله','✓','—','—','—'],['مدیریت کاربران، دسته‌بندی‌ها و فرمول کد','✓','—','—','—']];
+  const rows=[['مشاهده و ویرایش همه‌ی محله‌ها و افراد','✓','✓','استان خود','محله‌های تخصیص‌یافته'],['نیاز ثبت‌ها به تأیید','—','—','خیر (مدیر می‌تواند لغو کند)','بله، تأیید رابط استانی'],['تأیید یا برگشت ثبت کارشناسان','✓','✓','استان خود','—'],['تعیین رابط استانی و کارشناس، تخصیص محله','✓','✓','کارشناس و محله‌ی استان خود','—'],['ابلاغیه','✓','✓','به کارشناسان استان خود','دریافت و گزارش'],['تغییر وضعیت پرچم‌سرای محله، حذف پرونده محله','✓','✓','—','—'],['دسته‌بندی‌ها، شهرها و استان‌ها','✓','✓','دوره‌های استانی','—'],['تعیین مدیر سامانه و ادمین فنی','✓','—','—','—'],['رفع اشکال حساب کاربران، رفع قفل، رمز موقت، دیدن از چشم کاربر','✓','—','—','—'],['سلامت داده، تنظیمات ورود، اعلان سراسری، پشتیبان‌گیری، فرمول کد','✓','—','—','—']];
   const cell=v=>v==='✓'?'<span class="yes">✓</span>':v==='—'?'<span class="no">—</span>':`<span class="small">${v}</span>`;
   const cnt=r=>db.users.filter(u=>u.role===r).length;
   const f=ui.uf,q=qnorm(f.q);
@@ -3203,14 +3488,14 @@ function adminUsers(){
   <div class="tab-head"><div class="toolbar" style="flex:1"><input type="search" data-uf="q" value="${esc(f.q)}" placeholder="جستجوی نام، کد ملی یا موبایل" aria-label="جستجوی کاربر"><select data-uf="role" aria-label="سطح"><option value="">همه سطوح</option>${opts(LEVEL).map(([k,t])=>`<option value="${k}" ${f.role===k?'selected':''}>${t}</option>`).join('')}</select><select data-uf="city" aria-label="شهر"><option value="">همه شهرها</option>${db.settings.cities.map(c=>`<option ${f.city===c.name?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><button class="btn primary sm" data-act="add-user">+ افزودن کاربر</button></div>
   <p class="small muted">${fa(list.length)} کاربر، ${fa(cnt('operator'))} کارشناس، ${fa(cnt('supervisor'))} رابط استانی</p>
   <div class="table-wrap"><table class="tbl resp"><thead><tr><th>نام</th><th>موبایل ورود</th><th>سطح</th><th>محدوده</th><th>محله‌های تخصیص‌یافته</th><th>وضعیت</th><th>آخرین فعالیت</th><th></th></tr></thead><tbody>
-  ${pageSlice(list,ui.usersPage).map(u=>`<tr style="cursor:default"><td data-l="نام" class="m-main"><a href="#u-${u.id}"><b>${esc(u.name)}</b></a></td><td data-l="موبایل ورود" class="m-hide"><span class="phone">${fa(u.mobile||'')}</span></td><td data-l="سطح"><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span></td>
-  <td data-l="محدوده">${u.role==='admin'||u.role==='viewer'?'همه':esc(areaOf(u))}</td>
+  ${pageSlice(list,ui.usersPage).map(u=>`<tr style="cursor:default"><td data-l="نام" class="m-main"><a href="#${isTech()?'sup':'u'}-${u.id}"><b>${esc(u.name)}</b></a>${isLocked(u)?' <span class="pill bad">قفل</span>':''}</td><td data-l="موبایل ورود" class="m-hide"><span class="phone">${fa(u.mobile||'')}</span></td><td data-l="سطح"><span class="pill ${LEVEL[u.role].c}">${LEVEL[u.role].t}</span></td>
+  <td data-l="محدوده">${ADM(u.role)||u.role==='viewer'?'همه':esc(areaOf(u))}</td>
   <td data-l="محله‌ها" class="num m-hide">${u.role==='operator'?`<a href="#list" data-act="list-op" data-id="${u.id}">${num(nbc.get(u.id)||0)}</a>`:'—'}</td>
   <td data-l="وضعیت"><span class="dot ${u.active?'':'off'}">${u.active?'فعال':'غیرفعال'}</span></td><td data-l="آخرین فعالیت" class="small muted">${relTime(u.last)}</td>
-  <td><button class="btn sm ghost" data-act="edit-user" data-id="${u.id}">ویرایش</button></td></tr>`).join('')}
+  <td>${isTech()||!ADM(u.role)||u.id===me().id?`<button class="btn sm ghost" data-act="edit-user" data-id="${u.id}">ویرایش</button>`:''}</td></tr>`).join('')}
   </tbody></table></div>${pager(list.length,ui.usersPage,'usersPage')}
-  <div class="card sec"><h3>چهار سطح دسترسی</h3>
-  <div class="table-wrap" style="border:0"><table class="tbl matrix" style="min-width:640px"><thead><tr><th>امکان</th><th>مدیر سامانه (${fa(cnt('admin'))})</th><th>رابط استانی (${fa(cnt('supervisor'))})</th><th>کارشناس (${fa(cnt('operator'))})</th><th>نمایشی (${fa(cnt('viewer'))})</th></tr></thead><tbody>
+  <div class="card sec"><h3>سطوح دسترسی</h3>
+  <div class="table-wrap" style="border:0"><table class="tbl matrix" style="min-width:640px"><thead><tr><th>امکان</th><th>ادمین فنی (${fa(cnt('tech'))})</th><th>مدیر سامانه (${fa(cnt('admin'))})</th><th>رابط استانی (${fa(cnt('supervisor'))})</th><th>کارشناس (${fa(cnt('operator'))})</th></tr></thead><tbody>
   ${rows.map(r=>`<tr style="cursor:default"><td>${r[0]}</td><td>${cell(r[1])}</td><td>${cell(r[2])}</td><td>${cell(r[3])}</td><td>${cell(r[4])}</td></tr>`).join('')}
   </tbody></table></div></div></div>`;
 }
@@ -3345,6 +3630,7 @@ function wireMap(f,fl){
   setTimeout(()=>m.invalidateSize(),80);
 }
 function openForm(cfg){
+  if(ui.viewAs){toast('در حالت «دیدن از چشم کاربر» فقط مشاهده ممکن است');return;}
   const d=$('#dlg');const u=me();d.classList.remove('as-sheet');d.onclick=null;
   const note=u.role==='operator'?'<p class="small form-note">این ثبت پس از تأیید رابط استانی نهایی می‌شود.</p>':'';
   d.onchange=null;d.classList.remove('as-full');
@@ -3391,7 +3677,7 @@ const postalOk=v=>v&&!/^\d{10}$/.test(v)?esc('کد پستی باید ۱۰ رقم
 
 function nbForm(n){
   const u=me();
-  const cities=u.role==='admin'?db.settings.cities.map(c=>c.name):u.role==='supervisor'?provCities(u.province):[u.city];
+  const cities=ADM(u.role)?db.settings.cities.map(c=>c.name):u.role==='supervisor'?provCities(u.province):[u.city];
   const city=n?.city||cities[0];const cd=cityOf(city)?.d||22;
   const ops=db.users.filter(x=>x.role==='operator'&&x.active&&x.city===city);
   const fields=[
@@ -3639,23 +3925,25 @@ function reviewForm(n,r,preset){
 }
 /* نوع بررسی محله ← نوع ارتباط در پرونده‌ی فرد (برای متولیان حاضر) */
 const RV2CT={'بازدید میدانی':'بازدید','جلسه با متولیان':'جلسه حضوری','تماس تلفنی':'تماس تلفنی'};
-function userForm(u){
-  openForm({title:u?'ویرایش کاربر':'افزودن کاربر',noApprovalNote:true,fields:[
+function userForm(u,pre={}){
+  const tech=isTech(),roles=tech?opts(LEVEL):opts(LEVEL).filter(([k])=>k==='supervisor'||k==='operator'||(u&&k===u.role));
+  if(u&&!tech&&ADM(u.role)&&u.id!==me().id){toast('حساب مدیر و ادمین فنی را فقط ادمین فنی ویرایش می‌کند');return;}
+  openForm({title:u?'ویرایش کاربر':pre.role==='admin'?'تعیین مدیر سامانه':'افزودن کاربر',noApprovalNote:true,fields:[
     {name:'name',label:'نام و نام خانوادگی',required:true,value:u?.name},
     {name:'nid',label:'کد ملی (برای ورود)',required:true,dir:'ltr',inputmode:'numeric',digits:true,value:u?.nid,validate:v=>!nidOk(v)?esc('کد ملی معتبر نیست.'):db.users.some(x=>x!==u&&x.nid===v)?esc('این کد ملی برای کاربر دیگری ثبت شده است.'):''},
     {name:'mobile',label:'موبایل (کد ورود به این شماره پیامک می‌شود)',required:true,type:'tel',dir:'ltr',inputmode:'tel',digits:true,value:u?.mobile,ph:'09xxxxxxxxx',validate:v=>!mobileOk(v)?esc('شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود.'):''},
-    {name:'role',label:'سطح دسترسی',type:'select',options:opts(LEVEL),value:u?.role||'operator'},
+    {name:'role',label:'سطح دسترسی',type:'select',options:roles,value:u?.role||pre.role||'operator',hint:tech?'مدیر سامانه و ادمین فنی را فقط ادمین فنی تعیین می‌کند.':''},
     {name:'city',label:'شهر',type:'select',options:[['','—'],...db.settings.cities.map(c=>[c.name,c.name+'، استان '+c.province])],value:u?.city||'',validate:(v,vals)=>vals.role==='operator'&&!v?esc('برای کارشناس محله شهر را انتخاب کنید.'):''},
     {name:'province',label:'استان',type:'select',options:[['','—'],...db.settings.provinces.map(p=>[p,p])],value:u?.province||'',hint:'رابط استانی همه‌ی شهرهای این استان را می‌بیند و ثبت‌های کارشناسان آن را تأیید می‌کند.',validate:(v,vals)=>vals.role==='supervisor'&&!v?esc('برای رابط استانی استان را انتخاب کنید.'):''},
     {name:'active',label:'وضعیت',type:'select',options:yesno,value:u?(u.active?'yes':'no'):'yes',hint:'کاربر غیرفعال نمی‌تواند وارد شود و اگر در سامانه باشد بیرون می‌افتد؛ سوابقش می‌ماند.'},
-    {name:'pw',label:'رمز عبور (فقط برای مدیر سامانه)',type:'password',dir:'ltr',value:'',hint:u?.pwh?'مدیر علاوه بر پیامک، این رمز را هم وارد می‌کند. فقط برای تعیین رمز تازه پر کنید.':'مدیر سامانه علاوه بر کد پیامکی، این رمز را هم وارد می‌کند؛ حداقل ۸ نویسه.',
-      validate:(v,vals)=>vals.role==='admin'&&!u?.pwh&&!v?esc('برای مدیر سامانه رمز عبور تعیین کنید.'):v&&v.length<8?esc('رمز باید حداقل ۸ نویسه باشد.'):''},
+    {name:'pw',label:u?.pwh?'رمز تازه (اختیاری)':'رمز اولیه',type:'password',dir:'ltr',value:'',hint:u?.pwh?'فقط برای تعیین رمز تازه پر کنید. اگر برای کس دیگری رمز می‌گذارید، در ورود بعدی باید آن را عوض کند.':'مدیر و ادمین فنی علاوه بر کد پیامکی، رمز هم وارد می‌کنند؛ حداقل ۸ نویسه. در اولین ورود باید رمز تازه بگذارند.',
+      validate:(v,vals)=>ADM(vals.role)&&!u?.pwh&&!v?esc('برای این سطح دسترسی رمز اولیه تعیین کنید.'):v&&v.length<8?esc('رمز باید حداقل ۸ نویسه باشد.'):''},
   ],toast:'کاربر ذخیره شد',
-  onOpen:f=>{const r=f.elements.role;const sync=()=>{$('[data-f="pw"]',f).hidden=r.value!=='admin';$('[data-f="city"]',f).hidden=r.value!=='operator';$('[data-f="province"]',f).hidden=r.value!=='supervisor';};r.addEventListener('change',sync);sync();},
+  onOpen:f=>{const r=f.elements.role;const sync=()=>{$('[data-f="pw"]',f).hidden=!ADM(r.value);$('[data-f="city"]',f).hidden=r.value!=='operator';$('[data-f="province"]',f).hidden=r.value!=='supervisor';};r.addEventListener('change',sync);sync();},
   onSubmit:v=>{
     v.active=v.active==='yes';if(v.role!=='operator')v.city='';if(v.role!=='supervisor')v.province='';
-    const pw=v.pw;delete v.pw;if(pw&&v.role==='admin')v.pwh=pwHash(pw);
-    if(u){if(u.id===me().id&&(!v.active||v.role!=='admin')){toast('نمی‌توانید سطح یا وضعیت خودتان را تغییر دهید');return false;}Object.assign(u,v);}
+    const pw=v.pw;delete v.pw;if(pw&&ADM(v.role)){v.pwh=pwHash(pw);v.mustPw=!u||u.id!==me().id;}
+    if(u){if(u.id===me().id&&(!v.active||v.role!==u.role)){toast('نمی‌توانید سطح یا وضعیت خودتان را تغییر دهید');return false;}Object.assign(u,v);}
     else{const id='x'+uid();db.users.push({id,username:id,last:0,act:0,...v});}
     db.changes.unshift({id:uid(),t:Date.now(),uid:me().id,ent:'user',op:u?'update':'create',st:'admin',txt:(u?'ویرایش کاربر «':'افزودن کاربر «')+v.name+'»',tn:v.name});
     persist();
@@ -3663,11 +3951,11 @@ function userForm(u){
 }
 function pwForm(){
   const u=me();
-  openForm({title:'تغییر رمز عبور',noApprovalNote:true,fields:[
+  openForm({title:u.mustPw?'تعیین رمز تازه':'تغییر رمز عبور',intro:u.mustPw?'رمز شما موقت است؛ برای ادامه رمز تازه‌ای بگذارید.':'',noApprovalNote:true,fields:[
     {name:'cur',label:'رمز فعلی',type:'password',dir:'ltr',required:true,validate:v=>pwHash(v)!==u.pwh?esc('رمز فعلی درست نیست.'):''},
     {name:'pw',label:'رمز تازه',type:'password',dir:'ltr',required:true,hint:'حداقل ۸ نویسه؛ ترکیب حرف و عدد بهتر است.',validate:v=>v.length<8?esc('رمز باید حداقل ۸ نویسه باشد.'):''},
     {name:'pw2',label:'تکرار رمز تازه',type:'password',dir:'ltr',required:true,validate:(v,vals)=>v!==vals.pw?esc('تکرار رمز با رمز تازه یکی نیست.'):''},
-  ],toast:'رمز عبور تغییر کرد',onSubmit:v=>{u.pwh=pwHash(v.pw);db.changes.unshift({id:uid(),t:Date.now(),uid:u.id,ent:'user',op:'update',st:'admin',txt:'تغییر رمز عبور',tn:u.name});persist();}});
+  ],toast:'رمز عبور تغییر کرد',onSubmit:v=>{u.pwh=pwHash(v.pw);u.mustPw=false;db.changes.unshift({id:uid(),t:Date.now(),uid:u.id,ent:'user',op:'update',st:'admin',txt:'تغییر رمز عبور',tn:u.name});persist();}});
 }
 function rejectDialog(keys,onDone){
   openForm({title:'عدم تأیید و برگشت به کارشناس',noApprovalNote:true,submit:'برگشت با این توضیح',fields:[
@@ -3692,6 +3980,10 @@ function openFix(c){
 }
 
 /* ================= CSV export (opens in Excel; UTF-8 with BOM) ================= */
+function downloadFile(name,content,type){
+  if(!document.querySelector('link[rel="manifest"]')){toast('دریافت فایل در این پیش‌نمایش ممکن نیست؛ در نسخه نصبی (index.html) کار می‌کند');return;}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);toast('فایل آماده شد');}catch(e){toast('دانلود در این پیش‌نمایش ممکن نیست');}
+}
 function downloadCSV(name,rows){
   if(!document.querySelector('link[rel="manifest"]')){toast('دریافت فایل در این پیش‌نمایش ممکن نیست؛ در نسخه نصبی (index.html) کار می‌کند');return;}
   const csv='﻿'+rows.map(r=>r.map(v=>{v=String(v??'');if(/^[=+\-@\t\r]/.test(v))v="'"+v;return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\r\n');
@@ -3703,7 +3995,7 @@ const app=$('#app');
 function defaultRoute(u){return u.role==='viewer'?'list':'home';}
 const recentKey=()=>KEY+'-recent-'+(me()?.id||'');
 function recentGet(){try{return JSON.parse(localStorage.getItem(recentKey())||'[]');}catch(e){return [];}}
-function recentPush(k){try{const a=recentGet().filter(x=>x!==k);a.unshift(k);localStorage.setItem(recentKey(),JSON.stringify(a.slice(0,8)));}catch(e){}}
+function recentPush(k){if(ui.viewAs)return;try{const a=recentGet().filter(x=>x!==k);a.unshift(k);localStorage.setItem(recentKey(),JSON.stringify(a.slice(0,8)));}catch(e){}}
 function render(){
   clearMaps();listMap=null;listLayer=null;
   if(!db){app.innerHTML='<div class="login"><p class="muted">در حال بارگذاری…</p></div>';return;}
@@ -3718,7 +4010,15 @@ function render(){
   else if(route.startsWith('u-')&&(isAdmin()||route.slice(2)===u.id||(isSup()&&inProv(getU(route.slice(2))?.city,u)))){const x=getU(route.slice(2));body=x?userView(x):notFound;}
   else if(route==='home'&&u.role==='operator')body=homeView(u);
   else if(route==='home'&&u.role==='supervisor')body=provView(u);
+  else if(route==='home'&&u.role==='tech')body=techHome(u);
   else if(route==='home'&&u.role==='admin')body=natView(u);
+  else if(route==='nat'&&isAdmin())body=natView(u);
+  else if(route==='users'&&isTech())body=techUsersView();
+  else if(route.startsWith('sup-')&&isTech()&&getU(route.slice(4)))body=supUserView(getU(route.slice(4)));
+  else if(route==='health'&&isTech())body=healthView();
+  else if(route==='tech'&&isTech())body=techView();
+  else if(route==='support')body=supportView(u);
+  else if(route.startsWith('t-')){const t=(db.tickets||[]).find(x=>x.id===route.slice(2));body=t&&(isTech()||t.uid===u.id)?ticketView(t):notFound;}
   else if(route.startsWith('pv-')&&isAdmin()&&pvByIdx(route.slice(3)))body=provView(u,pvByIdx(route.slice(3)));
   else if(route==='provs'&&isAdmin())body=provsView();
   else if(route==='notices'&&u.role!=='viewer')body=noticesView(u);
@@ -3732,7 +4032,7 @@ function render(){
   else if(route==='perf'&&isReviewer())body=perfView();
   else if(route==='admin'&&isAdmin())body=adminView();
   else{route='list';body=listView();}
-  app.innerHTML=topbar(u,route)+`<main class="wrap">${roleBanner(u,route)}${body}</main>`;
+  app.innerHTML=topbar(u,route)+`<main class="wrap">${viewAsBar()}${sysNotice()}${roleBanner(u,route)}${body}</main>`;document.body.classList.toggle('viewing-as',!!ui.viewAs);
   if(ui.fsOpen&&ui.fsOpen!==(location.hash||'#'))ui.fsOpen=null;
   document.body.classList.toggle('fs-open',!!ui.fsOpen&&ui.fsOpen===(location.hash||'#')&&isMob()&&!!$('.filters'));
   document.title='پرچمدار';
@@ -3741,7 +4041,7 @@ function render(){
     updateList();
     if(listMap){let mt;listMap.on('moveend',()=>{clearTimeout(mt);mt=setTimeout(()=>{if(listMap)drawMarkers(filtered());},60);});}
   }else if(route==='people'){updatePeople();}
-  else if(route==='home'&&isAdmin())drawNatMap();
+  else if((route==='home'&&u.role==='admin')||route==='nat')drawNatMap();
   else if(route==='home'&&isSup())drawProvMap(u.province);
   else if(route.startsWith('pv-')&&isAdmin())drawProvMap(pvByIdx(route.slice(3)));
   else if(route==='queue'){$$('.qmap').slice(0,10).forEach(el=>{const m=makeMap(el);if(!m)return;const ll=[+el.dataset.lat,+el.dataset.lng];m.setView(ll,15);const n=findN(el.dataset.nb);if(n)nbMarker(n).addTo(m);m.dragging?.disable();m.scrollWheelZoom?.disable();});}
@@ -3755,8 +4055,8 @@ function render(){
     m.on('click',e=>{if(!ui.picking||!canEdit(n))return;ui.picking=false;const c=save('nb',n,{lat:+e.latlng.lat.toFixed(6),lng:+e.latlng.lng.toFixed(6)},{nb:n.id,txt:'تعیین موقعیت روی نقشه',tn:n.name});render();toast(c?.st==='pending'?'موقعیت برای تأیید ارسال شد':'موقعیت محله ثبت شد');});
   }
 }
-function doLogout(){session=null;ui.auth=null;try{localStorage.removeItem(KEY+'-remember');}catch(x){}ui.opInit=false;ui.f={...F0};ui.pf={...PF0};ui.pfInit=false;ui.groupInit=false;saveFilters();try{sessionStorage.removeItem(KEY+'-u');}catch(x){}location.hash='';render();}
-function switchPersona(id){ui.opInit=false;ui.f={...F0};ui.pf={...PF0};saveFilters();session=id;try{sessionStorage.setItem(KEY+'-u',session);}catch(x){}ui.picking=false;ui.sel.clear();ui.qsel.clear();ui.qf={op:'',ent:''};ui.prf={...PRF0};ui.pfInit=false;ui.groupInit=false;ui.homeAll=false;location.hash=defaultRoute(me());render();toast('ورود به‌عنوان '+me().name);}
+function doLogout(){session=null;ui.auth=null;ui.viewAs=null;try{localStorage.removeItem(KEY+'-remember');}catch(x){}ui.opInit=false;ui.f={...F0};ui.pf={...PF0};ui.pfInit=false;ui.groupInit=false;saveFilters();try{sessionStorage.removeItem(KEY+'-u');}catch(x){}location.hash='';render();}
+function switchPersona(id){ui.viewAs=null;ui.opInit=false;ui.f={...F0};ui.pf={...PF0};saveFilters();session=id;try{sessionStorage.setItem(KEY+'-u',session);}catch(x){}ui.picking=false;ui.sel.clear();ui.qsel.clear();ui.qf={op:'',ent:''};ui.prf={...PRF0};ui.pfInit=false;ui.groupInit=false;ui.homeAll=false;location.hash=defaultRoute(me());render();toast('ورود به‌عنوان '+me().name);}
 function currentN(){const h=location.hash.slice(1);return h.startsWith('n-')?findN(h.slice(2)):null;}
 function currentP(){const h=location.hash.slice(1);return h.startsWith('p-')?getP(h.slice(2)):null;}
 const refreshTab=n=>{$('#tabpanel').innerHTML=tabPanel(n,canEdit(n));};
@@ -3791,11 +4091,12 @@ app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   if(b.tagName==='INPUT'&&b.type==='checkbox')e.stopPropagation();
   const a=b.dataset.act,id=b.dataset.id,n=currentN(),p=currentP();
+  if(ui.viewAs&&!VIEW_OK.has(a)){e.preventDefault();toast('در حالت «دیدن از چشم کاربر» فقط مشاهده ممکن است؛ برای تغییر، این حالت را پایان دهید');return;}
   switch(a){
     case 'demo':{const u=db.users.find(x=>x.active&&x.username===b.dataset.u);if(u)finishLogin(u,'demo',false);break;}
     case 'fillnid':ui.auth={step:'nid',nid:b.dataset.nid};render();setTimeout(()=>$('#lg-nid')?.focus(),0);break;
     case 'otp-back':ui.auth={step:'nid',nid:ui.auth?.nid};render();break;
-    case 'otp-resend':{const a=ui.auth;if(!a||Date.now()-a.sent<OTP_GAP)break;sendOtp(a);a.err='';render();toast('کد تازه ارسال شد');break;}
+    case 'otp-resend':{const a=ui.auth;if(!a||Date.now()<a.exp)break;sendOtp(a);a.err='';render();toast('کد تازه ارسال شد');break;}
     case 'chg-pw':$('#dlg').close();pwForm();break;
     case 'logout':doLogout();break;
     case 'install':if(installEvt){installEvt.prompt();installEvt.userChoice.finally(()=>{installEvt=null;render();});}break;
@@ -3880,6 +4181,37 @@ app.addEventListener('click',e=>{
     case 'golist':Object.assign(ui.f,{...F0,sort:ui.f.sort});if(b.dataset.p)ui.f.prov=b.dataset.p;if(b.dataset.k)ui.f[b.dataset.k]=b.dataset.v;ui.page=1;saveFilters();if(location.hash==='#list')render();else location.hash='list';break;
     case 'gopeople':ui.pf={...PF0};if(b.dataset.p)ui.pf.prov=b.dataset.p;if(b.dataset.k)ui.pf[b.dataset.k]=b.dataset.v;ui.pfInit=true;ui.pPage=1;location.hash='people';break;
     case 'goprob':ui.prf={...PRF0,chip:b.dataset.v||'',prov:b.dataset.p||''};location.hash='problems';break;
+    case 'tk-new':$('#dlg').close?.();ticketForm();break;
+    case 'tkf':ui.tkF=b.dataset.v;render();break;
+    case 'tk-reply':{const t=(db.tickets||[]).find(x=>x.id===id);const txt=$('#tk-text').value.trim();if(!t)break;if(!txt){toast('متن پیام را بنویسید');$('#tk-text').focus();break;}
+      const u=me();t.msgs.push({uid:u.id,t:Date.now(),text:txt});t.upd=Date.now();if(u.role==='tech'){t.unread=true;t.st=b.dataset.st||'doing';}else{t.techUnread=true;if(t.st==='done')t.st='doing';}u.last=Date.now();persist();render();toast(u.role==='tech'?'پاسخ برای کاربر فرستاده شد':'پیام شما فرستاده شد');break;}
+    case 'tk-st':{const t=(db.tickets||[]).find(x=>x.id===id);if(!t)break;t.st=b.dataset.v;t.upd=Date.now();persist();render();toast('وضعیت: '+TST[t.st].t);break;}
+    case 'view-as':{const x=getU(id);if(x&&isTech())startViewAs(x);break;}
+    case 'view-exit':endViewAs();break;
+    case 'unlock':{const x=getU(id);if(!x)break;unlockUser(x);logTech('رفع قفل ورود «'+x.name+'»',x.name);persist();render();toast('قفل ورود '+x.name+' برداشته شد');break;}
+    case 'temp-pw':{const x=getU(id);if(x)tempPwForm(x);break;}
+    case 'u-active':{const x=getU(id);if(!x||x.id===realMe().id)break;x.active=!x.active;logTech((x.active?'فعال کردن':'غیرفعال کردن')+' حساب «'+x.name+'»',x.name);persist();render();toast(x.active?'حساب فعال شد':'حساب غیرفعال شد');break;}
+    case 'xfer':{const x=getU(id);if(x)xferForm(x);break;}
+    case 'merge':{const k=mergePeople((b.dataset.ids||'').split(','));render();toast(k?fa(k)+' پرونده در یک پرونده ادغام شد':'ادغام انجام نشد');break;}
+    case 'fix-unlock-all':{const L=db.users.filter(isLocked);L.forEach(unlockUser);logTech('رفع قفل '+fa(L.length)+' کاربر');persist();render();toast('قفل '+fa(L.length)+' کاربر برداشته شد');break;}
+    case 'fix-deadop':{const act=new Set(db.users.filter(x=>x.role==='operator'&&x.active).map(x=>x.id));const L=db.nb.filter(n=>!n._st&&n.op&&!act.has(n.op));const grp=uid();L.forEach(n=>commit({ent:'nb',op:'update',nb:n.id,tid:n.id,data:{op:''},txt:'برداشتن تخصیص کارشناس غیرفعال',tn:n.name,grp},realMe()));persist();render();toast(fa(L.length)+' محله بدون کارشناس شد؛ از «کارشناسان» به نفر تازه بسپارید');break;}
+    case 'fix-code':{const cnt={};db.nb.forEach(n=>{if(n.code&&!n._st)cnt[n.code]=(cnt[n.code]||0)+1;});const seen=new Set();let k=0;
+      db.nb.filter(n=>!n._st&&n.code).forEach(n=>{const bad=/XXX|object|undefined|NaN/.test(n.code);if(!bad&&(cnt[n.code]<2||!seen.has(n.code))){seen.add(n.code);return;}
+        const mx=Math.max(0,...db.nb.filter(x=>x.city===n.city&&x.district===n.district).map(x=>x.seq||0));n.seq=mx+1;n.code=codeFor(n);k++;});
+      logTech('ساخت کد تازه برای '+fa(k)+' محله');ver++;persist();render();toast(fa(k)+' کد تازه ساخته شد');break;}
+    case 'fix-badlink':{let k=0;db.nb.forEach(n=>{const l0=n.links.length;n.links=n.links.filter(l=>getP(l.pid));k+=l0-n.links.length;});logTech('حذف '+fa(k)+' پیوند خراب');ver++;persist();render();toast(fa(k)+' پیوند خراب حذف شد');break;}
+    case 'mgr-new':userForm(null,{role:'admin'});break;
+    case 'ttab':ui.techTab=b.dataset.tab;render();break;
+    case 'sec-save':{const g=(i,mn,mx)=>Math.min(mx,Math.max(mn,Math.round(Number(normDigits($(i).value))||mn)));db.settings.sec={ttl:g('#sec-ttl',1,10),tries:g('#sec-tries',3,10),lock:g('#sec-lock',5,120)};logTech('تغییر تنظیمات ورود');persist();render();toast('تنظیمات ورود ذخیره شد');break;}
+    case 'ntc-save':{const txt=$('#ntc-text').value.trim();if(!txt){toast('متن اعلان را بنویسید');break;}const dd=Number($('#ntc-days').value);db.settings.notice={on:true,text:txt,level:$('#ntc-level').value,until:dd?Date.now()+dd*DAY:0,t:Date.now()};logTech('انتشار اعلان سراسری');persist();render();toast('اعلان برای همه‌ی کاربران منتشر شد');break;}
+    case 'ntc-off':if(db.settings.notice)db.settings.notice.on=false;logTech('برداشتن اعلان سراسری');persist();render();toast('اعلان برداشته شد');break;
+    case 'ntc-x':try{sessionStorage.setItem(KEY+'-ntc',String(db.settings.notice?.t));}catch(x){}b.closest('.sys-notice')?.remove();break;
+    case 'bk-down':{db.settings.lastBackup=Date.now();persist();downloadFile('parchamdar-backup-'+today()+'.json',JSON.stringify(db),'application/json');break;}
+    case 'bk-restore':{const f=$('#bk-file')?.files?.[0];if(!f){toast('اول فایل پشتیبان را انتخاب کنید');break;}
+      if(!b.dataset.armed){b.dataset.armed='1';b.textContent='همه‌ی داده‌های فعلی جایگزین می‌شود؛ دوباره بزنید';break;}
+      f.text().then(txt=>{let d;try{d=JSON.parse(txt);}catch(x){toast('این فایل پشتیبان معتبر نیست');return;}
+        if(!d||d.v!==DBV||!Array.isArray(d.nb)||!Array.isArray(d.users)||!Array.isArray(d.people)||!d.settings){toast('این فایل پشتیبان پرچمدار نیست یا نسخه‌اش جور نیست');return;}
+        const r=realMe();db=d;ver++;ensureGeo();ensureAdmin();ensureAuth();ensureTech();ensurePFlag();ensureFields();if(!getU(r.id))db.users.push(r);logTech('بازگردانی از فایل پشتیبان');flush();render();toast('داده‌ها از فایل پشتیبان بازگردانده شد');});break;}
     case 'goperf':ui.perfProv=b.dataset.p||'';ui.perfCity='';location.hash='perf';break;
     case 'dir-new':dirForm(b.dataset.pv?{provs:[b.dataset.pv]}:{});break;
     case 'dir-read':{const d=(db.directives||[]).find(x=>x.id===id);if(!d)break;d.reads[me().id]=Date.now();me().last=Date.now();persist();render();toast('مطالعه‌ی ابلاغیه ثبت شد');break;}
@@ -3940,7 +4272,7 @@ app.addEventListener('submit',e=>{
     if(a.uid&&c===a.code&&now>a.exp)return fail('این کد منقضی شده است؛ «ارسال دوباره» را بزنید.');
     if(!a.uid||c!==a.code)return badTry(a,fail);
     const u=getU(a.uid);if(!u||!u.active)return fail('ورود با این حساب ممکن نیست.');
-    if(u.role==='admin'){a.step='pw';a.err='';a.code=null;render();setTimeout(()=>$('#lg-pw')?.focus(),0);return;}
+    if(ADM(u.role)){a.step='pw';a.err='';a.code=null;render();setTimeout(()=>$('#lg-pw')?.focus(),0);return;}
     return finishLogin(u,'sms',a.rem);
   }
   if(a.step==='pw'){
@@ -3960,6 +4292,7 @@ app.addEventListener('input',e=>{
   if(t.dataset.prq!==undefined){clearTimeout(qT);qT=setTimeout(()=>{ui.prf.q=t.value;ui.prf.page=1;render();const i=$('[data-prq]');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}},300);}
   if(t.dataset.pfilter==='q'){clearTimeout(qT);qT=setTimeout(()=>{ui.pf.q=t.value;ui.pPage=1;updatePeople();},180);}
   if(t.dataset.uf==='q'){clearTimeout(qT);qT=setTimeout(()=>{ui.uf.q=t.value;ui.usersPage=1;render();const i=$('[data-uf="q"]');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}},250);}
+  if(t.id==='tu-q'){const q=qnorm(t.value);const r=$('#tu-res');if(r)r.innerHTML=q?db.users.filter(x=>qnorm(x.name+' '+(x.nid||'')+' '+(x.mobile||'')+' '+normDigits(x.nid||'')).includes(qnorm(normDigits(t.value)))||qnorm(x.name).includes(q)).slice(0,8).map(x=>`<a href="#sup-${x.id}" class="tu-row"><b>${esc(x.name)}</b><small>${LEVEL[x.role]?.t||''}${areaOf(x)?'، '+esc(areaOf(x)):''}، ${fa(x.mobile||'')}${isLocked(x)?'، قفل':''}</small></a>`).join('')||'<p class="small muted">کاربری پیدا نشد.</p>':'';}
   if(t.dataset.change==='pattern-preview')$('#pv').innerHTML=previewCodes(t.value);
 });
 app.addEventListener('change',e=>{
@@ -3984,7 +4317,7 @@ render();
   let saved=null;
   try{saved=await idb.get(KEY);}catch(e){}
   if(saved&&saved.v===DBV){db=saved;ver++;}else freshDb();
-  ensureGeo();ensureAdmin();ensureAuth();ensurePFlag();ensureFields();
+  ensureGeo();ensureAdmin();ensureAuth();ensureTech();ensurePFlag();ensureFields();
   render();
 })();
 /* PWA: register the service worker only where the page is served as the installable app */
